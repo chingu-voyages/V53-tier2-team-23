@@ -34,7 +34,7 @@ Everyone on your team should add their name along with a link to their GitHub
 your repo access and to practice PR'ing with your team *before* you start
 coding!
 
-- Chinedu Olekah #1:Scrum Master[GitHub](https://github.com/kenako1) / [LinkedIn] (www.linkedin.com/in/chinedu-olekah-pmp-psm-29391021)
+- Chinedu Olekah #1:Scrum Master[GitHub](https://github.com/kenako1) / http://www.linkedin.com/in/chinedu-olekah-pmp-psm-29391021  
 - Teammate name #2: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
 
    ...
