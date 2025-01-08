@@ -36,7 +36,7 @@ coding!
 
 - Chinedu Olekah #1:Scrum Master [GitHub](https://github.com/kenako1) / [LinkedIn](www.linkedin.com/in/chinedu-olekah)
 - Leon Kountouras #2: [GitHub](https://github.com/leonalkalai) / [LinkedIn](https://www.linkedin.com/in/leon-koundouras/)
-- Teammate name #3: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Win Win Khaing (Thea) #3: [GitHub](https://github.com/TheaWin) / [LinkedIn](www.linkedin.com/in/thea-win) 
 
   ...
 
