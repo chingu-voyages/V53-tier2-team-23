@@ -34,10 +34,13 @@ Everyone on your team should add their name along with a link to their GitHub
 your repo access and to practice PR'ing with your team _before_ you start
 coding!
 
-- Chinedu Olekah #1:Scrum Master [GitHub](https://github.com/kenako1) / [LinkedIn](www.linkedin.com/in/chinedu-olekah)
+# Scrum Master
+- Chinedu Olekah: [GitHub](https://github.com/kenako1) / [LinkedIn](www.linkedin.com/in/chinedu-olekah)
+
+# UX/UI Designer
+- Céline Savary #4: [GitHub](https://github.com/cmsavary) / [LinkedIn](https://www.linkedin.com/in/celinesavaryuxui/)
+
+# Developers
 - Leon Kountouras #2: [GitHub](https://github.com/leonalkalai) / [LinkedIn](https://www.linkedin.com/in/leon-koundouras/)
 - Win Win Khaing (Thea) #3: [GitHub](https://github.com/TheaWin) / [LinkedIn](https://www.linkedin.com/in/thea-win/) 
-- Céline Savary #4: [GitHub](https://github.com/cmsavary) / [LinkedIn](https://www.linkedin.com/in/celinesavaryuxui/)
-  ...
-
 - Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
