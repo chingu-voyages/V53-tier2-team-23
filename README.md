@@ -1,4 +1,4 @@
-# Eato
+# Eato App
 
 ## Overview
 
