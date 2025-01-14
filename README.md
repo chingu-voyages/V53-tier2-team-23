@@ -1,31 +1,43 @@
-# voyage-tasks
+# Eato
 
-Your project's `readme` is as important to success as your code. For
-this reason you should put as much care into its creation and maintenance
-as you would any other component of the application.
+## Overview
+This app was created for Chingu Voyage 53. It integrates with the [Dishes API](https://menus-api.vercel.app/dishes) to provide a menu scheduling platform, enabling managers to create and share weekly meal plans with staff. The application ensures employees have clear visibility of the planned meals while accounting for dietary restrictions and allergies.
 
-If you are unsure of what should go into the `readme` let this article,
-written by an experienced Chingu, be your starting point -
-[Keys to a well written README](https://tinyurl.com/yk3wubft).
+## Features
 
-And before we go there's "one more thing"! Once you decide what to include
-in your `readme` feel free to replace the text we've provided here.
+- Allergy Input and Management
 
-> Own it & Make it your Own!
+ - [ ] Enable managers to input workers' allergies directly within the app using a user-friendly form or interface.
+ - [ ] Allow multiple allergy inputs, with the option to save and manage them for future menu planning.
+ - [ ] Automatically filter out dishes containing allergens based on workers' allergy data items.
 
-## Team Documents
+- Week Scheduling
+  - [ ] Provide managers with the ability to schedule menus for a specific week using:
+    - Date Picker: A calendar interface for seamless week selection.
+    - Default Option: Automatically pre-select the upcoming week for scheduling.
+    - Manual Input: Allow managers to specify the start and end dates of the week.
+  - [ ] Define the weekly menu structure as a 7-day period starting on Monday and ending on Sunday.
 
-You may find these helpful as you work together to organize your project.
+- Dish Management
 
-- [Team Project Ideas](./docs/team_project_ideas.md)
-- [Team Decision Log](./docs/team_decision_log.md)
+  - [ ] Dish Assignment
+    - Enable managers to assign dishes for each day of the week
+       - [ ] Automatically generate a menu with one unique dish for each day using dishes API.
+       - [ ] Write a logic to randomly select and assign unique dish for each day of the week.
+       - [ ] Implement a regenerate weekly menu feature.
+    - "Day Off" Feature
+       - [ ] Enable marking specific weekdays as "Day Off", where no dish is assigned.
+  - [ ] Data Requirements
+    - Source dishes from the dishes API containing the following details:
+      - Dish Name: Unique identifier for each dish.
+      - Ingredients: List of ingredients used.
+      - Calories: Nutritional value of the dish.
 
-Meeting Agenda templates (located in the `/docs` directory in this repo):
+## Running this project locally
 
-- Meeting - Voyage Kickoff --> ./docs/meeting-voyage_kickoff.docx
-- Meeting - App Vision & Feature Planning --> ./docs/meeting-vision_and_feature_planning.docx
-- Meeting - Sprint Retrospective, Review, and Planning --> ./docs/meeting-sprint_retrospective_review_and_planning.docx
-- Meeting - Sprint Open Topic Session --> ./docs/meeting-sprint_open_topic_session.docx
+## Dev Dependencies
+
+## Visuals
 
 ## Our Team
 
