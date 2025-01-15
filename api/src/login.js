@@ -15,12 +15,6 @@ exports.handler = async (event) => {
     query: event.queryStringParameters,
   };
 
-  // Create a data object to send as the response
-  const data = {
-    user: username,
-    password: password,
-  };
-
   //POST METHOD
 
   if (request.method === "POST") {
@@ -40,19 +34,20 @@ exports.handler = async (event) => {
         process.env.JWT_SECRET
       );
 
+      // Create a data object to send as the response
+      const data = {
+        username: username,
+        password: password,
+        token: token,
+      };
+
       //response.setHeader("auth-token", token);
       // response.setHeader("Authorization", `Bearer ${token}`);
 
       // response.setHeader("Content-Type", "application/json");
       return {
         statusCode: 200,
-        body: JSON.stringify({
-          data: {
-            username: username,
-            password: password,
-            token: token,
-          },
-        }),
+        body: JSON.stringify({ data }),
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
