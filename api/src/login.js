@@ -8,7 +8,7 @@ const manager = {
 
 exports.handler = async (event) => {
   if (event.httpMethod === "POST") {
-    const { username, password } = request.body;
+    const { username, password } = JSON.parse(event.body);
 
     // Create a data object to send as the response
     const data = {
@@ -86,5 +86,5 @@ exports.handler = async (event) => {
   //   }
   // }
 
-  return response.status(405).json({ message: "Method Not Allowed" });
+  // return response.status(405).json({ message: "Method Not Allowed" });
 };
