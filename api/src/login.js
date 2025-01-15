@@ -7,14 +7,24 @@ const manager = {
 };
 
 exports.handler = async (event) => {
-  if (event.httpMethod === "POST") {
-    const { username, password } = JSON.parse(event.body);
+  // set request object
+  const request = {
+    method: event.httpMethod,
+    headers: event.headers,
+    body: event.body ? JSON.parse(event.body) : null,
+    query: event.queryStringParameters,
+  };
 
-    // Create a data object to send as the response
-    const data = {
-      user: username,
-      password: password,
-    };
+  // Create a data object to send as the response
+  const data = {
+    user: username,
+    password: password,
+  };
+
+  //POST METHOD
+
+  if (request.method === "POST") {
+    const { username, password } = request.body;
 
     // return new Response(JSON.stringify(data), {
     //   status: 200,
@@ -24,20 +34,6 @@ exports.handler = async (event) => {
     //   },
     // });
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ data }),
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    };
-  }
-
-  /* POST METHOD
-  if (request.method === "POST") {
-    const { username, password } = request.body;
-
     if (username === manager.username && password === manager.password) {
       const token = jwt.sign(
         { username: manager.username },
@@ -45,16 +41,32 @@ exports.handler = async (event) => {
       );
 
       //response.setHeader("auth-token", token);
-      response.setHeader("Authorization", `Bearer ${token}`);
+      // response.setHeader("Authorization", `Bearer ${token}`);
 
-      response.setHeader("Content-Type", "application/json");
-
-      response.status(200).json({ token });
+      // response.setHeader("Content-Type", "application/json");
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          data: {
+            username: username,
+            password: password,
+            token: token,
+          },
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      };
+      //response.status(200).json({ token });
     } else {
       response.status(401).json({ message: "Credentials don't match" });
     }
+    return {
+      statusCode: 405,
+      body: JSON.stringify({ message: "Method Not Allowed" }),
+    };
   }
-*/
 
   // GET METHOD
   // if (request.method === "GET") {
