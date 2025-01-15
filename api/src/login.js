@@ -1,3 +1,6 @@
-export default function handler(req, res) {
-  res.status(200).json({ message: "Hello from Serverless!" });
-}
+exports.handler = async (event, context) => {
+  return {
+    statusCode: 200,
+    body: JSON.stringify({ message: "Hello from Serverless!" }),
+  };
+};
