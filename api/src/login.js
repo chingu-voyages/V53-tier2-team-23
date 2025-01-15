@@ -38,9 +38,21 @@ export default function handler(request, response) {
 
     try {
       const verified = jwt.verify(token, process.env.JWT_SECRET);
-      return response
-        .status(200)
-        .json({ message: "Manager content", manager: verified.username });
+
+      const responseBody = JSON.stringify(verified);
+
+      return {
+        statusCode: 200,
+        body: responseBody,
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+      };
+
+      // return response
+      //   .status(200)
+      //   .json({ message: "Manager content", manager: verified.username });
     } catch (error) {
       return response.status(401).json({ message: "Token not accepted" });
     }
