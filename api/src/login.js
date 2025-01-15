@@ -17,7 +17,7 @@ export default function handler(request, response) {
         process.env.JWT_SECRET
       );
 
-      response.setHeader("Authorization", `${token}`);
+      response.setHeader("auth-token", token);
       response.setHeader("Content-Type", "application/json");
 
       response.status(200).json({ token });
@@ -28,7 +28,7 @@ export default function handler(request, response) {
 
   // GET METHOD
   if (request.method === "GET") {
-    const token = request.headers.authorization;
+    const token = request.headers["auth-token"];
     if (!token) {
       return response.status(401).json({ message: "Token not found" });
     }
