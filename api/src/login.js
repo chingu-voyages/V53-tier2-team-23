@@ -20,7 +20,7 @@ exports.handler = async (event) => {
     //   status: 200,
     //   headers: {
     //     "Content-Type": "application/json",
-    //     "Access-Control-Allow-Origin": "*", 
+    //     "Access-Control-Allow-Origin": "*",
     //   },
     // });
 
@@ -32,8 +32,6 @@ exports.handler = async (event) => {
         "Access-Control-Allow-Origin": "*",
       },
     };
-  }
-  
   }
 
   /* POST METHOD
@@ -89,4 +87,4 @@ exports.handler = async (event) => {
   // }
 
   return response.status(405).json({ message: "Method Not Allowed" });
-}
+};
