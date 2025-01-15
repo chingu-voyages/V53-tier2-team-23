@@ -8,7 +8,7 @@ const manager = {
 
 export default async function handler(request, response) {
   if (request.method === "POST") {
-    const { username, password } = JSON.parse(request.body);
+    const { username, password } = request.body;
 
     // Create a data object to send as the response
     const data = {
