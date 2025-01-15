@@ -7,7 +7,19 @@ const manager = {
 };
 
 export default function handler(request, response) {
-  // POST METHOD
+  if (request.method === "POST") {
+    const { username, password } = request.body;
+
+    // Create a data object to send as the response
+    const data = {
+      user: username,
+      password: password,
+    };
+
+    return response.status(200).json(data); // Send the user and password as JSON
+  }
+
+  /* POST METHOD
   if (request.method === "POST") {
     const { username, password } = request.body;
 
@@ -27,6 +39,7 @@ export default function handler(request, response) {
       response.status(401).json({ message: "Credentials don't match" });
     }
   }
+*/
 
   // GET METHOD
   // if (request.method === "GET") {
