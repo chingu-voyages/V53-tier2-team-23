@@ -6,9 +6,9 @@ const manager = {
   password: "manager",
 };
 
-export default function handler(request, response) {
+export default async function handler(request, response) {
   if (request.method === "POST") {
-    const { username, password } = request.body;
+    const { username, password } = JSON.parse(request.body);
 
     // Create a data object to send as the response
     const data = {
@@ -20,12 +20,10 @@ export default function handler(request, response) {
       statusCode: 200,
       body: JSON.stringify(data),
       headers: {
-        "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
       },
     };
-    // return response.status(200).json(data); // Send the user and password as JSON
   }
 
   /* POST METHOD
