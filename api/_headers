@@ -1,1 +1,2 @@
-Content-Security-Policy: default-src 'self'; connect-src 'self' https://eato-meatplanner.netlify.app;
+/*
+  Content-Security-Policy: default-src 'self'; connect-src *;
