@@ -15,7 +15,7 @@ exports.handler = async (event) => {
     query: event.queryStringParameters,
   };
 
-  //POST METHOD
+  //POST METHOD for user login
 
   if (request.method === "POST") {
     const { username, password } = request.body;
@@ -39,6 +39,8 @@ exports.handler = async (event) => {
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
       };
     } else {
@@ -49,7 +51,7 @@ exports.handler = async (event) => {
     }
   }
 
-  // GET METHOD
+  // GET METHOD verify the JWT token sent by the client
   if (request.method === "GET") {
     const token = request.headers.authorization?.split(" ")[1];
     //const token = request.headers["auth-token"];
@@ -71,6 +73,8 @@ exports.handler = async (event) => {
         headers: {
           "Content-Type": "application/json; charset=utf-8",
           "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
         },
       };
     } catch (error) {
