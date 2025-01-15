@@ -1,2 +1,5 @@
 [build]
-  functions = "api/src"
+  functions = "api/src"  
+
+[dev]
+  functions = "api/src"  
