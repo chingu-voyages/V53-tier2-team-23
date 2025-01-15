@@ -15,6 +15,18 @@ exports.handler = async (event) => {
     query: event.queryStringParameters,
   };
 
+  // Handle OPTIONS preflight request
+  if (request.method === "OPTIONS") {
+    return {
+      statusCode: 204,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      },
+    };
+  }
+
   //POST METHOD for user login
 
   if (request.method === "POST") {
