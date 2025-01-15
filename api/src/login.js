@@ -16,7 +16,16 @@ export default function handler(request, response) {
       password: password,
     };
 
-    return response.status(200).json(data); // Send the user and password as JSON
+    return {
+      statusCode: 200,
+      body: JSON.stringify(data),
+      headers: {
+        "Access-Control-Allow-Credentials": "true",
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json",
+      },
+    };
+    // return response.status(200).json(data); // Send the user and password as JSON
   }
 
   /* POST METHOD
