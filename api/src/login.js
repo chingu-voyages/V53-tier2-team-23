@@ -73,11 +73,10 @@ exports.handler = async (event) => {
           "Access-Control-Allow-Origin": "*",
         },
       };
-
     } catch (error) {
       return {
         statusCode: 401,
-        body: JSON.stringify({ message: Token not accepted" }),
+        body: JSON.stringify({ message: "Token not accepted" }),
       };
     }
   }
