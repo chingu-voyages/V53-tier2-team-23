@@ -14,7 +14,7 @@ export default function handler(request, response) {
     if (username === manager.username && password === manager.password) {
       const token = jwt.sign(
         { username: manager.username },
-        `${process.env.JWT_SECRET}`
+        process.env.JWT_SECRET
       );
 
       response.setHeader("Authorization", `${token}`);
@@ -34,7 +34,7 @@ export default function handler(request, response) {
     }
 
     try {
-      const verified = jwt.verify(token, `${process.env.JWT_SECRET}`);
+      const verified = jwt.verify(token, process.env.JWT_SECRET);
       return response
         .status(200)
         .json({ message: "Manager content", manager: verified.username });
@@ -43,7 +43,5 @@ export default function handler(request, response) {
     }
   }
 
-  if (request.method !== "GET" && request.method !== "POST") {
-    return response.status(405).json({ message: "Method Not Allowed" });
-  }
+  return response.status(405).json({ message: "Method Not Allowed" });
 }
