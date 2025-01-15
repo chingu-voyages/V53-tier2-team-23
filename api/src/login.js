@@ -1,4 +1,4 @@
-import jwt from "jsonwebtoken";
+const jwt = require("jsonwebtoken");
 
 // CREDENTIALS
 const manager = {
@@ -6,8 +6,8 @@ const manager = {
   password: "manager",
 };
 
-export default async function handler(request) {
-  if (request.method === "POST") {
+exports.handler = async (event) => {
+  if (event.httpMethod === "POST") {
     const { username, password } = request.body;
 
     // Create a data object to send as the response
@@ -16,14 +16,24 @@ export default async function handler(request) {
       password: password,
     };
 
-    return new Response(JSON.stringify(data), {
-      status: 200,
+    // return new Response(JSON.stringify(data), {
+    //   status: 200,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     "Access-Control-Allow-Origin": "*", 
+    //   },
+    // });
+
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ data }),
       headers: {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*", 
+        "Access-Control-Allow-Origin": "*",
       },
-    });
+    };
   }
+  
   }
 
   /* POST METHOD
