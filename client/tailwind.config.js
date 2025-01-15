@@ -12,7 +12,11 @@ export default {
       lg: '1024px',
       xl: '1280px',
     },
-    extend: {},
+    extend: {
+      colors: {
+        background: 'var(--background)',
+      },
+    },
   },
   plugins: [],
 };
