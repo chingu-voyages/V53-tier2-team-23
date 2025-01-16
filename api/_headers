@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: default-src 'self'; connect-src *;
+  Content-Security-Policy: default-src 'self'; style-src 'self' 'nonce-<nonce_value>'; connect-src *;
