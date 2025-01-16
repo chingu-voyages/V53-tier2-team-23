@@ -2,8 +2,8 @@ const jwt = require("jsonwebtoken");
 
 // CREDENTIALS
 const manager = {
-  username: "manager",
-  password: "manager",
+  username: REACT_APP_MANAGER_USERNAME,
+  password: REACT_APP_MANAGER_PASSWORD,
 };
 
 exports.handler = async (event) => {
