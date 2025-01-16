@@ -57,6 +57,10 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "Credentials don't match" }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*", // ✅
+        },
       };
     }
   }
@@ -69,6 +73,10 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "Token not found" }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*", // ✅ Always include CORS header
+        },
       };
     }
 
@@ -89,6 +97,10 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "Token not accepted" }),
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*", // ✅ Always include CORS header
+        },
       };
     }
   }
@@ -96,5 +108,9 @@ exports.handler = async (event) => {
   return {
     statusCode: 405,
     body: JSON.stringify({ message: "Method Not Allowed" }),
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*", // ✅ Always include CORS header
+    },
   };
 };
