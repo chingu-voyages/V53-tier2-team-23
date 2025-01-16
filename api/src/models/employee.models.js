@@ -17,6 +17,19 @@ const employeeSchema = new Schema({
       ref: 'Allergen',
     },
   ],
+  dietaryRestrictions: [
+    {
+      type: String,
+      enum: [
+        'Lactose-free',
+        'Gluten-free',
+        'Vegetarian',
+        'Vegan',
+        'Diabetes-friendly',
+      ],
+      required: false,
+    },
+  ],
 });
 
 module.exports = mongoose.model('Employee', employeeSchema);
