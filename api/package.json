@@ -1,5 +1,5 @@
 {
-  "name": "my-fullstack-app-backend",
+  "name": "eato-api",
   "version": "1.0.0",
   "description": "Backend for my fullstack application using Node.js and Express.",
   "main": "src/app.js",
@@ -8,11 +8,12 @@
     "dev": "nodemon src/app.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.10.9"
   },
   "devDependencies": {
+    "eslint": "^9.18.0",
     "nodemon": "^2.0.7"
   },
   "author": "",
