@@ -39,7 +39,7 @@ exports.handler = async (event) => {
       );
 
       // Create a data object to send as the response
-      const data = {
+      const userData = {
         username: username,
         password: password,
         token: token,
@@ -47,7 +47,7 @@ exports.handler = async (event) => {
 
       return {
         statusCode: 200,
-        body: JSON.stringify({ data }),
+        body: JSON.stringify({ userData }),
         headers: {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
@@ -67,15 +67,15 @@ exports.handler = async (event) => {
 
   // GET METHOD verify the JWT token sent by the client
   if (request.method === "GET") {
-    const token = request.headers.authorization?.split(" ")[1];
-    //const token = request.headers["auth-token"];
+    const token = request.headers.authorization?.replace("Bearer ", "");
+
     if (!token) {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "Token not found" }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*", // ✅ Always include CORS header
+          "Access-Control-Allow-Origin": "*",
         },
       };
     }
@@ -83,7 +83,9 @@ exports.handler = async (event) => {
     try {
       const verified = jwt.verify(token, process.env.JWT_SECRET);
 
-      const responseBody = JSON.stringify(verified);
+      const responseBody = JSON.stringify({
+        username: verified.username,
+      });
 
       return {
         statusCode: 200,
