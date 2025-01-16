@@ -1,4 +1,3 @@
-//import jwt 
 const jwt = require("jsonwebtoken");
 
 // CREDENTIALS
