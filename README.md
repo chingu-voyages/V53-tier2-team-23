@@ -55,4 +55,4 @@ coding!
 # Developers
 - Leon Kountouras #2: [GitHub](https://github.com/leonalkalai) / [LinkedIn](https://www.linkedin.com/in/leon-koundouras/)
 - Win Win Khaing (Thea) #3: [GitHub](https://github.com/TheaWin) / [LinkedIn](https://www.linkedin.com/in/thea-win/) 
-- Teammate name #n: [GitHub](https://github.com/ghaccountname) / [LinkedIn](https://linkedin.com/in/liaccountname)
+- Teammate name #4: [GitHub](https://github.com/Zien-Alhawshi/) / [LinkedIn](https://www.linkedin.com/in/zien-alhawshi-a5235a25b/)
