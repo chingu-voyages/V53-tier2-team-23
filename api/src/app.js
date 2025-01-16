@@ -9,7 +9,7 @@ async function getTokenFromLocalStorage() {
 
 async function authenticateUser(token) {
   const response = await fetch(
-    "https://eato-meatplanner.netlify.app/.netlify/functions/login",
+    "https://eato-meatplanner.netlify.app/api/.netlify/functions/login",
     {
       method: "GET",
       headers: {
@@ -35,7 +35,7 @@ async function authenticateUser(token) {
 
 async function loginUser(username, password) {
   const loginResponse = await fetch(
-    "https://eato-meatplanner.netlify.app/.netlify/functions/login",
+    "https://eato-meatplanner.netlify.app/api/.netlify/functions/login",
     {
       method: "POST",
       headers: {
