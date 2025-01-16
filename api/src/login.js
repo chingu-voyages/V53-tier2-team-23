@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 
-console.log(
-  process.env.REACT_APP_MANAGER_USERNAME,
-  process.env.REACT_APP_MANAGER_PASSWORD
-);
+console.log("Username:", process.env.REACT_APP_MANAGER_USERNAME);
+console.log("Password:", process.env.REACT_APP_MANAGER_PASSWORD);
+console.log("JWT Secret:", process.env.JWT_SECRET);
+
 // CREDENTIALS
 const manager = {
   username: process.env.REACT_APP_MANAGER_USERNAME,
