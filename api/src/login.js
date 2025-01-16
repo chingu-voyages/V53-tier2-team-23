@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-//test comment
 
 // CREDENTIALS
 const manager = {
