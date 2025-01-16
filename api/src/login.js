@@ -1,9 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-console.log("Username:", process.env.REACT_APP_MANAGER_USERNAME);
-console.log("Password:", process.env.REACT_APP_MANAGER_PASSWORD);
-console.log("JWT Secret:", process.env.JWT_SECRET);
-
 // CREDENTIALS
 const manager = {
   username: process.env.REACT_APP_MANAGER_USERNAME,
@@ -11,6 +7,11 @@ const manager = {
 };
 
 exports.handler = async (event) => {
+  console.log(manager);
+  console.log("Username:", process.env.REACT_APP_MANAGER_USERNAME);
+  console.log("Password:", process.env.REACT_APP_MANAGER_PASSWORD);
+  console.log("JWT Secret:", process.env.JWT_SECRET);
+
   // set request object
   const request = {
     method: event.httpMethod,
