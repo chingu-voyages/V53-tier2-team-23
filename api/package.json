@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^5.10.9"
   },
   "devDependencies": {
