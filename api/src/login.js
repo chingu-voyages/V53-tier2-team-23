@@ -1,17 +1,12 @@
 const jwt = require("jsonwebtoken");
 
-// CREDENTIALS
+// CREDENTIALS ✅
 const manager = {
   username: process.env.REACT_APP_MANAGER_USERNAME,
   password: process.env.REACT_APP_MANAGER_PASSWORD,
 };
 
 exports.handler = async (event) => {
-  console.log(manager);
-  console.log("Username:", process.env.REACT_APP_MANAGER_USERNAME);
-  console.log("Password:", process.env.REACT_APP_MANAGER_PASSWORD);
-  console.log("JWT Secret:", process.env.JWT_SECRET);
-
   // set request object
   const request = {
     method: event.httpMethod,
@@ -64,7 +59,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({ message: "Credentials don't match" }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*", // ✅
+          "Access-Control-Allow-Origin": "*",
         },
       };
     }
@@ -106,7 +101,7 @@ exports.handler = async (event) => {
         body: JSON.stringify({ message: "Token not accepted" }),
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*", // ✅ Always include CORS header
+          "Access-Control-Allow-Origin": "*",
         },
       };
     }
@@ -117,7 +112,7 @@ exports.handler = async (event) => {
     body: JSON.stringify({ message: "Method Not Allowed" }),
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*", // ✅ Always include CORS header
+      "Access-Control-Allow-Origin": "*",
     },
   };
 };
