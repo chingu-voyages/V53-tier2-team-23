@@ -13,12 +13,12 @@ const dishSchema = new Schema({
     required: true,
   },
   ingredients: {
-    type: [String],
+    type: [String], // an array of strings
     required: true,
   },
   allergens: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
       ref: 'Allergen',
     },
   ],

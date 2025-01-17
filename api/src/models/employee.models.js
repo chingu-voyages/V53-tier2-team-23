@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const employeeSchema = new Schema({
   employeeId: {
-    type: Number,
+    type: String,
     required: true,
     uniqure: true,
   },
@@ -13,7 +13,7 @@ const employeeSchema = new Schema({
   },
   allergies: [
     {
-      type: Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
       ref: 'Allergen',
     },
   ],
@@ -26,7 +26,7 @@ const employeeSchema = new Schema({
         'Vegetarian',
         'Vegan',
         'Diabetes-friendly',
-      ],
+      ], // only take a specific set of values
       required: false,
     },
   ],
