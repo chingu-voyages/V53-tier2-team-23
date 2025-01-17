@@ -1,11 +1,19 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+/**
+ * Employee Schema to represent employee data.
+ * @typedef {Object} Employee
+ * @property {string} employeeId - The unique identifier for the employee.
+ * @property {string} employeeName - The name of the employee.
+ * @property {Array<ObjectId>} allergies - Array of ObjectIds referencing allergens.
+ * @property {Array<string>} dietaryRestrictions - Array of dietary restrictions.
+ */
 const employeeSchema = new Schema({
   employeeId: {
     type: String,
     required: true,
-    uniqure: true,
+    unique: true,
   },
   employeeName: {
     type: String,
@@ -15,6 +23,7 @@ const employeeSchema = new Schema({
     {
       type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
       ref: 'Allergen',
+      required: false,
     },
   ],
   dietaryRestrictions: [
