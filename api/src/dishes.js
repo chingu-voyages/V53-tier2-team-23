@@ -34,7 +34,7 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishesData = await getData('dishes');
-      console.log('dishesData:', dishesData;
+      console.log('dishesData:', dishesData);
       const parsedDishesData =
         typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
       console.log('parsedDishesData:', parsedDishesData);
