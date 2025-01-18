@@ -23,7 +23,7 @@ const handler = async (event, context) => {
   console.log('Path:', path);
   console.log('Request body:', body);
 
-  if (httpMethod === 'GET' && path === '/dishes') {
+  if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishes = await getData('dishes');
       return {
