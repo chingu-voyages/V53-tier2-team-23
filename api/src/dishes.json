@@ -1,0 +1,1317 @@
+[
+  {
+    "category": "vegetarian",
+    "dishName": "Vegetable Stir-fry",
+    "ingredients": ["Broccoli", "Carrot", "Bell Pepper", "Soy Sauce", "Garlic"],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/vegetable-stirfry.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Veggie Burger",
+    "ingredients": ["Black Beans", "Lettuce", "Tomato", "Whole Wheat Bun"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/veggie-burger.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Caprese Salad",
+    "ingredients": [
+      "Tomatoes",
+      "Mozzarella",
+      "Basil",
+      "Olive Oil",
+      "Balsamic Vinegar"
+    ],
+    "allergens": [],
+    "calories": 150,
+    "imageUrl": "imagesPath/caprese-salad.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Lentil Soup",
+    "ingredients": ["Lentils", "Carrot", "Celery", "Onion", "Vegetable Broth"],
+    "allergens": [],
+    "calories": 180,
+    "imageUrl": "imagesPath/lentil-soup.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Eggplant Parmesan",
+    "ingredients": [
+      "Eggplant",
+      "Tomato Sauce",
+      "Mozzarella",
+      "Parmesan",
+      "Basil"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/eggplant-parmesan.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Vegetarian Tacos",
+    "ingredients": [
+      "Corn Tortillas",
+      "Black Beans",
+      "Lettuce",
+      "Tomato",
+      "Cheese"
+    ],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/vegetarian-tacos.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Falafel Wrap",
+    "ingredients": [
+      "Falafel",
+      "Hummus",
+      "Lettuce",
+      "Tomato",
+      "Whole Wheat Wrap"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/falafel-wrap.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Mushroom Risotto",
+    "ingredients": [
+      "Mushrooms",
+      "Arborio Rice",
+      "Vegetable Broth",
+      "Parmesan",
+      "Garlic"
+    ],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/mushroom-risotto.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Grilled Vegetable Skewers",
+    "ingredients": [
+      "Zucchini",
+      "Bell Pepper",
+      "Onion",
+      "Cherry Tomatoes",
+      "Olive Oil"
+    ],
+    "allergens": [],
+    "calories": 180,
+    "imageUrl": "imagesPath/grilled-vegetable-skewers.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Spinach and Cheese Stuffed Portobello",
+    "ingredients": [
+      "Portobello Mushroom",
+      "Spinach",
+      "Mozzarella",
+      "Garlic",
+      "Olive Oil"
+    ],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/spinach-cheese-portobello.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Sweet Potato and Black Bean Chili",
+    "ingredients": [
+      "Sweet Potatoes",
+      "Black Beans",
+      "Tomato",
+      "Onion",
+      "Chili Powder"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/sweet-potato-chili.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Vegetable Samosas",
+    "ingredients": ["Potatoes", "Peas", "Carrot", "Curry Powder", "Pastry"],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/vegetable-samosas.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Chickpea Salad",
+    "ingredients": ["Chickpeas", "Cucumber", "Tomato", "Olives", "Olive Oil"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/chickpea-salad.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Zucchini Noodles with Pesto",
+    "ingredients": ["Zucchini", "Basil", "Garlic", "Olive Oil", "Parmesan"],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/zucchini-noodles-pesto.jpg"
+  },
+  {
+    "category": "vegetarian",
+    "dishName": "Vegan Pizza",
+    "ingredients": [
+      "Gluten-Free Pizza Dough",
+      "Tomato Sauce",
+      "Vegan Cheese",
+      "Olives",
+      "Mushrooms"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/vegan-pizza.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Tofu Stir-fry",
+    "ingredients": ["Tofu", "Broccoli", "Carrot", "Soy Sauce", "Garlic"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/vegan-tofu-stirfry.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Chickpea Curry",
+    "ingredients": [
+      "Chickpeas",
+      "Coconut Milk",
+      "Curry Powder",
+      "Onion",
+      "Tomatoes"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/chickpea-curry.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Tacos",
+    "ingredients": [
+      "Corn Tortillas",
+      "Black Beans",
+      "Lettuce",
+      "Guacamole",
+      "Salsa"
+    ],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/vegan-tacos.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Lentil Shepherd’s Pie",
+    "ingredients": ["Lentils", "Mashed Potatoes", "Carrot", "Peas", "Onion"],
+    "allergens": [],
+    "calories": 450,
+    "imageUrl": "imagesPath/lentil-shepherds-pie.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Buddha Bowl",
+    "ingredients": ["Quinoa", "Avocado", "Chickpeas", "Spinach", "Tahini"],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/vegan-buddha-bowl.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Pizza",
+    "ingredients": [
+      "Gluten-Free Pizza Dough",
+      "Tomato Sauce",
+      "Vegan Cheese",
+      "Olives",
+      "Mushrooms"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/vegan-pizza.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Burrito",
+    "ingredients": [
+      "Flour Tortilla",
+      "Rice",
+      "Black Beans",
+      "Guacamole",
+      "Lettuce"
+    ],
+    "allergens": [],
+    "calories": 450,
+    "imageUrl": "imagesPath/vegan-burrito.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Caesar Salad",
+    "ingredients": [
+      "Romaine Lettuce",
+      "Vegan Caesar Dressing",
+      "Croutons",
+      "Chickpeas"
+    ],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/vegan-caesar-salad.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Tofu Scramble",
+    "ingredients": ["Tofu", "Spinach", "Mushrooms", "Onion", "Turmeric"],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/tofu-scramble.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Lasagna",
+    "ingredients": [
+      "Lasagna Sheets",
+      "Tofu",
+      "Spinach",
+      "Tomato Sauce",
+      "Vegan Cheese"
+    ],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/vegan-lasagna.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Burger",
+    "ingredients": ["Black Beans", "Lettuce", "Tomato", "Vegan Bun", "Pickles"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/vegan-burger.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Mac and Cheese",
+    "ingredients": [
+      "Pasta",
+      "Vegan Cheese Sauce",
+      "Cashews",
+      "Nutritional Yeast",
+      "Turmeric"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/vegan-mac-cheese.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Falafel",
+    "ingredients": ["Chickpeas", "Garlic", "Parsley", "Cumin", "Coriander"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/vegan-falafel.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Pad Thai",
+    "ingredients": ["Rice Noodles", "Tofu", "Peanuts", "Lime", "Tamari Sauce"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/vegan-pad-thai.jpg"
+  },
+  {
+    "category": "vegan",
+    "dishName": "Vegan Chocolate Cake",
+    "ingredients": [
+      "Flour",
+      "Cocoa Powder",
+      "Almond Milk",
+      "Sugar",
+      "Baking Powder"
+    ],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/vegan-chocolate-cake.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Grilled Salmon",
+    "ingredients": ["Salmon", "Lemon", "Olive Oil", "Garlic", "Parsley"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/grilled-salmon.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Shrimp Scampi",
+    "ingredients": ["Shrimp", "Garlic", "Linguine", "Butter", "Lemon"],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/shrimp-scampi.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Fish Tacos",
+    "ingredients": ["White Fish", "Corn Tortillas", "Cabbage", "Salsa", "Lime"],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/fish-tacos.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Tuna Salad",
+    "ingredients": ["Tuna", "Lettuce", "Tomato", "Olives", "Olive Oil"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/tuna-salad.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Salmon Sushi",
+    "ingredients": ["Salmon", "Rice", "Nori", "Wasabi", "Soy Sauce"],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/salmon-sushi.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Grilled Shrimp Skewers",
+    "ingredients": ["Shrimp", "Garlic", "Lemon", "Paprika", "Olive Oil"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/grilled-shrimp-skewers.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Fish and Chips",
+    "ingredients": ["Cod", "Potatoes", "Flour", "Baking Powder", "Oil"],
+    "allergens": [],
+    "calories": 450,
+    "imageUrl": "imagesPath/fish-and-chips.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Crispy Tuna Patties",
+    "ingredients": ["Tuna", "Breadcrumbs", "Egg", "Garlic", "Lemon"],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/crispy-tuna-patties.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Mussels in White Wine",
+    "ingredients": ["Mussels", "White Wine", "Garlic", "Shallots", "Parsley"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/mussels-in-white-wine.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Salmon Fillet with Asparagus",
+    "ingredients": ["Salmon", "Asparagus", "Olive Oil", "Lemon", "Garlic"],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/salmon-asparagus.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Sushi Rolls",
+    "ingredients": ["Salmon", "Rice", "Nori", "Avocado", "Cucumber"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/sushi-rolls.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Clam Chowder",
+    "ingredients": ["Clams", "Potatoes", "Onion", "Celery", "Cream"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/clam-chowder.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Tuna Poke Bowl",
+    "ingredients": ["Tuna", "Avocado", "Rice", "Cucumber", "Soy Sauce"],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/tuna-poke-bowl.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Lobster Roll",
+    "ingredients": ["Lobster", "Brioche Bun", "Lettuce", "Lemon", "Mayo"],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/lobster-roll.jpg"
+  },
+  {
+    "category": "pescatarian",
+    "dishName": "Baked Cod with Herbs",
+    "ingredients": ["Cod", "Olive Oil", "Rosemary", "Garlic", "Lemon"],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/baked-cod-herbs.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Avocado Egg Boats",
+    "ingredients": ["Avocado", "Egg", "Cheddar Cheese", "Bacon", "Chives"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/keto-avocado-egg-boats.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Cauliflower Mac and Cheese",
+    "ingredients": [
+      "Cauliflower",
+      "Cheddar Cheese",
+      "Heavy Cream",
+      "Garlic",
+      "Butter"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/cauliflower-mac-and-cheese.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Chicken Alfredo",
+    "ingredients": [
+      "Chicken Breast",
+      "Heavy Cream",
+      "Parmesan Cheese",
+      "Zucchini",
+      "Garlic"
+    ],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/keto-chicken-alfredo.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Salmon Salad",
+    "ingredients": ["Salmon", "Lettuce", "Olives", "Avocado", "Cucumber"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/keto-salmon-salad.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Zucchini Noodles with Pesto",
+    "ingredients": [
+      "Zucchini",
+      "Basil Pesto",
+      "Parmesan Cheese",
+      "Olive Oil",
+      "Garlic"
+    ],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/zucchini-noodles-pesto.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Beef Stir-Fry",
+    "ingredients": ["Beef", "Broccoli", "Bell Peppers", "Soy Sauce", "Garlic"],
+    "allergens": [],
+    "calories": 450,
+    "imageUrl": "imagesPath/keto-beef-stirfry.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Meatballs with Marinara",
+    "ingredients": [
+      "Ground Beef",
+      "Parmesan Cheese",
+      "Egg",
+      "Tomato Sauce",
+      "Garlic"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/keto-meatballs-marinara.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Eggplant Parmesan",
+    "ingredients": [
+      "Eggplant",
+      "Almond Flour",
+      "Mozzarella Cheese",
+      "Tomato Sauce",
+      "Parmesan Cheese"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/keto-eggplant-parmesan.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Shrimp Scampi",
+    "ingredients": [
+      "Shrimp",
+      "Butter",
+      "Garlic",
+      "Zucchini",
+      "Parmesan Cheese"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/keto-shrimp-scampi.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Chicken Parmesan",
+    "ingredients": [
+      "Chicken Breast",
+      "Almond Flour",
+      "Mozzarella Cheese",
+      "Tomato Sauce",
+      "Parmesan Cheese"
+    ],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/keto-chicken-parmesan.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Cobb Salad",
+    "ingredients": ["Chicken", "Bacon", "Egg", "Avocado", "Blue Cheese"],
+    "allergens": [],
+    "calories": 450,
+    "imageUrl": "imagesPath/keto-cobb-salad.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Chicken Caesar Salad",
+    "ingredients": [
+      "Chicken",
+      "Romaine Lettuce",
+      "Parmesan Cheese",
+      "Caesar Dressing",
+      "Bacon"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/keto-chicken-caesar-salad.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Cauliflower Pizza",
+    "ingredients": [
+      "Cauliflower",
+      "Cheese",
+      "Egg",
+      "Tomato Sauce",
+      "Pepperoni"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/keto-cauliflower-pizza.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Avocado Chicken Salad",
+    "ingredients": ["Chicken", "Avocado", "Celery", "Mayo", "Lettuce"],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/keto-avocado-chicken-salad.jpg"
+  },
+  {
+    "category": "Keto",
+    "dishName": "Keto Chili",
+    "ingredients": [
+      "Ground Beef",
+      "Tomatoes",
+      "Bell Peppers",
+      "Onions",
+      "Cheddar Cheese"
+    ],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/keto-chili.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "Grilled Chicken with Avocado Salsa",
+    "ingredients": [
+      "Chicken Breast",
+      "Avocado",
+      "Tomato",
+      "Red Onion",
+      "Cilantro"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/grilled-chicken-avocado-salsa.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Beef Stir-Fry",
+    "ingredients": [
+      "Beef",
+      "Bell Peppers",
+      "Broccoli",
+      "Garlic",
+      "Coconut Oil"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/paleo-beef-stirfry.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Sweet Potato Hash",
+    "ingredients": [
+      "Sweet Potatoes",
+      "Ground Turkey",
+      "Onion",
+      "Spinach",
+      "Olive Oil"
+    ],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/paleo-sweet-potato-hash.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Chicken Soup",
+    "ingredients": ["Chicken Breast", "Carrots", "Celery", "Onions", "Garlic"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/paleo-chicken-soup.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Salmon with Asparagus",
+    "ingredients": ["Salmon", "Asparagus", "Olive Oil", "Lemon", "Garlic"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/paleo-salmon-asparagus.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Meatballs with Zucchini Noodles",
+    "ingredients": [
+      "Ground Beef",
+      "Zucchini",
+      "Tomato Sauce",
+      "Garlic",
+      "Basil"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/paleo-meatballs-zucchini-noodles.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Chicken Lettuce Wraps",
+    "ingredients": [
+      "Ground Chicken",
+      "Lettuce",
+      "Carrots",
+      "Coconut Oil",
+      "Garlic"
+    ],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/paleo-chicken-lettuce-wraps.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Shrimp and Avocado Salad",
+    "ingredients": ["Shrimp", "Avocado", "Lettuce", "Olive Oil", "Lemon"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/paleo-shrimp-avocado-salad.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Beef Tacos",
+    "ingredients": [
+      "Ground Beef",
+      "Lettuce",
+      "Tomato",
+      "Avocado",
+      "Taco Seasoning"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/paleo-beef-tacos.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Baked Chicken Thighs",
+    "ingredients": [
+      "Chicken Thighs",
+      "Rosemary",
+      "Olive Oil",
+      "Garlic",
+      "Lemon"
+    ],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/paleo-baked-chicken-thighs.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Fish Tacos with Cabbage Slaw",
+    "ingredients": ["White Fish", "Lettuce", "Cabbage", "Avocado", "Lime"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/paleo-fish-tacos-cabbage-slaw.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Eggplant Parmesan",
+    "ingredients": [
+      "Eggplant",
+      "Almond Flour",
+      "Tomato Sauce",
+      "Basil",
+      "Olive Oil"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/paleo-eggplant-parmesan.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Zucchini Fritters",
+    "ingredients": ["Zucchini", "Almond Flour", "Egg", "Garlic", "Coconut Oil"],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/paleo-zucchini-fritters.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Grilled Shrimp Skewers",
+    "ingredients": ["Shrimp", "Olive Oil", "Lemon", "Garlic", "Paprika"],
+    "allergens": [],
+    "calories": 250,
+    "imageUrl": "imagesPath/paleo-grilled-shrimp-skewers.jpg"
+  },
+  {
+    "category": "paleo",
+    "dishName": "paleo Beef and Broccoli",
+    "ingredients": [
+      "Beef",
+      "Broccoli",
+      "Coconut Oil",
+      "Garlic",
+      "Coconut Aminos"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/paleo-beef-broccoli.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Chicken Parmesan",
+    "ingredients": [
+      "Chicken Breast",
+      "Gluten-Free Breadcrumbs",
+      "Mozzarella Cheese",
+      "Tomato Sauce",
+      "Parmesan Cheese"
+    ],
+    "allergens": [],
+    "calories": 450,
+    "imageUrl": "imagesPath/gluten-free-chicken-parmesan.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Pancakes",
+    "ingredients": [
+      "Gluten-Free Flour",
+      "Egg",
+      "Milk",
+      "Baking Powder",
+      "Maple Syrup"
+    ],
+    "allergens": [],
+    "calories": 300,
+    "imageUrl": "imagesPath/gluten-free-pancakes.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Quinoa Salad",
+    "ingredients": [
+      "Quinoa",
+      "Cucumber",
+      "Tomato",
+      "Red Onion",
+      "Lemon Dressing"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/gluten-free-quinoa-salad.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Chocolate Chip Cookies",
+    "ingredients": [
+      "Gluten-Free Flour",
+      "Chocolate Chips",
+      "Butter",
+      "Sugar",
+      "Egg"
+    ],
+    "allergens": ["Egg", "Dairy"],
+    "calories": 200,
+    "imageUrl": "imagesPath/gluten-free-chocolate-chip-cookies.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Veggie Stir-Fry",
+    "ingredients": [
+      "Bell Peppers",
+      "Carrots",
+      "Broccoli",
+      "Gluten-Free Soy Sauce",
+      "Garlic"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/gluten-free-veggie-stirfry.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Beef Tacos",
+    "ingredients": [
+      "Ground Beef",
+      "Corn Tortillas",
+      "Lettuce",
+      "Tomato",
+      "Cheese"
+    ],
+    "allergens": ["Dairy"],
+    "calories": 400,
+    "imageUrl": "imagesPath/gluten-free-beef-tacos.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Shrimp Scampi",
+    "ingredients": ["Shrimp", "Garlic", "Gluten-Free Pasta", "Butter", "Lemon"],
+    "allergens": ["Shellfish", "Dairy"],
+    "calories": 350,
+    "imageUrl": "imagesPath/gluten-free-shrimp-scampi.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Veggie Pizza",
+    "ingredients": [
+      "Gluten-Free Pizza Crust",
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Bell Peppers",
+      "Olives"
+    ],
+    "allergens": ["Dairy"],
+    "calories": 400,
+    "imageUrl": "imagesPath/gluten-free-veggie-pizza.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Baked Ziti",
+    "ingredients": [
+      "Gluten-Free Pasta",
+      "Ricotta Cheese",
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Parmesan Cheese"
+    ],
+    "allergens": ["Dairy"],
+    "calories": 500,
+    "imageUrl": "imagesPath/gluten-free-baked-ziti.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Spaghetti Bolognese",
+    "ingredients": [
+      "Spaghetti",
+      "Ground Beef",
+      "Tomato Sauce",
+      "Onion",
+      "Garlic"
+    ],
+    "allergens": ["Gluten"],
+    "calories": 500,
+    "imageUrl": "imagesPath/spaghetti-bolognese.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Grilled Cheese Sandwich",
+    "ingredients": ["Bread", "Cheese", "Butter"],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 400,
+    "imageUrl": "imagesPath/grilled-cheese.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Classic Caesar Salad",
+    "ingredients": [
+      "Lettuce",
+      "Croutons",
+      "Caesar Dressing",
+      "Parmesan Cheese"
+    ],
+    "allergens": ["Gluten", "Dairy", "Egg"],
+    "calories": 350,
+    "imageUrl": "imagesPath/caesar-salad.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Chicken Alfredo",
+    "ingredients": [
+      "Chicken Breast",
+      "Fettuccine",
+      "Cream",
+      "Parmesan Cheese",
+      "Garlic"
+    ],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 600,
+    "imageUrl": "imagesPath/chicken-alfredo.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Beef Tacos",
+    "ingredients": [
+      "Ground Beef",
+      "Taco Shells",
+      "Lettuce",
+      "Tomato",
+      "Cheese"
+    ],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 400,
+    "imageUrl": "imagesPath/beef-tacos.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Margherita Pizza",
+    "ingredients": [
+      "Pizza Dough",
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Basil"
+    ],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 500,
+    "imageUrl": "imagesPath/margherita-pizza.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Eggplant Parmesan",
+    "ingredients": [
+      "Eggplant",
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Breadcrumbs",
+      "Parmesan Cheese"
+    ],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 450,
+    "imageUrl": "imagesPath/eggplant-parmesan.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Beef Stew",
+    "ingredients": ["Beef", "Carrots", "Potatoes", "Onions", "Broth"],
+    "allergens": [],
+    "calories": 500,
+    "imageUrl": "imagesPath/beef-stew.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Chicken Tenders",
+    "ingredients": ["Chicken Breast", "Breadcrumbs", "Egg", "Flour", "Oil"],
+    "allergens": ["Gluten", "Egg"],
+    "calories": 450,
+    "imageUrl": "imagesPath/chicken-tenders.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Lasagna",
+    "ingredients": [
+      "Lasagna Noodles",
+      "Ground Beef",
+      "Tomato Sauce",
+      "Ricotta Cheese",
+      "Mozzarella Cheese"
+    ],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 650,
+    "imageUrl": "imagesPath/lasagna.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Beef Burger",
+    "ingredients": ["Ground Beef", "Burger Bun", "Cheese", "Lettuce", "Tomato"],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 550,
+    "imageUrl": "imagesPath/beef-burger.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Chicken Nuggets",
+    "ingredients": ["Chicken Breast", "Breadcrumbs", "Egg", "Oil", "Flour"],
+    "allergens": ["Gluten", "Egg"],
+    "calories": 400,
+    "imageUrl": "imagesPath/chicken-nuggets.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Shrimp Scampi",
+    "ingredients": ["Shrimp", "Spaghetti", "Garlic", "Butter", "Lemon"],
+    "allergens": ["Shellfish", "Dairy"],
+    "calories": 500,
+    "imageUrl": "imagesPath/shrimp-scampi.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Chicken Parmesan",
+    "ingredients": [
+      "Chicken Breast",
+      "Breadcrumbs",
+      "Tomato Sauce",
+      "Mozzarella Cheese",
+      "Parmesan Cheese"
+    ],
+    "allergens": ["Gluten", "Dairy"],
+    "calories": 600,
+    "imageUrl": "imagesPath/chicken-parmesan.jpg"
+  },
+  {
+    "category": "standard",
+    "dishName": "Fish and Chips",
+    "ingredients": ["White Fish", "Potatoes", "Flour", "Oil", "Lemon"],
+    "allergens": ["Gluten"],
+    "calories": 700,
+    "imageUrl": "imagesPath/fish-and-chips.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Vegetable Stir-fry",
+    "ingredients": ["Broccoli", "Carrot", "Bell Pepper", "Soy Sauce", "Garlic"],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/vegetable-stirfry.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Grilled Lemon Herb Chicken",
+    "ingredients": [
+      "Chicken Breast",
+      "Lemon",
+      "Garlic",
+      "Olive Oil",
+      "Rosemary"
+    ],
+    "allergens": [],
+    "calories": 280,
+    "imageUrl": "imagesPath/grilled-chicken.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Spaghetti Squash with Marinara",
+    "ingredients": [
+      "Spaghetti Squash",
+      "Tomato Sauce",
+      "Basil",
+      "Garlic",
+      "Olive Oil"
+    ],
+    "allergens": [],
+    "calories": 220,
+    "imageUrl": "imagesPath/spaghetti-squash.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Chickpea Salad",
+    "ingredients": [
+      "Chickpeas",
+      "Cucumber",
+      "Tomato",
+      "Red Onion",
+      "Lemon Juice"
+    ],
+    "allergens": [],
+    "calories": 180,
+    "imageUrl": "imagesPath/chickpea-salad.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Baked Salmon with Asparagus",
+    "ingredients": ["Salmon", "Asparagus", "Olive Oil", "Lemon", "Garlic"],
+    "allergens": ["Fish"],
+    "calories": 350,
+    "imageUrl": "imagesPath/baked-salmon.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Stuffed Bell Peppers",
+    "ingredients": [
+      "Bell Peppers",
+      "Quinoa",
+      "Black Beans",
+      "Tomato",
+      "Cilantro"
+    ],
+    "allergens": [],
+    "calories": 280,
+    "imageUrl": "imagesPath/stuffed-bell-peppers.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Coconut Shrimp",
+    "ingredients": [
+      "Shrimp",
+      "Coconut Flakes",
+      "Almond Flour",
+      "Egg",
+      "Garlic"
+    ],
+    "allergens": ["Shellfish", "Eggs", "Nuts"],
+    "calories": 320,
+    "imageUrl": "imagesPath/coconut-shrimp.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Cauliflower Rice Stir-fry",
+    "ingredients": [
+      "Cauliflower Rice",
+      "Carrots",
+      "Peas",
+      "Soy Sauce",
+      "Ginger"
+    ],
+    "allergens": [],
+    "calories": 190,
+    "imageUrl": "imagesPath/cauliflower-rice.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Beef and Broccoli Stir-fry",
+    "ingredients": ["Beef", "Broccoli", "Soy Sauce", "Garlic", "Sesame Seeds"],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/beef-broccoli.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Zucchini Noodles with Pesto",
+    "ingredients": ["Zucchini", "Basil", "Garlic", "Olive Oil", "Pine Nuts"],
+    "allergens": ["Nuts"],
+    "calories": 240,
+    "imageUrl": "imagesPath/zucchini-noodles.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Grilled Salmon with Spinach",
+    "ingredients": ["Salmon", "Spinach", "Lemon", "Olive Oil", "Garlic"],
+    "allergens": ["Fish"],
+    "calories": 340,
+    "imageUrl": "imagesPath/grilled-salmon.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Quinoa and Black Bean Bowl",
+    "ingredients": ["Quinoa", "Black Beans", "Tomato", "Cilantro", "Olive Oil"],
+    "allergens": [],
+    "calories": 280,
+    "imageUrl": "imagesPath/quinoa-bowl.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Vegetable Omelet",
+    "ingredients": ["Eggs", "Spinach", "Tomato", "Onion", "Bell Pepper"],
+    "allergens": ["Eggs"],
+    "calories": 290,
+    "imageUrl": "imagesPath/vegetable-omelet.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Cucumber Avocado Salad",
+    "ingredients": ["Cucumber", "Avocado", "Lemon Juice", "Olive Oil", "Dill"],
+    "allergens": [],
+    "calories": 180,
+    "imageUrl": "imagesPath/cucumber-avocado-salad.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Baked Chicken with Green Beans",
+    "ingredients": [
+      "Chicken Breast",
+      "Green Beans",
+      "Olive Oil",
+      "Garlic",
+      "Lemon"
+    ],
+    "allergens": [],
+    "calories": 310,
+    "imageUrl": "imagesPath/baked-chicken.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Lentil Soup",
+    "ingredients": ["Lentils", "Carrots", "Celery", "Tomato", "Garlic"],
+    "allergens": [],
+    "calories": 220,
+    "imageUrl": "imagesPath/lentil-soup.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Grilled Tofu with Vegetables",
+    "ingredients": ["Tofu", "Zucchini", "Bell Peppers", "Soy Sauce", "Garlic"],
+    "allergens": ["Soy"],
+    "calories": 270,
+    "imageUrl": "imagesPath/grilled-tofu.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Eggplant Parmesan (No Cheese)",
+    "ingredients": ["Eggplant", "Tomato Sauce", "Basil", "Garlic", "Olive Oil"],
+    "allergens": [],
+    "calories": 260,
+    "imageUrl": "imagesPath/eggplant-parmesan.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Shrimp and Cauliflower Rice",
+    "ingredients": [
+      "Shrimp",
+      "Cauliflower Rice",
+      "Garlic",
+      "Olive Oil",
+      "Lemon"
+    ],
+    "allergens": ["Shellfish"],
+    "calories": 300,
+    "imageUrl": "imagesPath/shrimp-cauliflower-rice.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Roasted Brussels Sprouts and Chicken",
+    "ingredients": [
+      "Chicken Breast",
+      "Brussels Sprouts",
+      "Olive Oil",
+      "Garlic",
+      "Paprika"
+    ],
+    "allergens": [],
+    "calories": 320,
+    "imageUrl": "imagesPath/roasted-brussels.jpg"
+  }
+]

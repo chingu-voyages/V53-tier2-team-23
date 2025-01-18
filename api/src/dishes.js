@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+const Dish = require('./models/dishModel'); // Import Dish model
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
 const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
@@ -96,9 +98,12 @@ const handler = async (event, context) => {
 
 // GET request handler for all dishes
 async function getData(collectionValue) {
-  const db = await getDb();
-  const collection = await db.collection(collectionValue);
-  const data = await collection.find({}).toArray();
+  // const db = await getDb();
+
+  // const collection = await db.collection(collectionValue);
+  // const data = await collection.find({}).toArray();
+
+  const data = await Dish.find({}); // Fetch all dishes using Mongoose
 
   // Debugging output to check the fetched data
   // console.log('Fetched dishes:', data);
