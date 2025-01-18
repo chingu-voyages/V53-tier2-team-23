@@ -1,4 +1,5 @@
-const { MongoClient, ServerApiVersion } = require('mongodb'); // import  MongoClient and ServerApiVersion classes from mongodb
+const { MongoClient } = require('mongodb'); // import  MongoClient and ServerApiVersion classes from mongodb
+
 const uri = process.env.MONGODB_URI; // get Atlas URI from env file
 const db = 'eato_database';
 if (!uri) {
@@ -24,11 +25,8 @@ let cachedClient = null; // for serverless - comment if not
 // create client instance using new MongoClient constructor
 const client = new MongoClient(uri, {
   //serverAPI object uses MongoDB driver configuration to use the Server API for specific MongoDB versions compatibility.
-  serverAPI: {
-    version: ServerApiVersion.v1, // version 1 of the MongoDB Server API for compatibility.
-    strict: true, //  MongoDB driver throws error for Server API version unsupported methods-features.
-    deprecationErrors: true, // MongoDB driver throws error for Server API version deprecated methods-features.
-  },
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 const getDb = async () => {
