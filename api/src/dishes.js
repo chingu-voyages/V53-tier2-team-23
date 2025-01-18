@@ -1,5 +1,5 @@
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
-import { ObjectId } from 'mongodb'; // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
+const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
