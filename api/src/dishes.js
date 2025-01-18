@@ -34,12 +34,13 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishesData = await getData('dishes');
-      console.log('dishesData:', dishesData);
-      const parsedDishesData =
-        typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
-      console.log('parsedDishesData:', parsedDishesData);
-      const dishes = Array.isArray(parsedDishesData) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-        ? dishes.map((dish) => new DishesObjectClass(dish))
+      // console.log('dishesData:', dishesData);
+      // const parsedDishesData =
+      //   typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
+      // console.log('parsedDishesData:', parsedDishesData);
+      const dishesArray = dishesData.body;
+      const dishes = Array.isArray(dishesArray) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+        ? dishesArray.map((dish) => new DishesObjectClass(dish))
         : []; // else empty array
       console.log('dishes:', dishes);
       return {
