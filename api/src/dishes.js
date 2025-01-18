@@ -68,7 +68,7 @@ const handler = async (event, context) => {
     }
   }
 
-  if (httpMethod === 'GET' && path.startsWith('/dishes/')) {
+  if (httpMethod === 'GET' && path.includes('/dishes/')) {
     const dishId = path.split('/').pop(); // Extract dish id from path
     try {
       const dish = await getDish(dishId, 'dishes');
