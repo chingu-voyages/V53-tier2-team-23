@@ -19,6 +19,10 @@ const handler = async (event, context) => {
     };
   }
 
+  console.log('HTTP Method:', httpMethod);
+  console.log('Path:', path);
+  console.log('Request body:', body);
+
   if (httpMethod === 'GET' && path === '/dishes') {
     try {
       const dishes = await getData('dishes');
