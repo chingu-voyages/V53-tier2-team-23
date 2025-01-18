@@ -1,7 +1,7 @@
 {
   "name": "eato-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend for my fullstack application using Node.js and Express.",
   "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "express": "^4.21.2",
-    "mongoose": "^5.10.9"
+    "mongoose": "^5.13.23"
   },
   "devDependencies": {
     "eslint": "^9.18.0",
