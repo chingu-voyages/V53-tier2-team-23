@@ -1,4 +1,4 @@
-import { MongoClient, ServerApiVersion } from 'mongodb'; // import  MongoClient and ServerApiVersion classes from mongodb
+const { MongoClient, ServerApiVersion } = require('mongodb'); // import  MongoClient and ServerApiVersion classes from mongodb
 const uri = process.env.MONGODB_URI; // get Atlas URI from env file
 const db = 'eato_database';
 if (!uri) {
