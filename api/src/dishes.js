@@ -7,7 +7,8 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-export async function handler(event, context) {
+const handler = async (event, context) => {
+  //async function handler(event, context) {
   const { httpMethod, path, queryStringParameters, body } = event;
 
   if (httpMethod === 'OPTIONS') {
@@ -48,7 +49,7 @@ export async function handler(event, context) {
       message: 'Method Not Allowed',
     }),
   };
-}
+};
 
 // GET request handler for all projects
 async function getData(collection) {
@@ -65,3 +66,5 @@ async function getData(collection) {
     body: JSON.stringify(data),
   };
 }
+
+module.exports.handler = handler;
