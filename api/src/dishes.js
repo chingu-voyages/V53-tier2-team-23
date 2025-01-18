@@ -38,11 +38,11 @@ const handler = async (event, context) => {
       // const parsedDishesData =
       //   typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
       // console.log('parsedDishesData:', parsedDishesData);
-      const dishesArray = dishesData.body;
-      const dishes = Array.isArray(dishesArray) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-        ? dishesArray.map((dish) => new DishesObjectClass(dish))
-        : []; // else empty array
-      console.log('dishes:', dishesArray);
+      const dishes = dishesData.body;
+      // const dishes = Array.isArray(dishesArray) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+      //   ? dishesArray.map((dish) => new DishesObjectClass(dish))
+      //   : []; // else empty array
+      console.log('dishes:', dishes);
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -52,6 +52,33 @@ const handler = async (event, context) => {
             dishes: dishes,
             dishesLength: dishes.length,
           },
+        }),
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: 'An internal server error occurred.',
+          error: error.message, // Include error details for debugging
+        }),
+      };
+    }
+  }
+
+  if (httpMethod === 'GET' && path.startsWith('/dishes/')) {
+    const dishId = path.split('/').pop(); // Extract dish id from path
+    try {
+      const dish = await getDish(dishId);
+      return {
+        statusCode: 200,
+        headers, // Include the headers in the response
+        body: JSON.stringify({
+          success: true,
+          dishId: dishId,
+          data: dish,
         }),
       };
     } catch (error) {
@@ -79,9 +106,9 @@ const handler = async (event, context) => {
 };
 
 // GET request handler for all projects
-async function getData(collection_value) {
+async function getData(collectionValue) {
   const db = await getDb();
-  const collection = await db.collection(collection_value);
+  const collection = await db.collection(collectionValue);
   const data = await collection.find({}).toArray();
 
   // Debugging output to check the fetched data
@@ -92,6 +119,25 @@ async function getData(collection_value) {
     headers,
     body: JSON.stringify(data),
   };
+}
+
+// GET request handler for dish with id
+async function getDish(dishId, collectionValue) {
+  const db = await getDb();
+  const collection = await db.collection(collectionValue);
+  const query = { _id: new ObjectId(dishId) }; // set new query dish id based on entry in the database having the _id field
+  /* [ https://www.mongodb.com/docs/manual/reference/method/db.collection.findOne/ ]
+    findOne(query) looks for a single document in the collection that matches the criteria in query (_id).
+   */
+  const dish = await collection.findOne(query);
+  if (!dish) {
+    return {
+      statusCode: 404,
+      headers,
+      body: JSON.stringify({ message: 'Project not found' }),
+    };
+  }
+  return { statusCode: 200, headers, body: JSON.stringify(dish) };
 }
 
 module.exports.handler = handler;
