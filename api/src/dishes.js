@@ -37,7 +37,7 @@ const handler = async (event, context) => {
       console.log('dishesData:', data);
       const parsedDishesData =
         typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
-      console.log('parsedDishesData:', data);
+      console.log('parsedDishesData:', parsedDishesData);
       const dishes = Array.isArray(parsedDishesData) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
         ? dishes.map((dish) => new DishesObjectClass(dish))
         : []; // else empty array
