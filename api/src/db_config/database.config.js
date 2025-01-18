@@ -34,18 +34,22 @@ const client = new MongoClient(uri, {
 const getDb = async () => {
   if (cachedClient) {
     // Return cached client if it exists
-    return cachedClient.db(`${db}`);
+    return cachedClient.db(db);
   }
 
   try {
     await client.connect(); // Connect to the MongoDB database
     cachedClient = client; // Cache the client for reuse
-    console.log('MongoDB connection established successfully');
-    return client.db(`${db}`);
+    console.log(
+      'MongoDB connection established successfully to ' +
+        db.getName() +
+        ' database'
+    );
+    return client.db(db);
   } catch (error) {
     console.error('Failed to connect to MongoDB:', error);
     throw error; // Rethrow the error to handle it appropriately in the calling function
   }
 };
 
-export default eato_database;
+export default getDb;
