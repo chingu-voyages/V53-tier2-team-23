@@ -68,10 +68,17 @@ const handler = async (event, context) => {
     }
   }
 
-  if (httpMethod === 'GET' && path.endsWith('/dishes/')) {
+  if (httpMethod === 'GET' && path.startsWith('/dishes/')) {
     const dishId = path.split('/').pop(); // Extract dish id from path
     try {
       const dish = await getDish(dishId, 'dishes');
+      if (!dish) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({ message: 'Dish not found' }),
+        };
+      }
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -130,14 +137,9 @@ async function getDish(dishId, collectionValue) {
     findOne(query) looks for a single document in the collection that matches the criteria in query (_id).
    */
   const dish = await collection.findOne(query);
-  if (!dish) {
-    return {
-      statusCode: 404,
-      headers,
-      body: JSON.stringify({ message: 'Project not found' }),
-    };
-  }
-  return { statusCode: 200, headers, body: JSON.stringify(dish) };
+
+  //return { statusCode: 200, headers, body: JSON.stringify(dish) };
+  return dish;
 }
 
 module.exports.handler = handler;
