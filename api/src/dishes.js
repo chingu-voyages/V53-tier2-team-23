@@ -52,9 +52,9 @@ const handler = async (event, context) => {
 };
 
 // GET request handler for all projects
-async function getData(collection) {
+async function getData(collection_value) {
   const db = await getDb();
-  const collection = await db.collection(collection);
+  const collection = await db.collection(collection_value);
   const data = await collection.find({}).toArray();
 
   // Debugging output to check the fetched data
