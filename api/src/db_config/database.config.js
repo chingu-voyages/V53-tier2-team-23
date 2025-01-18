@@ -41,9 +41,7 @@ const getDb = async () => {
     await client.connect(); // Connect to the MongoDB database
     cachedClient = client; // Cache the client for reuse
     console.log(
-      'MongoDB connection established successfully to ' +
-        db.getName() +
-        ' database'
+      'MongoDB connection established successfully to ' + db + ' database'
     );
     return client.db(db);
   } catch (error) {
@@ -52,4 +50,4 @@ const getDb = async () => {
   }
 };
 
-export default getDb;
+module.exports default getDb;
