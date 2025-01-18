@@ -33,16 +33,15 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
-      const dishesData = await getData('dishes');
+      const dishes = await getData('dishes');
       // console.log('dishesData:', dishesData);
       // const parsedDishesData =
       //   typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
       // console.log('parsedDishesData:', parsedDishesData);
-      const dishes = dishesData.body;
       // const dishes = Array.isArray(dishesArray) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
       //   ? dishesArray.map((dish) => new DishesObjectClass(dish))
       //   : []; // else empty array
-      console.log('dishes:', dishes);
+      // console.log('dishes:', dishes);
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -121,11 +120,7 @@ async function getData(collectionValue) {
   // Debugging output to check the fetched data
   // console.log('Fetched dishes:', data);
 
-  return {
-    statusCode: 200,
-    headers,
-    body: JSON.stringify(data),
-  };
+  return data;
 }
 
 // GET request handler for dish with id
@@ -137,8 +132,6 @@ async function getDish(dishId, collectionValue) {
     findOne(query) looks for a single document in the collection that matches the criteria in query (_id).
    */
   const dish = await collection.findOne(query);
-
-  //return { statusCode: 200, headers, body: JSON.stringify(dish) };
   return dish;
 }
 
