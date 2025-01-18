@@ -21,7 +21,7 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
-      const dishes = await getData('eato_database');
+      const dishes = await getData('dishes');
       return {
         statusCode: 200,
         headers, // Include the headers in the response
