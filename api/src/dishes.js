@@ -34,11 +34,14 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishesData = await getData('dishes');
-      const parsedDishesData = JSON.parse(dishesData);
+      console.log('dishesData:', data);
+      const parsedDishesData =
+        typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
+      console.log('parsedDishesData:', data);
       const dishes = Array.isArray(parsedDishesData) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
         ? dishes.map((dish) => new DishesObjectClass(dish))
         : []; // else empty array
-
+      console.log('dishes:', dishes);
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -81,7 +84,7 @@ async function getData(collection_value) {
   const data = await collection.find({}).toArray();
 
   // Debugging output to check the fetched data
-  console.log('Fetched dishes:', data);
+  // console.log('Fetched dishes:', data);
 
   return {
     statusCode: 200,
