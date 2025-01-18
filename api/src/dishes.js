@@ -42,7 +42,7 @@ const handler = async (event, context) => {
       const dishes = Array.isArray(dishesArray) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
         ? dishesArray.map((dish) => new DishesObjectClass(dish))
         : []; // else empty array
-      console.log('dishes:', dishes);
+      console.log('dishes:', dishesArray);
       return {
         statusCode: 200,
         headers, // Include the headers in the response
