@@ -34,6 +34,7 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishes = await getData('dishes');
+      console.log(typeof dishes);
       const dishesObject = dishes.map((dish) => new DishesObjectClass(dish));
       return {
         statusCode: 200,
