@@ -7,6 +7,18 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+// CreateProject class
+class DishesObjectClass {
+  constructor(reqbody) {
+    this.id = reqbody._id;
+    this.category = reqbody.category;
+    this.dishName = reqbody.dishName;
+    this.ingredients = reqbody.ingredients;
+    this.allergens = reqbody.allergens;
+    this.imageUrl = reqbody.imageUrl;
+  }
+}
+
 const handler = async (event, context) => {
   //async function handler(event, context) {
   const { httpMethod, path, queryStringParameters, body } = event;
@@ -22,10 +34,17 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishes = await getData('dishes');
+      const dishesObject = dishes.map((dish) => new DishesObjectClass(dish));
       return {
         statusCode: 200,
         headers, // Include the headers in the response
-        body: JSON.stringify({ success: true, data: dishes }),
+        body: JSON.stringify({
+          success: true,
+          data: {
+            dishes: dishesObject,
+            dishesLength: dishes.length,
+          },
+        }),
       };
     } catch (error) {
       console.error('Error:', error);
