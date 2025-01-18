@@ -34,7 +34,8 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishesData = await getData('dishes');
-      const dishes = Array.isArray(dishesData) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+      const parsedDishesData = JSON.parse(dishesData);
+      const dishes = Array.isArray(parsedDishesData) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
         ? dishes.map((dish) => new DishesObjectClass(dish))
         : []; // else empty array
 
