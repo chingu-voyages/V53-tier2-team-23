@@ -7,18 +7,6 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
-// CreateProject class
-class DishesObjectClass {
-  constructor(dish) {
-    this.id = dish._id;
-    this.category = dish.category;
-    this.dishName = dish.dishName;
-    this.ingredients = dish.ingredients;
-    this.allergens = dish.allergens;
-    this.imageUrl = dish.imageUrl;
-  }
-}
-
 const handler = async (event, context) => {
   //async function handler(event, context) {
   const { httpMethod, path, queryStringParameters, body } = event;
@@ -34,14 +22,6 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishes = await getData('dishes');
-      // console.log('dishesData:', dishesData);
-      // const parsedDishesData =
-      //   typeof dishesData === 'string' ? JSON.parse(dishesData) : dishesData;
-      // console.log('parsedDishesData:', parsedDishesData);
-      // const dishes = Array.isArray(dishesArray) //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-      //   ? dishesArray.map((dish) => new DishesObjectClass(dish))
-      //   : []; // else empty array
-      // console.log('dishes:', dishes);
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -69,9 +49,12 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.includes('/dishes/')) {
     const dishId = path.split('/').pop(); // Extract dish id from path
+
     try {
       const dish = await getDish(dishId, 'dishes');
-      if (!dish) {
+      if (!dishId || !ObjectId.isValid(dishId)) {
+        // check if valid mongodb id
+        // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
         return {
           statusCode: 404,
           headers,
@@ -111,7 +94,7 @@ const handler = async (event, context) => {
   };
 };
 
-// GET request handler for all projects
+// GET request handler for all dishes
 async function getData(collectionValue) {
   const db = await getDb();
   const collection = await db.collection(collectionValue);
