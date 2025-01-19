@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
+const Allergen = require('./models/allergen.model'); // Import the Allergen model
 const Employee = require('./models/employee.model'); // Import employee model
 const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
@@ -165,9 +166,38 @@ async function getEmployee(employeeId) {
 async function createEmployee(body) {
   try {
     const db = await getDb();
+
     // Parse the body
     const reqBody = JSON.parse(body); // Parse JSON string into an object
-    const newEmployee = new Employee(reqBody); // create an new employee from model
+
+    const allergens = [];
+
+    // Check each selected allergen
+    for (const allergenName of reqBody.allergies) {
+      // Find the allergen in the database
+      let allergen = await Allergen.findOne({
+        allergenName: allergenName.toLowerCase(),
+      });
+
+      // If allergen doesn't exist, you can either skip or handle it as needed
+      if (!allergen) {
+        console.log(`Allergen ${allergenName} not found in the database.`);
+        // Optionally, you can add code to create it, but since it's pre-selected, you may not need this
+        continue; // Skip this allergen if not found
+      }
+
+      // Add the allergen's ObjectId to the list
+      allergens.push(allergen._id);
+    }
+
+    // Create the employee object with the allergens and dietary restrictions
+    const employeeData = {
+      employeeName: reqBody.employeeName,
+      allergies: allergens, // Include the ObjectIds of the allergens
+      dietaryRestrictions: reqBody.dietaryRestrictions, // Dietary restrictions as they are
+    };
+
+    const newEmployee = new Employee(employeeData); // create an new employee from model
 
     const employee = await newEmployee.save();
 
