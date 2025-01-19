@@ -170,6 +170,23 @@ async function createEmployee(body) {
     // Parse the body
     const reqBody = JSON.parse(body); // Parse JSON string into an object
 
+    const allergens = [];
+    for (const allergenName of reqBody.allergies) {
+      // Fetch the allergen by name
+      let allergen = await Allergen.findOne({
+        allergenName: allergenName.toLowerCase(),
+      });
+
+      // If the allergen doesn't exist, log it or handle it as needed
+      if (!allergen) {
+        console.log(`Allergen ${allergenName} not found.`);
+        continue; // Skip this allergen if not found
+      }
+
+      // Push the allergen's ObjectId to the array
+      allergens.push(allergen._id);
+    }
+
     // Create the employee object with the allergens and dietary restrictions
     const employeeData = {
       employeeName: reqBody.employeeName,
