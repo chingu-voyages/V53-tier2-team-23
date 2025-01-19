@@ -17,9 +17,11 @@ const getDb = async () => {
   try {
     // Use Mongoose to connect to the MongoDB database
     const connection = await mongoose.connect(uri, {
+      dbName: 'eato_database',
       autoIndex: false,
       bufferCommands: false, // Disable Mongoose buffering for serverless
     });
+    console.log('Connected to DB:', mongoose.connection.db.databaseName);
 
     client = connection; // Cache the Mongoose connection
     console.log('MongoDB connection established successfully');
