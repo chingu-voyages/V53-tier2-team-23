@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-const Employee = require('./models/employee.model'); // Import employee model
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
+const Employee = require('./models/employee.model'); // Import employee model
 const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
 const headers = {

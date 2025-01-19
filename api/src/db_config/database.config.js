@@ -16,12 +16,13 @@ const getDb = async () => {
 
   try {
     // Use Mongoose to connect to the MongoDB database
-    await mongoose.connect(uri, {
+    const connection = await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      bufferCommands: false, // Disable Mongoose buffering for serverless
     });
 
-    client = mongoose.connection; // Cache the Mongoose connection
+    client = connection; // Cache the Mongoose connection
     console.log('MongoDB connection established successfully');
     return client;
   } catch (error) {
