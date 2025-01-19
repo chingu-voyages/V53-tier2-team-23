@@ -25,6 +25,7 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
       const employees = await getEmployees();
+      const employeesCount = await Employee.countDocuments(); // Get total employees
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -32,7 +33,7 @@ const handler = async (event, context) => {
           success: true,
           data: {
             employees: employees,
-            employeesLength: employees.length,
+            employeesCount: employeesCount,
           },
         }),
       };
@@ -54,13 +55,23 @@ const handler = async (event, context) => {
     const employeeId = path.split('/').pop(); // Extract employee id from path
     try {
       const employee = await getEmployee(employeeId);
+      if (!employee) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({ message: 'Employee not found' }),
+        };
+      }
       return {
         statusCode: 200,
         headers, // Include the headers in the response
         body: JSON.stringify({
           success: true,
-          employeeId: employeeId,
-          data: employee,
+          data: {
+            employee: employee,
+            employeeId: employeeId,
+            employeesLength: employees.length,
+          },
         }),
       };
     } catch (error) {
@@ -133,11 +144,7 @@ async function getEmployee(employeeId) {
     if (!employeeId || !ObjectId.isValid(employeeId)) {
       // check if valid mongodb id
       // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
-      return {
-        statusCode: 404,
-        headers,
-        body: JSON.stringify({ message: 'employeeId not found' }),
-      };
+      return null;
     }
 
     const db = await getDb();
@@ -146,14 +153,7 @@ async function getEmployee(employeeId) {
     const employee = await Employee.findById(mongooseEmployeeId);
     console.log('employeeId:', employeeId);
     console.log('employee:', employee);
-    if (!employee) {
-      return {
-        statusCode: 404,
-        headers,
-        body: JSON.stringify({ message: 'Employee not found' }),
-      };
-    }
-    return employee;
+    return employee || null;
   } catch (error) {
     console.error('Error fetching employee:', error);
     throw new Error('Error fetching employee');
