@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const dish = require('./models/dish.model'); // Import employee model
 const employee = require('./models/employee.model'); // Import employee model
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
 const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
@@ -95,7 +94,7 @@ const handler = async (event, context) => {
     };
 
     try {
-      const employee = await createEmployee(body);
+      const employee = await createEmployee(body, 'employees');
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -132,7 +131,7 @@ async function getData(collectionValue) {
   // const collection = await db.collection(collectionValue);
   // const data = await collection.find({}).toArray();
 
-  const data = await employee.find({}); // Fetch all employees using Mongoose
+  const data = await Employee.find({}); // Fetch all employees using Mongoose
 
   // Debugging output to check the fetched data
   // console.log('Fetched employees:', data);
@@ -142,9 +141,9 @@ async function getData(collectionValue) {
 
 // GET request handler for employee with id
 async function getEmployee(employeeId, collectionValue) {
-  // const db = await getDb();
-  // const collection = await db.collection(collectionValue);
-  // const query = { _id: new ObjectId(employeeId) }; // set new query employee id based on entry in the database having the _id field
+  const db = await getDb();
+  const collection = await db.collection(collectionValue);
+  const query = { _id: new ObjectId(employeeId) }; // set new query employee id based on entry in the database having the _id field
   /* [ https://www.mongodb.com/docs/manual/reference/method/db.collection.findOne/ ]
     findOne(query) looks for a single document in the collection that matches the criteria in query (_id).
    */
@@ -154,23 +153,20 @@ async function getEmployee(employeeId, collectionValue) {
 
 // POST request handler to create project
 
-async function createEmployee(body) {
+async function createEmployee(body, collectionValue) {
   try {
     // Parse the body
     const reqbody = JSON.parse(body); // Parse JSON string into an object
     const newEmployee = new Employee(reqBody); // create an new employee from model
-    const employees_db = await getdb();
-    const collection = await employees_db.collection('employees');
+    const db = await getdb();
+    const collection = await db.collection(collectionValue);
 
     const employee = await collection.insertOne(newEmployee);
 
     newEmployee._id = employee.insertedId;
 
-    // Return the new project along with its MongoDB _id
-    return {
-      success: true,
-      data: newEmployee,
-    };
+    // Return the new employee along with its MongoDB _id
+    return newEmployee;
   } catch (error) {
     console.error('Error adding new project:', error);
 
