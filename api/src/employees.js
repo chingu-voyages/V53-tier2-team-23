@@ -170,26 +170,6 @@ async function createEmployee(body) {
     // Parse the body
     const reqBody = JSON.parse(body); // Parse JSON string into an object
 
-    const allergens = [];
-
-    // Check each selected allergen
-    for (const allergenName of reqBody.allergies) {
-      // Find the allergen in the database
-      let allergen = await Allergen.findOne({
-        allergenName: allergenName.toLowerCase(),
-      });
-
-      // If allergen doesn't exist, you can either skip or handle it as needed
-      if (!allergen) {
-        console.log(`Allergen ${allergenName} not found in the database.`);
-        // Optionally, you can add code to create it, but since it's pre-selected, you may not need this
-        continue; // Skip this allergen if not found
-      }
-
-      // Add the allergen's ObjectId to the list
-      allergens.push(allergen._id);
-    }
-
     // Create the employee object with the allergens and dietary restrictions
     const employeeData = {
       employeeName: reqBody.employeeName,
@@ -199,7 +179,12 @@ async function createEmployee(body) {
 
     const newEmployee = new Employee(employeeData); // create an new employee from model
 
-    const employee = await newEmployee.save();
+    const savedEmployee = await newEmployee.save();
+
+    // Populate the allergies field to get the full allergen documents
+    const employee = await Employee.findById(employee._id)
+      .populate('allergies') // This will replace ObjectIds with full Allergen documents
+      .exec();
 
     // Return the new employee along with its MongoDB _id
     return employee;
