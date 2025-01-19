@@ -199,7 +199,7 @@ async function createEmployee(body) {
     const savedEmployee = await newEmployee.save();
 
     // Populate the allergies field to get the full allergen documents
-    const employee = await Employee.findById(employee._id)
+    const employee = await Employee.findById(savedEmployee._id)
       .populate('allergies') // This will replace ObjectIds with full Allergen documents
       .exec();
 
