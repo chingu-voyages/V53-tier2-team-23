@@ -146,7 +146,7 @@ async function getEmployee(employeeId) {
       };
     }
 
-    const db = await getdb();
+    const db = await getDb();
     // Find employee by _id using with findById() method
     const mongooseEmployeeId = mongoose.Types.ObjectId(employeeId);
     const employee = await Employee.findById(mongooseEmployeeId);
@@ -170,7 +170,7 @@ async function getEmployee(employeeId) {
 
 async function createEmployee(body) {
   try {
-    const db = await getdb();
+    const db = await getDb();
     // Parse the body
     const reqbody = JSON.parse(body); // Parse JSON string into an object
     const newEmployee = new Employee(reqBody); // create an new employee from model
