@@ -54,22 +54,13 @@ const handler = async (event, context) => {
 
     try {
       const employee = await getEmployee(employeeId);
-      if (!employeeId || !ObjectId.isValid(employeeId)) {
-        // check if valid mongodb id
-        // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ message: 'employee not found' }),
-        };
-      }
       return {
         statusCode: 200,
         headers, // Include the headers in the response
         body: JSON.stringify({
           success: true,
           employeeId: employeeId,
-          data: employee,
+          data: employee.data,
         }),
       };
     } catch (error) {
@@ -98,7 +89,10 @@ const handler = async (event, context) => {
       return {
         statusCode: 200,
         headers, // Include the headers in the response
-        body: JSON.stringify({ success: true, data: employee.data }),
+        body: JSON.stringify({
+          success: true,
+          data: employee.data,
+        }),
       };
     } catch (error) {
       console.error('Error:', error);
@@ -132,8 +126,6 @@ async function getEmployees() {
     // Fetch all employees using Mongoose
     const data = await Employee.find({});
 
-    // Return the fetched data (all employees)
-    console.log('employees: ', data);
     return data;
   } catch (error) {
     console.error('Error fetching employees:', error);
@@ -145,6 +137,16 @@ async function getEmployees() {
 async function getEmployee(employeeId) {
   try {
     const db = await getdb();
+
+    if (!employeeId || !ObjectId.isValid(employeeId)) {
+      // check if valid mongodb id
+      // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
+      return {
+        statusCode: 404,
+        headers,
+        body: JSON.stringify({ message: 'employeeId not found' }),
+      };
+    }
     // Find employee by _id using with findById() method
     const employee = await Employee.findById(employeeId);
     if (!employee) {
