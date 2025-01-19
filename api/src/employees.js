@@ -52,7 +52,6 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.includes('/employees/')) {
     const employeeId = path.split('/').pop(); // Extract employee id from path
-    console.log('getemployeeId: ', employeeId);
     try {
       const employee = await getEmployee(employeeId);
       return {
@@ -61,7 +60,7 @@ const handler = async (event, context) => {
         body: JSON.stringify({
           success: true,
           employeeId: employeeId,
-          data: employee.data,
+          data: employee,
         }),
       };
     } catch (error) {
@@ -161,8 +160,16 @@ async function getEmployee(employeeId) {
   }
 }
 
-// POST request handler to create employee
+// create class Employee
+class EmployeeObject {
+  constructor(reqBody, allergens) {
+    this.employeeName = reqBody.employeeName;
+    this.allergies = allergens;
+    this.dietaryRestrictions = reqBody.dietaryRestrictions;
+  }
+}
 
+// POST request handler to create employee
 async function createEmployee(body) {
   try {
     const db = await getDb();
@@ -170,29 +177,25 @@ async function createEmployee(body) {
     // Parse the body
     const reqBody = JSON.parse(body); // Parse JSON string into an object
 
-    const allergens = [];
-    for (const allergenName of reqBody.allergies) {
-      // Fetch the allergen by name
-      let allergen = await Allergen.findOne({
-        allergenName: allergenName.toLowerCase(),
-      });
+    // Fetch all allergens [ https://www.mongodb.com/docs/manual/reference/operator/query/in/ ]
+    // $in  → Finds all documents where allergenName is in the provided array.
+    const allergensArray = reqBody.allergies;
+    const allergens = await Allergen.find({
+      allergenName: {
+        $in: allergensArray.map((allergen) => allergen.toLowerCase()),
+      },
+    });
 
-      // If the allergen doesn't exist, log it or handle it as needed
-      if (!allergen) {
-        console.log(`Allergen ${allergenName} not found.`);
-        continue; // Skip this allergen if not found
-      }
-
-      // Push the allergen's ObjectId to the array
-      allergens.push(allergen._id);
-    }
+    // allergens ids
+    const allergenIds = allergens.map((allergen) => allergen._id);
 
     // Create the employee object with the allergens and dietary restrictions
-    const employeeData = {
-      employeeName: reqBody.employeeName,
-      allergies: allergens, // Include the ObjectIds of the allergens
-      dietaryRestrictions: reqBody.dietaryRestrictions, // Dietary restrictions as they are
-    };
+    const employeeData = new EmployeeObject(reqBody, allergenIds);
+    // const employeeData = {
+    //   employeeName: reqBody.employeeName,
+    //   allergies: allergens, // Include the ObjectIds of the allergens
+    //   dietaryRestrictions: reqBody.dietaryRestrictions, // Dietary restrictions as they are
+    // };
 
     const newEmployee = new Employee(employeeData); // create an new employee from model
 
