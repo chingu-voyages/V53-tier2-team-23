@@ -34,6 +34,11 @@ function setRoutes(app) {
     '/allergen',
     allergenController.createAllergen.bind(allergenController)
   );
+
+  app.get(
+    '/allergen',
+    allergenController.getAllAllergen.bind(allergenController)
+  );
 }
 
 module.exports = setRoutes;

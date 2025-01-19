@@ -17,6 +17,15 @@ class AllergenController {
       res.status(500).send(error.message);
     }
   }
+
+  async getAllAllergen(req, res) {
+    try {
+      const allergies = await Allergen.find();
+      res.send(allergies);
+    } catch (err) {
+      res.status(500).send(err.message);
+    }
+  }
 }
 
 module.exports = AllergenController;
