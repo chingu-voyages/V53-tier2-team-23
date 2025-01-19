@@ -9,36 +9,39 @@ const Schema = mongoose.Schema;
  * @property {Array<ObjectId>} allergies - Array of ObjectIds referencing allergens.
  * @property {Array<string>} dietaryRestrictions - Array of dietary restrictions.
  */
-const employeeSchema = new Schema({
-  employeeName: {
-    type: String,
-    required: true,
-  },
-  allergies: [
-    {
-      type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
-      ref: 'Allergen',
-      required: false,
-    },
-  ],
-  dietaryRestrictions: [
-    {
+const employeeSchema = new Schema(
+  {
+    employeeName: {
       type: String,
-      enum: [
-        'vegetarian',
-        'vegan',
-        'pescatarian',
-        'keto',
-        'paleo',
-        'glutenFree',
-        'standard',
-        'lactose-free',
-        'diabetes-friendly',
-      ], // only take a specific set of values
-      required: false,
+      required: true,
     },
-  ],
-});
+    allergies: [
+      {
+        type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
+        ref: 'Allergen',
+        required: false,
+      },
+    ],
+    dietaryRestrictions: [
+      {
+        type: String,
+        enum: [
+          'vegetarian',
+          'vegan',
+          'pescatarian',
+          'keto',
+          'paleo',
+          'glutenFree',
+          'standard',
+          'lactose-free',
+          'diabetes-friendly',
+        ], // only take a specific set of values
+        required: false,
+      },
+    ],
+  },
+  { collection: 'employees' }
+);
 
 const Employee = mongoose.model('Employee', employeeSchema);
 
