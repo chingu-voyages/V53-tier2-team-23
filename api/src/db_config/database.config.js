@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'); // Import Mongoose
-const uri = process.env.MONGOOSE_URI; // MongoDB URI from environment variable
+const uri = process.env.MONGODB_URI; // get Atlas URI from env file
 
 if (!uri) {
   throw new Error('MongoDB URI is not defined!');
