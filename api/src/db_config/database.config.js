@@ -17,8 +17,7 @@ const getDb = async () => {
   try {
     // Use Mongoose to connect to the MongoDB database
     const connection = await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      autoIndex: false,
       bufferCommands: false, // Disable Mongoose buffering for serverless
     });
 
