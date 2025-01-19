@@ -45,4 +45,9 @@ const employeeSchema = new Schema({
   ],
 });
 
-module.exports = mongoose.model('Employee', employeeSchema);
+// Explicitly ensure indexes use `createIndexes()`
+employeeSchema.set('autoIndex', true);
+
+const Employee = mongoose.model('Employee', employeeSchema);
+
+module.exports = Employee;
