@@ -174,10 +174,10 @@ async function createEmployee(body) {
     // Return the new employee along with its MongoDB _id
     return employee;
   } catch (error) {
-    console.error('Error adding new project:', error);
+    console.error('Error adding new employee:', error);
 
     // Return error response
-    throw new Error('Error adding new project');
+    throw new Error('Error adding new employee');
   }
 }
 
