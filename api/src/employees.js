@@ -77,7 +77,7 @@ const handler = async (event, context) => {
     }
   }
 
-  if (httpMethod === 'POST' && path.startsWith('/employees/create')) {
+  if (httpMethod === 'POST' && path.endsWith('/employees/create')) {
     try {
       const employee = await createEmployee(body);
       return {
