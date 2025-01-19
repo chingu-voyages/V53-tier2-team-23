@@ -21,7 +21,7 @@ const getDb = async () => {
       useUnifiedTopology: true,
     });
 
-    cachedClient = mongoose.connection; // Cache the Mongoose connection
+    client = mongoose.connection; // Cache the Mongoose connection
     console.log('MongoDB connection established successfully');
     return client;
   } catch (error) {
