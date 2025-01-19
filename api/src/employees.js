@@ -51,7 +51,7 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.includes('/employees/')) {
     const employeeId = path.split('/').pop(); // Extract employee id from path
-
+    console.log('getemployeeId: ', employeeId);
     try {
       const employee = await getEmployee(employeeId);
       return {
@@ -136,8 +136,6 @@ async function getEmployees() {
 // GET request handler for employee with id
 async function getEmployee(employeeId) {
   try {
-    const db = await getdb();
-
     if (!employeeId || !ObjectId.isValid(employeeId)) {
       // check if valid mongodb id
       // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
@@ -147,8 +145,12 @@ async function getEmployee(employeeId) {
         body: JSON.stringify({ message: 'employeeId not found' }),
       };
     }
+
+    const db = await getdb();
     // Find employee by _id using with findById() method
     const employee = await Employee.findById(employeeId);
+    console.log('employeeId:', employeeId);
+    console.log('employee:', employee);
     if (!employee) {
       return {
         statusCode: 404,
