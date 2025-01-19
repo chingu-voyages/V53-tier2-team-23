@@ -10,7 +10,25 @@ function setRoutes(app) {
     employeeController.createEmployee.bind(employeeController)
   );
 
-  app.get('/employee', employeeController.getEmployee.bind(employeeController));
+  app.get(
+    '/employee',
+    employeeController.getAllEmployee.bind(employeeController)
+  );
+
+  app.get(
+    '/employee/:employeeId',
+    employeeController.getEmployee.bind(employeeController)
+  );
+
+  app.put(
+    '/employee/:employeeId',
+    employeeController.editEmployee.bind(employeeController)
+  );
+
+  app.delete(
+    '/employee/:employeeId',
+    employeeController.deleteEmployee.bind(employeeController)
+  );
 
   app.post(
     '/allergen',
