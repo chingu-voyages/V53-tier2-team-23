@@ -148,7 +148,7 @@ async function getEmployee(employeeId) {
 
     const db = await getDb();
     // Find employee by _id using with findById() method
-    const mongooseEmployeeId = mongoose.Types.ObjectId(employeeId);
+    const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // Use `new` to create the ObjectId
     const employee = await Employee.findById(mongooseEmployeeId);
     console.log('employeeId:', employeeId);
     console.log('employee:', employee);
