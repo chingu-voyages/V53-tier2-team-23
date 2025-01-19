@@ -166,7 +166,7 @@ async function createEmployee(body) {
   try {
     const db = await getDb();
     // Parse the body
-    const reqbody = JSON.parse(body); // Parse JSON string into an object
+    const reqBody = JSON.parse(body); // Parse JSON string into an object
     const newEmployee = new Employee(reqBody); // create an new employee from model
 
     const employee = await newEmployee.save();
