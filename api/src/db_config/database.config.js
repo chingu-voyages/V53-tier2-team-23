@@ -5,13 +5,13 @@ if (!uri) {
   throw new Error('MongoDB URI is not defined!');
 }
 
-let cachedClient = null; // Cache for database connection
+let client = null; // Cache for database connection
 
 // Function to get a cached or new connection
 const getDb = async () => {
   // If the database is cached, return it
-  if (cachedClient) {
-    return cachedClient;
+  if (client) {
+    return client;
   }
 
   try {
