@@ -816,6 +816,84 @@
   },
   {
     "category": "glutenFree",
+    "dishName": "Gluten-Free Chicken Alfredo",
+    "ingredients": [
+      "Chicken Breast",
+      "Gluten-Free Pasta",
+      "Heavy Cream",
+      "Parmesan Cheese",
+      "Garlic"
+    ],
+    "allergens": ["Dairy"],
+    "calories": 450,
+    "imageUrl": "imagesPath/gluten-free-chicken-alfredo.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Veggie Frittata",
+    "ingredients": ["Eggs", "Spinach", "Mushrooms", "Bell Peppers", "Cheese"],
+    "allergens": ["Eggs", "Dairy"],
+    "calories": 300,
+    "imageUrl": "imagesPath/gluten-free-veggie-frittata.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Chicken Stir-fry",
+    "ingredients": [
+      "Chicken Breast",
+      "Broccoli",
+      "Carrots",
+      "Gluten-Free Soy Sauce",
+      "Ginger"
+    ],
+    "allergens": [],
+    "calories": 350,
+    "imageUrl": "imagesPath/gluten-free-chicken-stirfry.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Beef and Broccoli",
+    "ingredients": [
+      "Beef Strips",
+      "Broccoli",
+      "Gluten-Free Soy Sauce",
+      "Garlic",
+      "Ginger"
+    ],
+    "allergens": [],
+    "calories": 400,
+    "imageUrl": "imagesPath/gluten-free-beef-broccoli.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Sweet Potato Fries",
+    "ingredients": [
+      "Sweet Potatoes",
+      "Olive Oil",
+      "Paprika",
+      "Garlic Powder",
+      "Salt"
+    ],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/gluten-free-sweet-potato-fries.jpg"
+  },
+  {
+    "category": "glutenFree",
+    "dishName": "Gluten-Free Apple Crisp",
+    "ingredients": [
+      "Apples",
+      "Gluten-Free Oats",
+      "Butter",
+      "Cinnamon",
+      "Sugar"
+    ],
+    "allergens": ["Dairy"],
+    "calories": 350,
+    "imageUrl": "imagesPath/gluten-free-apple-crisp.jpg"
+  },
+  {
+    "category": "glutenFree",
     "dishName": "Gluten-Free Chicken Parmesan",
     "ingredients": [
       "Chicken Breast",
@@ -1217,101 +1295,223 @@
     "imageUrl": "imagesPath/zucchini-noodles.jpg"
   },
   {
-    "category": "diabetes-friendly",
-    "dishName": "Grilled Salmon with Spinach",
-    "ingredients": ["Salmon", "Spinach", "Lemon", "Olive Oil", "Garlic"],
+    "category": "lactose-free",
+    "dishName": "Grilled Turkey Skewers",
+    "ingredients": [
+      "Turkey",
+      "Bell Peppers",
+      "Zucchini",
+      "Garlic",
+      "Olive Oil"
+    ],
+    "allergens": [],
+    "calories": 290,
+    "imageUrl": "imagesPath/turkey-skewers.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Avocado Tuna Salad",
+    "ingredients": ["Tuna", "Avocado", "Cucumber", "Red Onion", "Lemon Juice"],
     "allergens": ["Fish"],
-    "calories": 340,
-    "imageUrl": "imagesPath/grilled-salmon.jpg"
+    "calories": 260,
+    "imageUrl": "imagesPath/avocado-tuna-salad.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Roasted Sweet Potatoes",
+    "ingredients": [
+      "Sweet Potatoes",
+      "Olive Oil",
+      "Rosemary",
+      "Garlic",
+      "Salt"
+    ],
+    "allergens": [],
+    "calories": 230,
+    "imageUrl": "imagesPath/roasted-sweet-potatoes.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Garlic Roasted Mushrooms",
+    "ingredients": ["Mushrooms", "Garlic", "Olive Oil", "Thyme", "Salt"],
+    "allergens": [],
+    "calories": 210,
+    "imageUrl": "imagesPath/garlic-mushrooms.jpg"
+  },
+  {
+    "category": "lactose-free",
+    "dishName": "Lemon Herb Quinoa",
+    "ingredients": ["Quinoa", "Lemon Juice", "Garlic", "Parsley", "Olive Oil"],
+    "allergens": [],
+    "calories": 200,
+    "imageUrl": "imagesPath/lemon-herb-quinoa.jpg"
   },
   {
     "category": "diabetes-friendly",
-    "dishName": "Quinoa and Black Bean Bowl",
-    "ingredients": ["Quinoa", "Black Beans", "Tomato", "Cilantro", "Olive Oil"],
+    "dishName": "Grilled Chicken Salad",
+    "ingredients": [
+      "Chicken Breast",
+      "Lettuce",
+      "Tomato",
+      "Cucumber",
+      "Olive Oil"
+    ],
     "allergens": [],
-    "calories": 280,
-    "imageUrl": "imagesPath/quinoa-bowl.jpg"
+    "calories": 250,
+    "imageUrl": "imagesPath/grilled-chicken-salad.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Baked Salmon with Spinach",
+    "ingredients": ["Salmon", "Spinach", "Garlic", "Olive Oil", "Lemon"],
+    "allergens": ["Fish"],
+    "calories": 320,
+    "imageUrl": "imagesPath/baked-salmon-spinach.jpg"
   },
   {
     "category": "diabetes-friendly",
     "dishName": "Vegetable Omelet",
-    "ingredients": ["Eggs", "Spinach", "Tomato", "Onion", "Bell Pepper"],
+    "ingredients": ["Eggs", "Spinach", "Mushrooms", "Tomato", "Olive Oil"],
     "allergens": ["Eggs"],
-    "calories": 290,
+    "calories": 200,
     "imageUrl": "imagesPath/vegetable-omelet.jpg"
   },
   {
     "category": "diabetes-friendly",
-    "dishName": "Cucumber Avocado Salad",
-    "ingredients": ["Cucumber", "Avocado", "Lemon Juice", "Olive Oil", "Dill"],
-    "allergens": [],
-    "calories": 180,
-    "imageUrl": "imagesPath/cucumber-avocado-salad.jpg"
-  },
-  {
-    "category": "diabetes-friendly",
-    "dishName": "Baked Chicken with Green Beans",
+    "dishName": "Quinoa and Black Bean Salad",
     "ingredients": [
-      "Chicken Breast",
-      "Green Beans",
-      "Olive Oil",
-      "Garlic",
-      "Lemon"
+      "Quinoa",
+      "Black Beans",
+      "Bell Pepper",
+      "Cilantro",
+      "Lime Juice"
     ],
-    "allergens": [],
-    "calories": 310,
-    "imageUrl": "imagesPath/baked-chicken.jpg"
-  },
-  {
-    "category": "diabetes-friendly",
-    "dishName": "Lentil Soup",
-    "ingredients": ["Lentils", "Carrots", "Celery", "Tomato", "Garlic"],
     "allergens": [],
     "calories": 220,
-    "imageUrl": "imagesPath/lentil-soup.jpg"
+    "imageUrl": "imagesPath/quinoa-blackbean-salad.jpg"
   },
   {
     "category": "diabetes-friendly",
-    "dishName": "Grilled Tofu with Vegetables",
-    "ingredients": ["Tofu", "Zucchini", "Bell Peppers", "Soy Sauce", "Garlic"],
-    "allergens": ["Soy"],
-    "calories": 270,
-    "imageUrl": "imagesPath/grilled-tofu.jpg"
-  },
-  {
-    "category": "diabetes-friendly",
-    "dishName": "Eggplant Parmesan (No Cheese)",
-    "ingredients": ["Eggplant", "Tomato Sauce", "Basil", "Garlic", "Olive Oil"],
+    "dishName": "Stuffed Zucchini Boats",
+    "ingredients": [
+      "Zucchini",
+      "Ground Turkey",
+      "Tomato Sauce",
+      "Garlic",
+      "Basil"
+    ],
     "allergens": [],
     "calories": 260,
-    "imageUrl": "imagesPath/eggplant-parmesan.jpg"
+    "imageUrl": "imagesPath/stuffed-zucchini.jpg"
   },
   {
     "category": "diabetes-friendly",
-    "dishName": "Shrimp and Cauliflower Rice",
+    "dishName": "Roasted Cauliflower and Chickpeas",
     "ingredients": [
-      "Shrimp",
-      "Cauliflower Rice",
-      "Garlic",
-      "Olive Oil",
-      "Lemon"
-    ],
-    "allergens": ["Shellfish"],
-    "calories": 300,
-    "imageUrl": "imagesPath/shrimp-cauliflower-rice.jpg"
-  },
-  {
-    "category": "diabetes-friendly",
-    "dishName": "Roasted Brussels Sprouts and Chicken",
-    "ingredients": [
-      "Chicken Breast",
-      "Brussels Sprouts",
+      "Cauliflower",
+      "Chickpeas",
       "Olive Oil",
       "Garlic",
       "Paprika"
     ],
     "allergens": [],
+    "calories": 230,
+    "imageUrl": "imagesPath/roasted-cauliflower-chickpeas.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Grilled Shrimp with Avocado Salsa",
+    "ingredients": ["Shrimp", "Avocado", "Tomato", "Cilantro", "Lime Juice"],
+    "allergens": ["Shellfish"],
+    "calories": 280,
+    "imageUrl": "imagesPath/grilled-shrimp-avocado.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Turkey Lettuce Wraps",
+    "ingredients": ["Ground Turkey", "Lettuce", "Carrot", "Cucumber", "Ginger"],
+    "allergens": [],
+    "calories": 210,
+    "imageUrl": "imagesPath/turkey-lettuce-wraps.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Cabbage Stir-fry",
+    "ingredients": ["Cabbage", "Carrot", "Bell Pepper", "Soy Sauce", "Garlic"],
+    "allergens": [],
+    "calories": 180,
+    "imageUrl": "imagesPath/cabbage-stirfry.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Grilled Vegetables with Hummus",
+    "ingredients": [
+      "Zucchini",
+      "Bell Pepper",
+      "Eggplant",
+      "Olive Oil",
+      "Hummus"
+    ],
+    "allergens": [],
+    "calories": 220,
+    "imageUrl": "imagesPath/grilled-vegetables-hummus.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Baked Cod with Asparagus",
+    "ingredients": ["Cod", "Asparagus", "Lemon", "Garlic", "Olive Oil"],
+    "allergens": ["Fish"],
+    "calories": 250,
+    "imageUrl": "imagesPath/baked-cod-asparagus.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Chicken and Vegetable Skewers",
+    "ingredients": [
+      "Chicken Breast",
+      "Bell Pepper",
+      "Zucchini",
+      "Olive Oil",
+      "Lemon Juice"
+    ],
+    "allergens": [],
+    "calories": 280,
+    "imageUrl": "imagesPath/chicken-vegetable-skewers.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Spaghetti Squash with Pesto",
+    "ingredients": [
+      "Spaghetti Squash",
+      "Basil",
+      "Olive Oil",
+      "Garlic",
+      "Pine Nuts"
+    ],
+    "allergens": ["Nuts"],
+    "calories": 230,
+    "imageUrl": "imagesPath/spaghetti-squash-pesto.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Eggplant Parmesan",
+    "ingredients": [
+      "Eggplant",
+      "Tomato Sauce",
+      "Garlic",
+      "Olive Oil",
+      "Parmesan Cheese"
+    ],
+    "allergens": ["Dairy"],
+    "calories": 270,
+    "imageUrl": "imagesPath/eggplant-parmesan.jpg"
+  },
+  {
+    "category": "diabetes-friendly",
+    "dishName": "Salmon and Avocado Salad",
+    "ingredients": ["Salmon", "Avocado", "Spinach", "Lemon", "Olive Oil"],
+    "allergens": ["Fish"],
     "calories": 320,
-    "imageUrl": "imagesPath/roasted-brussels.jpg"
+    "imageUrl": "imagesPath/salmon-avocado-salad.jpg"
   }
 ]

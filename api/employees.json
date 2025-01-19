@@ -1,0 +1,52 @@
+[
+  {
+    "employeeName": "John Doe",
+    "allergies": ["peanut", "shellfish"],
+    "dietaryRestrictions": ["vegetarian", "glutenFree"]
+  },
+  {
+    "employeeName": "Jane Smith",
+    "allergies": ["milk"],
+    "dietaryRestrictions": ["vegan", "lactose-free"]
+  },
+  {
+    "employeeName": "Sam Brown",
+    "allergies": ["soy"],
+    "dietaryRestrictions": ["pescatarian"]
+  },
+  {
+    "employeeName": "Lisa White",
+    "allergies": ["egg"],
+    "dietaryRestrictions": ["keto", "diabetes-friendly"]
+  },
+  {
+    "employeeName": "Michael Green",
+    "allergies": [],
+    "dietaryRestrictions": ["paleo"]
+  },
+  {
+    "employeeName": "Emily Clark",
+    "allergies": ["wheat"],
+    "dietaryRestrictions": ["glutenFree", "standard"]
+  },
+  {
+    "employeeName": "David Harris",
+    "allergies": ["tree nut", "fish"],
+    "dietaryRestrictions": ["vegan", "diabetes-friendly"]
+  },
+  {
+    "employeeName": "Sophia Lewis",
+    "allergies": ["sesame"],
+    "dietaryRestrictions": ["vegetarian"]
+  },
+  {
+    "employeeName": "James Young",
+    "allergies": ["gluten"],
+    "dietaryRestrictions": ["lactose-free", "keto"]
+  },
+  {
+    "employeeName": "Olivia Martin",
+    "allergies": [],
+    "dietaryRestrictions": ["pescatarian", "glutenFree"]
+  }
+]

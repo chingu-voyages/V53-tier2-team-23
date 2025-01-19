@@ -1,0 +1,12 @@
+[
+  { "allergenName": "peanut" },
+  { "allergenName": "shellfish" },
+  { "allergenName": "milk" },
+  { "allergenName": "soy" },
+  { "allergenName": "egg" },
+  { "allergenName": "wheat" },
+  { "allergenName": "tree nut" },
+  { "allergenName": "fish" },
+  { "allergenName": "sesame" },
+  { "allergenName": "gluten" }
+]
