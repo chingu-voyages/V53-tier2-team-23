@@ -133,7 +133,7 @@ async function getEmployees() {
     const data = await Employee.find({});
 
     // Return the fetched data (all employees)
-    console.log('employees: ' data);
+    console.log('employees: ', data);
     return data;
   } catch (error) {
     console.error('Error fetching employees:', error);
