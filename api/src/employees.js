@@ -94,7 +94,7 @@ const handler = async (event, context) => {
     };
 
     try {
-      const employee = await createEmployee(body, 'employees');
+      const employee = await createEmployee(body);
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -133,7 +133,7 @@ async function getEmployees() {
     const data = await Employee.find({});
 
     // Return the fetched data (all employees)
-    console.log(data);
+    console.log('employees: ' data);
     return data;
   } catch (error) {
     console.error('Error fetching employees:', error);
@@ -147,6 +147,13 @@ async function getEmployee(employeeId) {
     const db = await getdb();
     // Find employee by _id using with findById() method
     const employee = await Employee.findById(employeeId);
+    if (!employee) {
+      return {
+        statusCode: 404,
+        headers,
+        body: JSON.stringify({ message: 'Employee not found' }),
+      };
+    }
     return employee;
   } catch (error) {
     console.error('Error fetching employee:', error);
