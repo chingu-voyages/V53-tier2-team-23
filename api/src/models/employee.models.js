@@ -30,11 +30,15 @@ const employeeSchema = new Schema({
     {
       type: String,
       enum: [
-        'Lactose-free',
-        'Gluten-free',
-        'Vegetarian',
-        'Vegan',
-        'Diabetes-friendly',
+        'vegetarian',
+        'vegan',
+        'pescatarian',
+        'keto',
+        'paleo',
+        'glutenFree',
+        'standard',
+        'lactose-free',
+        'diabetes-friendly',
       ], // only take a specific set of values
       required: false,
     },
