@@ -78,12 +78,6 @@ const handler = async (event, context) => {
   }
 
   if (httpMethod === 'POST' && path.startsWith('/employees/create')) {
-    // Set headers for the response
-    const headers = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    };
-
     try {
       const employee = await createEmployee(body);
       return {
