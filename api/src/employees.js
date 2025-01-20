@@ -100,7 +100,7 @@ const handler = async (event, context) => {
   ) {
     try {
       const employeeId = path.split('/')[4]; // '/employees/{id}/dishes'
-      const employeeDishes = await getEmployeeDishes(employeeId);
+      const { employee, dishes } = await getEmployeeDishes(employeeId);
       console.log('httpreq:', employeeId);
       if (!employeeDishes) {
         return {
@@ -118,7 +118,7 @@ const handler = async (event, context) => {
           success: true,
           data: {
             employee,
-            employeeDishes,
+            dishes,
             employeeId,
           },
         }),
