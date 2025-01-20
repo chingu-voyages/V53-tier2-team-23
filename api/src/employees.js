@@ -102,7 +102,7 @@ const handler = async (event, context) => {
       const employeeId = path.split('/')[4]; // '/employees/{id}/dishes'
       const { employee, dishes } = await getEmployeeDishes(employeeId);
       console.log('httpreq:', employeeId);
-      if (!employeeDishes) {
+      if (!dishes) {
         return {
           statusCode: 404,
           headers,
