@@ -53,7 +53,7 @@ const handler = async (event, context) => {
 
   if (
     httpMethod === 'GET' &&
-    path.startsWith('/employees/') &&
+    path.includes('/employees/') &&
     !path.includes('/dishes')
   ) {
     const employeeId = path.split('/')[2]; // Extract employee ID // Extract employee id from path
@@ -93,7 +93,7 @@ const handler = async (event, context) => {
 
   if (
     httpMethod === 'GET' &&
-    path.startsWith('/employees/') &&
+    path.includes('/employees/') &&
     path.includes('/dishes')
   ) {
     try {
