@@ -38,17 +38,12 @@ async function handleGetEmployeeData(employeeId) {
     const employeeData = await getEmployee(employeeId);
 
     const localEmployeeData = await getDataFromLocalStorage();
-    const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
-    const {
-      localid,
-      localemployeeName,
-      localallergies,
-      localdietaryRestrictions,
-    } = localEmployeeData;
+    const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
+    console.log(_id, employeeName, allergies, dietaryRestrictions);
+
     if (localEmployeeData && employeeData) {
-      if (localid === id && localemployeeName === employeeName) {
-        console.log(id, employeeName, allergies, dietaryRestrictions);
-        viewEmployee(id, employeeName, allergies, dietaryRestrictions);
+      if (localEmployeeData._id === _id && localEmployeeData..employeeName === employeeName) {
+        await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
         console.log('The data is different');
