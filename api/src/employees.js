@@ -24,8 +24,8 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
-      const employees = await getEmployees();
-      const employeesCount = await Employee.countDocuments(); // Get total employees
+      const { employees, employeesNumber } = await getEmployees();
+
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -129,9 +129,13 @@ async function getEmployees() {
     const db = await getDb(); // Get the database connection
 
     // Fetch all employees using Mongoose
-    const data = await Employee.find({});
+    const employees = await Employee.find({});
+    const employeesCount = await Employee.countDocuments(); // Get total employees
 
-    return data;
+    return {
+      employees: employees,
+      employeesNumber: employeesCount,
+    };
   } catch (error) {
     console.error('Error fetching employees:', error);
     throw new Error('Failed to fetch employees');
@@ -141,18 +145,19 @@ async function getEmployees() {
 // GET request handler for employee with id
 async function getEmployee(employeeId) {
   try {
+    const db = await getDb();
     if (!employeeId || !ObjectId.isValid(employeeId)) {
       // check if valid mongodb id
       // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
-      return null;
+      throw new Error('employee id not valid');
     }
 
-    const db = await getDb();
     // Find employee by _id using with findById() method
-    const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // Use `new` to create the ObjectId
-    const employee = await Employee.findById(mongooseEmployeeId);
-    console.log('employeeId:', employeeId);
-    console.log('employee:', employee);
+    // const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // create the ObjectId
+    // const employee = await Employee.findById(mongooseEmployeeId);
+    const employee = await Employee.findById(employeeId);
+    // console.log('employeeId:', employeeId);
+    // console.log('employee:', employee);
     return employee || null;
   } catch (error) {
     console.error('Error fetching employee:', error);
@@ -179,10 +184,9 @@ async function createEmployee(body) {
 
     // Fetch all allergens [ https://www.mongodb.com/docs/manual/reference/operator/query/in/ ]
     // $in  → Finds all documents where allergenName is in the provided array.
-    const allergensArray = reqBody.allergies;
     const allergens = await Allergen.find({
       allergenName: {
-        $in: allergensArray.map((allergen) => allergen.toLowerCase()),
+        $in: reqBody.allergies.map((allergen) => allergen.toLowerCase()),
       },
     });
 
@@ -199,14 +203,14 @@ async function createEmployee(body) {
 
     const newEmployee = new Employee(employeeData); // create an new employee from model
 
-    const savedEmployee = await newEmployee.save();
+    const savedEmployee = await newEmployee.save(); // save to database
 
     // Populate the allergies field to get the full allergen documents
     const employee = await Employee.findById(savedEmployee._id)
-      .populate('allergies') // This will replace ObjectIds with full Allergen documents
+      .populate('allergies') // replace ObjectIds with Allergen
       .exec();
 
-    // Return the new employee along with its MongoDB _id
+    // Return the new employee
     return employee;
   } catch (error) {
     console.error('Error adding new employee:', error);
