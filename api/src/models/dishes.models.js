@@ -2,12 +2,13 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const dishSchema = new Schema({
-  dishId: {
+const dishesSchema = new Schema({
+  // use MongoDB ObjectId for dishId?
+  /*   dishId: {
     type: String,
     required: true,
     unique: true,
-  },
+  }, */
   dishName: {
     type: String,
     required: true,
@@ -32,4 +33,4 @@ const dishSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('Dish', dishSchema);
+module.exports = mongoose.model('Dishes', dishesSchema);
