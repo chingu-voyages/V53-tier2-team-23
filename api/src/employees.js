@@ -105,7 +105,7 @@ const handler = async (event, context) => {
           statusCode: 404,
           headers,
           body: JSON.stringify({
-            message: 'Dishes not found for this Employee',
+            message: 'Dishes not found for Employee with id: ' + employeeId,
           }),
         };
       }
