@@ -100,11 +100,13 @@ const handler = async (event, context) => {
       const employeeId = path.split('/')[2]; // '/employees/{id}/dishes'
       const employeeDishes = await getEmployeeDishes(employeeId);
       console.log('httpreq:', employeeId);
-      if (!employee) {
+      if (!employeeDishes) {
         return {
           statusCode: 404,
           headers,
-          body: JSON.stringify({ message: 'Employee not found' }),
+          body: JSON.stringify({
+            message: 'Dishes not found for this Employee',
+          }),
         };
       }
       return {
