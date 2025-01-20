@@ -1,9 +1,13 @@
 const EmployeeController = require('../controllers/employee.controllers');
 const AllergenController = require('../controllers/allergen.controllers');
+const DishesController = require('../controllers/dishes.controllers');
+const MenuController = require('../controllers/menu.controllers');
 
 function setRoutes(app) {
   const employeeController = new EmployeeController();
   const allergenController = new AllergenController();
+  const dishesController = new DishesController();
+  const menuController = new MenuController();
 
   app.post(
     '/employee',
@@ -39,6 +43,17 @@ function setRoutes(app) {
     '/allergen',
     allergenController.getAllAllergen.bind(allergenController)
   );
+
+  app.get('/dishes', dishesController.getAllDishes.bind(dishesController));
+
+  app.post('/dishes', dishesController.createDishes.bind(dishesController));
+
+  app.get(
+    '/dishes/filter',
+    dishesController.filteredDishes.bind(dishesController)
+  );
+
+  app.post('/menu', menuController.createMenu.bind(menuController));
 }
 
 module.exports = setRoutes;
