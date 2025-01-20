@@ -70,7 +70,7 @@ const handler = async (event, context) => {
           data: {
             employee: employee,
             employeeId: employeeId,
-            employeesLength: employees.length,
+            employeesLength: employee.length,
           },
         }),
       };
