@@ -67,8 +67,54 @@ async function submitForm(event) {
   event.preventDefault();
   const employeeId = document.getElementById('id').value;
   await handleGetEmployeeData(employeeId);
+  const employeeData = await getDataFromLocalStorage();
+  const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
+  viewEmployee(id, employeeName, allergies, dietaryRestrictions);
 }
 
-submitButton.addEventListener('click', (event) => {
+submitButton.addEventListener('click', () => {
   form.addEventListener('submit', submitForm);
 });
+
+function viewEmployee(id, employeeName, allergies, dietaryRestrictions) {
+  // employee container
+  const container = document.createElement('div');
+  container.classList.add('employee-container');
+  // employee name
+  const h2Element = document.createElement('h2');
+  h2Element.textContent = `Employee Name: ${employeeName}`;
+  container.appendChild(h2Element);
+
+  // allergies list
+  const allergiesContainer = document.createElement('div');
+  allergiesContainer.classList.add('allergies-container');
+  const allergiesTitle = document.createElement('h3');
+  allergiesTitle.textContent = 'Allergies:';
+  allergiesContainer.appendChild(allergiesTitle);
+  const allergiesList = document.createElement('ul');
+  allergies.forEach((allergy) => {
+    const allergyElement = document.createElement('li');
+    allergyElement.textContent = allergy.allergenName;
+    allergiesList.appendChild(allergyElement);
+  });
+  allergiesContainer.appendChild(allergiesList);
+  container.appendChild(allergiesContainer);
+
+  // Create and append the dietary restrictions list
+  const dietaryRestrictionsContainer = document.createElement('div');
+  dietaryRestrictionsContainer.classList.add('dietary-restrictions-container');
+  const dietaryRestrictionsTitle = document.createElement('h3');
+  dietaryRestrictionsTitle.textContent = 'Dietary Restrictions:';
+  dietaryRestrictionsContainer.appendChild(dietaryRestrictionsTitle);
+  const dietaryRestrictionsList = document.createElement('ul');
+  dietaryRestrictions.forEach((dietaryRestriction) => {
+    const dietaryRestrictionElement = document.createElement('li');
+    dietaryRestrictionElement.textContent = dietaryRestriction;
+    dietaryRestrictionsList.appendChild(dietaryRestrictionElement);
+  });
+  dietaryRestrictionsContainer.appendChild(dietaryRestrictionsList);
+  container.appendChild(dietaryRestrictionsContainer);
+
+  // Finally, append the entire container to the body or another parent element
+  responseContainer.appendChild(container);
+}
