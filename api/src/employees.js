@@ -193,11 +193,11 @@ async function getEmployees() {
 async function getEmployee(employeeId) {
   try {
     const db = await getDb();
-    if (!employeeId || !ObjectId.isValid(employeeId)) {
-      // check if valid mongodb id
-      // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
-      throw new Error('employee id not valid');
-    }
+    // if (!employeeId || !ObjectId.isValid(employeeId)) {
+    //   // check if valid mongodb id
+    //   // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
+    //   throw new Error('employee id not valid');
+    // }
 
     // Find employee by _id using with findById() method
     // const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // create the ObjectId
