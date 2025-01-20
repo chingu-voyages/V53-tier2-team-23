@@ -56,6 +56,7 @@ const handler = async (event, context) => {
     path.includes('/employees/') &&
     !path.includes('/dishes')
   ) {
+    console.log(path);
     const employeeId = path.split('/')[2]; // Extract employee ID // Extract employee id from path
     try {
       const employee = await getEmployee(employeeId);
