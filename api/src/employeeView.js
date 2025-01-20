@@ -19,7 +19,8 @@ async function getEmployee(employeeId) {
       throw new Error(`Failed to fetch employee data: ${response.status}`);
     }
 
-    const employeeData = await response.json();
+    const responseData = await response.json();
+    const employeeData = responseData.data;
     localStorage.setItem('employeeData', JSON.stringify(employeeData));
     return employeeData;
   } catch (error) {
