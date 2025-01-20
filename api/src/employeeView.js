@@ -49,8 +49,9 @@ async function handleGetEmployeeData(employeeId) {
       localEmployeeData.employeeName,
       employeeName
     );
-
-    if (localEmployeeData && employeeData) {
+    if (employeeData & !localEmployeeData) {
+      await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+    } else if (localEmployeeData && employeeData) {
       if (
         localEmployeeData._id === _id &&
         localEmployeeData.employeeName === employeeName
