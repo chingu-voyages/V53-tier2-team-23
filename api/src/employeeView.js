@@ -41,8 +41,7 @@ async function handleGetEmployeeData(employeeId) {
     console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
     console.log('localEmployeeData: ', localEmployeeData);
-    const { _id, employeeName, allergies, dietaryRestrictions } =
-      employeeData.employee;
+    const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
     console.log(
       localEmployeeData._id,
       _id,
