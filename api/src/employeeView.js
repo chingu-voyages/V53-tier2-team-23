@@ -36,7 +36,7 @@ async function getEmployee(employeeId) {
 
 async function handleGetEmployeeData(employeeId) {
   try {
-    responseContainer.textContent = 'loading...';
+    // responseContainer.textContent = 'loading...';
     const employeeData = await getEmployee(employeeId);
     console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
