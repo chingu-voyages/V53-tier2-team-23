@@ -23,6 +23,8 @@ async function getEmployee(employeeId) {
 
     const employeeData = responseData.data;
 
+    console.log('employeeData: ', employeeData);
+
     localStorage.setItem('employeeData', JSON.stringify(employeeData));
     return employeeData;
   } catch (error) {
@@ -36,8 +38,9 @@ async function handleGetEmployeeData(employeeId) {
   try {
     responseContainer.textContent = 'loading...';
     const employeeData = await getEmployee(employeeId);
-    //console.log(employeeData);
+    console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
+    console.log('localEmployeeData: ', localEmployeeData);
     const { _id, employeeName, allergies, dietaryRestrictions } =
       employeeData.employee;
     console.log(
