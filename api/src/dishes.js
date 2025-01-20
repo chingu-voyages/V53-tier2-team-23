@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
 const Allergen = require('./models/allergen.model'); // Import the Allergen model
-const dish = require('./models/dish.model'); // Import dish model
+const Dish = require('./models/dish.model'); // Import dish model
 const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
 const headers = {
