@@ -93,7 +93,7 @@ const handler = async (event, context) => {
     path.endsWith('/dishes')
   ) {
     try {
-      const employeeId = path.split('/')[3]; // '/employees/{id}/dishes'
+      const employeeId = path.split('/')[4]; // '/employees/{id}/dishes'
       const employeeDishes = await getEmployeeDishes(employeeId);
       console.log('httpreq:', employeeId);
       if (!employee) {
