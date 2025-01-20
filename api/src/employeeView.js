@@ -21,7 +21,7 @@ async function getEmployee(employeeId) {
 
     const responseData = await response.json();
 
-    const employeeData = responseData.data;
+    const employeeData = responseData.data.employee;
 
     console.log('employeeData: ', employeeData);
 
