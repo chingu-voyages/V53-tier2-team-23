@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
-const Dish = require('./models/dish.model'); // Import Dish model
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
+const Allergen = require('./models/allergen.model'); // Import the Allergen model
+const dish = require('./models/dish.model'); // Import dish model
 const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
 const headers = {
@@ -23,7 +24,8 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
-      const dishes = await getData('dishes');
+      const { dishes, dishesNumber } = await getDishes();
+
       return {
         statusCode: 200,
         headers, // Include the headers in the response
@@ -31,7 +33,7 @@ const handler = async (event, context) => {
           success: true,
           data: {
             dishes: dishes,
-            dishesLength: dishes.length,
+            dishesNumber: dishesNumber,
           },
         }),
       };
@@ -51,16 +53,13 @@ const handler = async (event, context) => {
 
   if (httpMethod === 'GET' && path.includes('/dishes/')) {
     const dishId = path.split('/').pop(); // Extract dish id from path
-
     try {
-      const dish = await getDish(dishId, 'dishes');
-      if (!dishId || !ObjectId.isValid(dishId)) {
-        // check if valid mongodb id
-        // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
+      const dish = await getDish(dishId);
+      if (!dish) {
         return {
           statusCode: 404,
           headers,
-          body: JSON.stringify({ message: 'Dish not found' }),
+          body: JSON.stringify({ message: 'dish not found' }),
         };
       }
       return {
@@ -68,8 +67,35 @@ const handler = async (event, context) => {
         headers, // Include the headers in the response
         body: JSON.stringify({
           success: true,
-          dishId: dishId,
-          data: dish,
+          data: {
+            dish: dish,
+            dishId: dishId,
+          },
+        }),
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: 'An internal server error occurred.',
+          error: error.message, // Include error details for debugging
+        }),
+      };
+    }
+  }
+
+  if (httpMethod === 'POST' && path.endsWith('/dishes/create')) {
+    try {
+      const dish = await createdish(body);
+      return {
+        statusCode: 200,
+        headers, // Include the headers in the response
+        body: JSON.stringify({
+          success: true,
+          data: dish.data,
         }),
       };
     } catch (error) {
@@ -97,30 +123,104 @@ const handler = async (event, context) => {
 };
 
 // GET request handler for all dishes
-async function getData(collectionValue) {
-  // const db = await getDb();
+async function getDishes() {
+  try {
+    const db = await getDb(); // Get the database connection
 
-  // const collection = await db.collection(collectionValue);
-  // const data = await collection.find({}).toArray();
+    // Fetch all dishes using Mongoose
+    const dishes = await Dish.find({});
+    const dishesNumber = await Dish.countDocuments(); // Get total dishes
 
-  const data = await Dish.find({}); // Fetch all dishes using Mongoose
-
-  // Debugging output to check the fetched data
-  // console.log('Fetched dishes:', data);
-
-  return data;
+    return {
+      dishes: dishes,
+      dishesNumber: dishesNumber,
+    };
+  } catch (error) {
+    console.error('Error fetching dishes:', error);
+    throw new Error('Failed to fetch dishes');
+  }
 }
 
 // GET request handler for dish with id
-async function getDish(dishId, collectionValue) {
-  const db = await getDb();
-  const collection = await db.collection(collectionValue);
-  const query = { _id: new ObjectId(dishId) }; // set new query dish id based on entry in the database having the _id field
-  /* [ https://www.mongodb.com/docs/manual/reference/method/db.collection.findOne/ ]
-    findOne(query) looks for a single document in the collection that matches the criteria in query (_id).
-   */
-  const dish = await collection.findOne(query);
-  return dish;
+async function getDish(dishId) {
+  try {
+    const db = await getDb();
+    if (!dishId || !ObjectId.isValid(dishId)) {
+      // check if valid mongodb id
+      // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
+      throw new Error('dish id not valid');
+    }
+
+    // Find dish by _id using with findById() method
+    // const mongoosedishId = new mongoose.Types.ObjectId(dishId); // create the ObjectId
+    // const dish = await dish.findById(mongoosedishId);
+    const dish = await Dish.findById(dishId);
+    // console.log('dishId:', dishId);
+    // console.log('dish:', dish);
+    return dish || null;
+  } catch (error) {
+    console.error('Error fetching dish:', error);
+    throw new Error('Error fetching dish');
+  }
+}
+
+// create class dish
+class dishObject {
+  constructor(reqBody) {
+    this.category = reqBody.category;
+    this.dishName = reqBody.dishName;
+    this.ingrediends = reqBody.ingrediends;
+    this.allergens = reqBody.allergens;
+    this.calories = reqBody.calories;
+    this.imageUrl = reqBody.imageUrl;
+  }
+}
+
+// POST request handler to create dish
+async function createDish(body) {
+  try {
+    const db = await getDb();
+
+    // Parse the body
+    const reqBody = JSON.parse(body); // Parse JSON string into an object
+
+    // Fetch all allergens [ https://www.mongodb.com/docs/manual/reference/operator/query/in/ ]
+    // $in  → Finds all documents where allergenName is in the provided array.
+    const allergens = await Allergen.find({
+      allergenName: {
+        $in: reqBody.allergies.map((allergen) => allergen.toLowerCase()),
+      },
+    });
+
+    // allergens ids
+    const allergenIds = allergens.map((allergen) => allergen._id);
+
+    // Create the dish object with the allergens and dietary restrictions
+    const dishData = new dishObject(reqBody, allergenIds);
+    // const dishData = {
+    //   dishName: reqBody.dishName,
+    //   allergies: allergens, // Include the ObjectIds of the allergens
+    //   dietaryRestrictions: reqBody.dietaryRestrictions, // Dietary restrictions as they are
+    // };
+
+    const newdish = new dish(dishData); // create an new dish from model
+
+    const saveddish = await newdish.save(); // save to database
+
+    // Populate the allergies field to get the full allergen documents
+    const dish = await dish
+      .findById(saveddish._id)
+      .populate('allergies') // replace ObjectIds with Allergen
+      .exec();
+
+    // Return the new dish
+    return dish;
+  } catch (error) {
+    console.error('Error adding new dish:', error);
+
+    // Return error response
+    throw new Error('Error adding new dish');
+  }
 }
 
 module.exports.handler = handler;

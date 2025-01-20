@@ -70,7 +70,46 @@ const handler = async (event, context) => {
           data: {
             employee: employee,
             employeeId: employeeId,
-            employeesLength: employee.length,
+          },
+        }),
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: 'An internal server error occurred.',
+          error: error.message, // Include error details for debugging
+        }),
+      };
+    }
+  }
+
+  if (
+    httpMethod === 'GET' &&
+    path.startsWith('/employees/') &&
+    path.endsWith('/dishes')
+  ) {
+    try {
+      const employeeId = path.split('/')[2]; // '/employees/{id}/dishes'
+      const employeeDishes = await getEmployeeDishes(employeeId);
+      if (!employee) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({ message: 'Employee not found' }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers, // Include the headers in the response
+        body: JSON.stringify({
+          success: true,
+          data: {
+            employeeDishes: employeeDishes,
+            employeeId: employeeId,
           },
         }),
       };
@@ -159,6 +198,39 @@ async function getEmployee(employeeId) {
     // console.log('employeeId:', employeeId);
     // console.log('employee:', employee);
     return employee || null;
+  } catch (error) {
+    console.error('Error fetching employee:', error);
+    throw new Error('Error fetching employee');
+  }
+}
+
+async function getEmployeeDishes(employeeId) {
+  try {
+    const db = await getDb();
+    if (!employeeId || !ObjectId.isValid(employeeId)) {
+      // check if valid mongodb id [ https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/ ]
+      throw new Error('employee id not valid');
+    }
+
+    // Find employee by _id using with findById() method
+    // const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // create the ObjectId
+    // const employee = await Employee.findById(mongooseEmployeeId);
+    const employee = await Employee.findById(employeeId)
+      .populate('allergies') // replace referenced ObjectIDs with actual values from allergens [ https://www.geeksforgeeks.org/mongoose-populate-method/ ]
+      .exec(); // executes the query and returns a Promise [ https://dev.to/asim_khan_cbe65e41bcbbc65/the-power-of-exec-in-mongoose-unlocking-better-query-execution-17fd ]
+
+    const dietaryRestrictions = employee.dietaryRestrictions; // get employee dietaryRestrictions
+    const allergyIds = employee.allergies.map((allergen) => allergen._id); // get employee allergy ids
+
+    // https://www.mongodb.com/docs/manual/reference/operator/query/nin/
+    // https://www.mongodb.com/docs/manual/reference/operator/query/in/
+    const dishes = await Dish.find({
+      category: { $in: dietaryRestrictions }, // Match categories
+      allergens: { $nin: allergyIds }, // Exclude allergens
+    });
+    // console.log('employeeId:', employeeId);
+    // console.log('employee:', employee);
+    return dishes || null;
   } catch (error) {
     console.error('Error fetching employee:', error);
     throw new Error('Error fetching employee');
