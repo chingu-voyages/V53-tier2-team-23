@@ -208,8 +208,8 @@ async function getEmployee(employeeId) {
 async function getEmployeeDishes(employeeId) {
   try {
     const db = await getDb();
-    console.log(employeeId);
     if (!employeeId || !ObjectId.isValid(employeeId)) {
+      console.log(employeeId);
       // check if valid mongodb id [ https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/ ]
       throw new Error('employee id not valid');
     }
@@ -235,6 +235,7 @@ async function getEmployeeDishes(employeeId) {
     return dishes || null;
   } catch (error) {
     console.error('Error fetching employee:', error);
+    console.log(employeeId);
     throw new Error('Error fetching employee');
   }
 }
