@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
 const Allergen = require('./models/allergen.model'); // Import the Allergen model
 const Employee = require('./models/employee.model'); // Import employee model
-const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
+//const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -193,11 +193,11 @@ async function getEmployees() {
 async function getEmployee(employeeId) {
   try {
     const db = await getDb();
-    // if (!employeeId || !ObjectId.isValid(employeeId)) {
-    //   // check if valid mongodb id
-    //   // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
-    //   throw new Error('employee id not valid');
-    // }
+    if (!employeeId || !mongoose.Types.ObjectId.isValid(employeeId)) {
+      // check if valid mongodb id
+      // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
+      throw new Error('employee id not valid');
+    }
 
     // Find employee by _id using with findById() method
     // const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // create the ObjectId
@@ -215,7 +215,7 @@ async function getEmployee(employeeId) {
 async function getEmployeeDishes(employeeId) {
   try {
     const db = await getDb();
-    if (!employeeId || !ObjectId.isValid(employeeId)) {
+    if (!employeeId || !mongoose.Types.ObjectId.isValid(employeeId)) {
       console.log(employeeId);
       // check if valid mongodb id [ https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/ ]
       throw new Error('employee id not valid');
