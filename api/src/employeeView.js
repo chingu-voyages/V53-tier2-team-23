@@ -47,7 +47,9 @@ async function handleGetEmployeeData(employeeId) {
     } = localEmployeeData;
     if (localEmployeeData && employeeData) {
       if (localid === id && localemployeeName === employeeName) {
-        responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
+        console.log(id, employeeName, allergies, dietaryRestrictions);
+        viewEmployee(id, employeeName, allergies, dietaryRestrictions);
+        //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
         console.log('The data is different');
         responseContainer.textContent = 'Employee data has changed.';
@@ -115,10 +117,6 @@ async function submitForm(event) {
   event.preventDefault();
   const employeeId = document.getElementById('id').value;
   await handleGetEmployeeData(employeeId);
-  const employeeData = await getDataFromLocalStorage();
-  const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
-  console.log(id, employeeName, allergies, dietaryRestrictions);
-  viewEmployee(id, employeeName, allergies, dietaryRestrictions);
 }
 
 submitButton.addEventListener('click', () => {
