@@ -20,7 +20,9 @@ async function getEmployee(employeeId) {
     }
 
     const responseData = await response.json();
+    console.log(responseData);
     const employeeData = responseData.data;
+    console.log(employeeData);
     localStorage.setItem('employeeData', JSON.stringify(employeeData));
     return employeeData;
   } catch (error) {
