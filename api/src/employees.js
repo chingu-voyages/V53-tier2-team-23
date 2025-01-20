@@ -33,7 +33,7 @@ const handler = async (event, context) => {
           success: true,
           data: {
             employees: employees,
-            employeesCount: employeesCount,
+            employeesNumber: employeesNumber,
           },
         }),
       };
@@ -130,11 +130,11 @@ async function getEmployees() {
 
     // Fetch all employees using Mongoose
     const employees = await Employee.find({});
-    const employeesCount = await Employee.countDocuments(); // Get total employees
+    const employeesNumber = await Employee.countDocuments(); // Get total employees
 
     return {
       employees: employees,
-      employeesNumber: employeesCount,
+      employeesNumber: employeesNumber,
     };
   } catch (error) {
     console.error('Error fetching employees:', error);
