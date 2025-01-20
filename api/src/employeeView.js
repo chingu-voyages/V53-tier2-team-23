@@ -42,7 +42,10 @@ async function handleGetEmployeeData(employeeId) {
     console.log(_id, employeeName, allergies, dietaryRestrictions);
 
     if (localEmployeeData && employeeData) {
-      if (localEmployeeData._id === _id && localEmployeeData..employeeName === employeeName) {
+      if (
+        localEmployeeData._id === _id &&
+        localEmployeeData.employeeName === employeeName
+      ) {
         await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
