@@ -63,20 +63,12 @@ async function handleGetEmployeeData(employeeId) {
   }
 }
 
-async function submitForm(event) {
-  event.preventDefault();
-  const employeeId = document.getElementById('id').value;
-  await handleGetEmployeeData(employeeId);
-  const employeeData = await getDataFromLocalStorage();
-  const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
-  viewEmployee(id, employeeName, allergies, dietaryRestrictions);
-}
-
-submitButton.addEventListener('click', () => {
-  form.addEventListener('submit', submitForm);
-});
-
-function viewEmployee(id, employeeName, allergies, dietaryRestrictions) {
+function viewEmployee(
+  id,
+  employeeName,
+  allergies = [],
+  dietaryRestrictions = []
+) {
   // employee container
   const container = document.createElement('div');
   container.classList.add('employee-container');
@@ -118,3 +110,17 @@ function viewEmployee(id, employeeName, allergies, dietaryRestrictions) {
   // Finally, append the entire container to the body or another parent element
   responseContainer.appendChild(container);
 }
+
+async function submitForm(event) {
+  event.preventDefault();
+  const employeeId = document.getElementById('id').value;
+  await handleGetEmployeeData(employeeId);
+  const employeeData = await getDataFromLocalStorage();
+  const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
+  console.log(id, employeeName, allergies, dietaryRestrictions);
+  viewEmployee(id, employeeName, allergies, dietaryRestrictions);
+}
+
+submitButton.addEventListener('click', () => {
+  form.addEventListener('submit', submitForm);
+});
