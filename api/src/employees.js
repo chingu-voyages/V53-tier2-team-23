@@ -33,8 +33,8 @@ const handler = async (event, context) => {
         body: JSON.stringify({
           success: true,
           data: {
-            employees: employees,
-            employeesNumber: employeesNumber,
+            employees,
+            employeesNumber,
           },
         }),
       };
@@ -74,8 +74,8 @@ const handler = async (event, context) => {
         body: JSON.stringify({
           success: true,
           data: {
-            employee: employee,
-            employeeId: employeeId,
+            employee,
+            employeeId,
           },
         }),
       };
@@ -117,8 +117,9 @@ const handler = async (event, context) => {
         body: JSON.stringify({
           success: true,
           data: {
-            employeeDishes: employeeDishes,
-            employeeId: employeeId,
+            employee,
+            employeeDishes,
+            employeeId,
           },
         }),
       };
@@ -181,8 +182,8 @@ async function getEmployees() {
     const employeesNumber = await Employee.countDocuments(); // Get total employees
 
     return {
-      employees: employees,
-      employeesNumber: employeesNumber,
+      employees,
+      employeesNumber,
     };
   } catch (error) {
     console.error('Error fetching employees:', error);
@@ -241,7 +242,12 @@ async function getEmployeeDishes(employeeId) {
     });
     // console.log('employeeId:', employeeId);
     // console.log('employee:', employee);
-    return dishes || null;
+    return (
+      {
+        employee,
+        dishes,
+      } || null
+    );
   } catch (error) {
     console.error('Error fetching employee:', error);
     console.log(employeeId);
