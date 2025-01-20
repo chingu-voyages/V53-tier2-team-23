@@ -35,18 +35,24 @@ async function handleGetEmployeeData(employeeId) {
     const employeeData = await getEmployee(employeeId);
 
     const localEmployeeData = await getDataFromLocalStorage();
-
-    if (JSON.stringify(localEmployeeData) === JSON.stringify(employeeData)) {
-      const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
-      if (employeeData && employeeName) {
+    const { id, employeeName, allergies, dietaryRestrictions } = employeeData;
+    const {
+      localid,
+      localemployeeName,
+      localallergies,
+      localdietaryRestrictions,
+    } = localEmployeeData;
+    if (localEmployeeData && employeeData) {
+      if (localid === id && localemployeeName === employeeName) {
         responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
-        responseContainer.textContent = 'no user';
-        console.log('no user');
-        localStorage.removeItem('employeeData');
+        console.log('The data is different');
+        responseContainer.textContent = 'Employee data has changed.';
       }
     } else {
-      console.log('The data is different');
+      responseContainer.textContent = 'No user';
+      console.log('No user');
+      localStorage.removeItem('employeeData');
     }
   } catch (error) {
     responseContainer.textContent = `Error:  ${error} , getting employee:`;
