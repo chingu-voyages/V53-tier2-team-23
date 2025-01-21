@@ -162,13 +162,9 @@ const handler = async (event, context) => {
     }
   }
 
-  if (
-    httpMethod === 'GET' &&
-    path.includes('/allergens/') &&
-    !path.includes('/dishes')
-  ) {
+  if (httpMethod === 'GET' && path.includes('/allergens/')) {
     const allergenId = path.split('/')[4]; // Extract allergen ID // Extract allergen id from path
-    console.log(allergenId);
+    console.log(path);
     try {
       const allergen = await getAllergen(allergenId);
       if (!allergen) {
