@@ -1,5 +1,6 @@
 const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
+const employeesContainer = document.querySelector('.employees-container');
 const form = document.querySelector('.form');
 
 async function getDataFromLocalStorage() {
@@ -47,6 +48,7 @@ async function getEmployees(employeesData) {
     );
     const { _id, employeeName, allergies, dietaryRestrictions } = employee;
     await viewEmployee(
+      'employeesContainer'
       index + 1,
       employeeIndex,
       _id,
@@ -154,30 +156,39 @@ async function getEmployee(employeeId) {
   }
 }
 
+// responseContainer.appendChild(container);
+// employeesContainer.appendChild(container);
+
 async function handleGetEmployeeData(employeeId) {
   try {
     responseContainer.innerHTML = 'loading...';
     const employeeData = await getEmployee(employeeId);
-    console.log('handleGetEmployeeData: ', employeeData);
+    // console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
-    console.log('localEmployeeData: ', localEmployeeData);
+    //console.log('localEmployeeData: ', localEmployeeData);
     const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
-    console.log(
-      localEmployeeData._id,
-      _id,
-      localEmployeeData.employeeName,
-      employeeName
-    );
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
-      await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+      await viewEmployee(
+        'responseContainer',
+        _id,
+        employeeName,
+        allergies,
+        dietaryRestrictions
+      );
     } else if (localEmployeeData && employeeData) {
       if (
         localEmployeeData._id === _id &&
         localEmployeeData.employeeName === employeeName
       ) {
         responseContainer.innerHTML = '';
-        await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+        await viewEmployee(
+          'responseContainer',
+          _id,
+          employeeName,
+          allergies,
+          dietaryRestrictions
+        );
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
         console.log('The data is different');
@@ -195,6 +206,7 @@ async function handleGetEmployeeData(employeeId) {
 }
 
 async function viewEmployee(
+  appendContainer,
   index = null,
   employeeIndex = null,
   id,
@@ -261,7 +273,9 @@ async function viewEmployee(
   container.appendChild(dietaryRestrictionsContainer);
 
   // Finally, append the entire container to the body or another parent element
-  responseContainer.appendChild(container);
+  appendContainer.appendChild(container);
+  // responseContainer.appendChild(container);
+  // employeesContainer.appendChild(container);
   return new Promise((resolve) => setTimeout(resolve, 500));
 }
 
