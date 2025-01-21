@@ -226,8 +226,8 @@ async function viewEmployee(
   employeeIndex = null,
   id,
   employeeName,
-  allergies = [],
-  dietaryRestrictions = []
+  allergies,
+  dietaryRestrictions
 ) {
   // employee container
   const container = document.createElement('div');
