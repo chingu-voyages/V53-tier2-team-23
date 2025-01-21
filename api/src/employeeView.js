@@ -145,7 +145,7 @@ async function handleGetEmployeeData(employeeId) {
 }
 
 async function getEmployee(employeeId) {
-  const URL = `https://eatodishes.netlify.app/.netlify/functions/employees/${employeeId}/dishes`;
+  const URL = `https://eatodishes.netlify.app/.netlify/functions/employees/${employeeId}`;
   try {
     const response = await fetch(URL, {
       method: 'GET',
@@ -171,8 +171,32 @@ async function getEmployee(employeeId) {
   }
 }
 
-// responseContainer.appendChild(container);
-// employeesContainer.appendChild(container);
+async function getAllergen(allergenId) {
+  const URL = `https://eatodishes.netlify.app/.netlify/functions/allergens/${allergenId}`;
+  try {
+    const response = await fetch(URL, {
+      method: 'GET',
+    });
+
+    // check response success
+    if (!response.ok) {
+      throw new Error(`Failed to fetch allergen data: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    const allergenData = responseData.data.allergen;
+
+    console.log('allergenData: ', allergenData);
+
+    localStorage.setItem('allergenData', JSON.stringify(allergenData));
+    return allergenIdData;
+  } catch (error) {
+    console.error('Error fetching allergen:', error);
+    // Return null
+    return null;
+  }
+}
 
 async function handleGetEmployeeData(employeeId) {
   try {
@@ -264,11 +288,12 @@ async function viewEmployee(
   allergiesTitle.textContent = 'Allergies:';
   allergiesContainer.appendChild(allergiesTitle);
   const allergiesList = document.createElement('ul');
-  allergies.forEach((allergy) => {
+  for (const allergye of allergies) {
+    const allergenName = await getAllergen(allergy);
     const allergyElement = document.createElement('li');
-    allergyElement.textContent = allergy;
+    allergyElement.textContent = allergenName;
     allergiesList.appendChild(allergyElement);
-  });
+  }
   allergiesContainer.appendChild(allergiesList);
   container.appendChild(allergiesContainer);
 
@@ -314,6 +339,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   await handleGetEmployeesData();
   formContainerButtons.forEach((button, index) => {
     button.addEventListener('click', (event) => {
+      console.log('clicked');
       form.addEventListener('submit', submitForm);
     });
   });

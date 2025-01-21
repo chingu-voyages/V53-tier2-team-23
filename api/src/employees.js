@@ -162,6 +162,47 @@ const handler = async (event, context) => {
     }
   }
 
+  if (
+    httpMethod === 'GET' &&
+    path.includes('/allergens/') &&
+    !path.includes('/dishes')
+  ) {
+    const allergenId = path.split('/')[4]; // Extract allergen ID // Extract allergen id from path
+    console.log(allergenId);
+    try {
+      const allergen = await getEmployee(allergenId);
+      if (!allergen) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({ message: 'Allergen not found' }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers, // Include the headers in the response
+        body: JSON.stringify({
+          success: true,
+          data: {
+            allergen,
+            allergenId,
+          },
+        }),
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: 'An internal server error occurred.',
+          error: error.message, // Include error details for debugging
+        }),
+      };
+    }
+  }
+
   return {
     statusCode: 405,
     headers, // Include the headers in the response
@@ -212,6 +253,30 @@ async function getEmployee(employeeId) {
   } catch (error) {
     console.error('Error fetching employee:', error);
     throw new Error('Error fetching employee');
+  }
+}
+
+// GET request handler for employee with id
+async function getAllergen(allergenId) {
+  try {
+    const db = await getDb();
+    if (!allergenId || !mongoose.Types.ObjectId.isValid(allergenId)) {
+      console.log(allergenId);
+      // check if valid mongodb id
+      // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
+      // throw new Error('employee id not valid');
+    }
+
+    // Find employee by _id using with findById() method
+    // const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // create the ObjectId
+    // const employee = await Employee.findById(mongooseEmployeeId);
+    const allergen = await Allergen.findById(allergenId);
+    // console.log('employeeId:', employeeId);
+    // console.log('employee:', employee);
+    return allergen || null;
+  } catch (error) {
+    console.error('Error fetching allergen:', error);
+    throw new Error('Error fetching allergen');
   }
 }
 
