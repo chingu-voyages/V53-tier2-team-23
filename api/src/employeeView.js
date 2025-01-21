@@ -48,7 +48,7 @@ async function getEmployees(employeesData) {
     );
     const { _id, employeeName, allergies, dietaryRestrictions } = employee;
     await viewEmployee(
-      'employeesContainer'
+      'employeesContainer',
       index + 1,
       employeeIndex,
       _id,
@@ -105,14 +105,26 @@ async function handleGetEmployeeData(employeeId) {
     );
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
-      await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+      await viewEmployee(
+        'responseContainer',
+        _id,
+        employeeName,
+        allergies,
+        dietaryRestrictions
+      );
     } else if (localEmployeeData && employeeData) {
       if (
         localEmployeeData._id === _id &&
         localEmployeeData.employeeName === employeeName
       ) {
         responseContainer.innerHTML = '';
-        await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+        await viewEmployee(
+          'responseContainer',
+          _id,
+          employeeName,
+          allergies,
+          dietaryRestrictions
+        );
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
         console.log('The data is different');
