@@ -225,6 +225,7 @@ async function getEmployees() {
       allergies: employee.allergies || [], // if array allergies empty
     }));
 
+    console.log(employees);
     const employeesNumber = await Employee.countDocuments(); // Get total employees
 
     return {
