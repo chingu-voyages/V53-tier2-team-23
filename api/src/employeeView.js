@@ -39,27 +39,41 @@ async function getAllEmployees() {
   }
 }
 
+async function getEmployees(employeesData) {
+  let index = 0;
+  for (const employee of employeesData) {
+    let employeeIndex = employeesData.findIndex(
+      (index) => index._id == employee._id
+    );
+    const { _id, employeeName, allergies, dietaryRestrictions } = employee;
+    await viewEmployee(
+      index + 1,
+      employeeIndex,
+      _id,
+      employeeName,
+      allergies,
+      dietaryRestrictions
+    );
+    index++;
+  }
+}
+
 async function handleGetEmployeesData() {
   try {
     responseContainer.innerHTML = 'loading...';
-    const employeesData = await getEmployees();
+    const employeesData = await getAllEmployees();
     const localEmployeesData = await getEmployeesDataFromLocalStorage();
     if (employeesData & !localEmployeeDatas) {
       responseContainer.innerHTML = '';
-      employeesData.map(employee, index => {
-        const { _id, employeeName, allergies, dietaryRestrictions } = employee;
-        await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
-      })
+
+      await getEmployees(employeesData);
     } else if (localEmployeeData && employeeData) {
       if (
         localEmployeeData._id === _id &&
         localEmployeeData.employeeName === employeeName
       ) {
         responseContainer.innerHTML = '';
-        employeesData.map(employee, index => {
-          const { _id, employeeName, allergies, dietaryRestrictions } = employee;
-          await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
-        })
+        await getEmployees(employeesData);
       } else {
         console.log('The data is different');
         responseContainer.textContent = 'Employee data has changed.';
@@ -182,7 +196,9 @@ async function handleGetEmployeeData(employeeId) {
   }
 }
 
-function viewEmployee(
+async function viewEmployee(
+  index = null,
+  employeeIndex = null,
   id,
   employeeName,
   allergies = [],
@@ -195,6 +211,20 @@ function viewEmployee(
   const h2Element = document.createElement('h2');
   h2Element.textContent = `${employeeName}`;
   container.appendChild(h2Element);
+
+  // index
+  if (index !== null) {
+    const indexElement = document.createElement('p');
+    indexElement.textContent = `${index}`;
+    container.appendChild(indexElement);
+  }
+
+  // employeeIndex
+  if (employeeIndex !== null) {
+    const employeeIndexElement = document.createElement('p');
+    employeeIndexElement.textContent = `EmployeeIndex: ${employeeIndex}`;
+    container.appendChild(employeeIndexElement);
+  }
 
   //diet category
   const mainDiet = dietaryRestrictions[0];
@@ -234,6 +264,7 @@ function viewEmployee(
 
   // Finally, append the entire container to the body or another parent element
   responseContainer.appendChild(container);
+  return new Promise((resolve) => setTimeout(resolve, 500));
 }
 
 async function submitForm(event) {
