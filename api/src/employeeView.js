@@ -190,7 +190,7 @@ async function getAllergen(allergenId) {
     console.log('allergenData: ', allergenData);
 
     localStorage.setItem('allergenData', JSON.stringify(allergenData));
-    return allergenIdData;
+    return allergenData;
   } catch (error) {
     console.error('Error fetching allergen:', error);
     // Return null
