@@ -216,14 +216,14 @@ async function getEmployees() {
     const db = await getDb(); // Get the database connection
 
     // Fetch all employees using Mongoose
-    const employees = await Employee.find({})
-      .populate('allergies', '_id allergenName') // Populate allergies with both _id and allergenName
+    const foundEmployees = await Employee.find({})
+      .populate('allergies', 'allergenName') // Populate allergies with both _id and allergenName
       .exec();
 
-    // const employees = foundEmployees.map((employee) => ({
-    //   ...employee,
-    //   allergies: employee.allergies || [], // if array allergies empty
-    // }));
+    const employees = foundEmployees.map((employee) => ({
+      ...employee,
+      allergies: employee.allergies || [], // if array allergies empty
+    }));
 
     console.log(employees);
     const employeesNumber = await Employee.countDocuments(); // Get total employees
