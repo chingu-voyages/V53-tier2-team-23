@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const allergen = [
   'gluten',
   'dairy',
-  'eggs',
+  'egg',
   'seafood',
   'soy',
   'tree nuts',
@@ -47,7 +47,7 @@ const employeeSchema = new Schema({
     {
       type: String, // Store the allergy name as a string
       enum: allergen, // Restrict values to the predefined list
-      required: false,
+      default: [],
     },
   ],
   dietaryRestrictions: [
