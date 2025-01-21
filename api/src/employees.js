@@ -170,7 +170,7 @@ const handler = async (event, context) => {
     const allergenId = path.split('/')[4]; // Extract allergen ID // Extract allergen id from path
     console.log(allergenId);
     try {
-      const allergen = await getEmployee(allergenId);
+      const allergen = await getAllergen(allergenId);
       if (!allergen) {
         return {
           statusCode: 404,
