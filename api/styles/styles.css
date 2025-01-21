@@ -5,7 +5,17 @@ body {
 }
 
 h2 {
-  color: #fff;
+  color: #000000;
+}
+
+form {
+  box-sizing: border-box;
+  padding: 30px;
+}
+label {
+  font-weight: 900;
+  -webkit-font-smoothing: antialiased;
+  font-variant: all-small-caps;
 }
 
 .form-container {
