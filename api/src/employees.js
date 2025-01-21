@@ -217,7 +217,7 @@ async function getEmployees() {
 
     // Fetch all employees using Mongoose
     const foundEmployees = await Employee.find({})
-      .populate('allergies', '_id') // Populate allergies with both _id and allergenName
+      .populate('allergies') // Populate allergies with both _id and allergenName
       .exec();
 
     const employees = foundEmployees.map((employee) => ({
