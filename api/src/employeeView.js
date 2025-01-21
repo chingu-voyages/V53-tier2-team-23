@@ -289,7 +289,7 @@ async function viewEmployee(
 
   // button view
   const buttonElement = document.createElement('button');
-  buttonElement.classList('form-container__button');
+  buttonElement.classList.add('form-container__button');
   buttonElement.textContent = 'Manage employee';
   container.appendChild(buttonElement);
 
