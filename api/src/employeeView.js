@@ -36,7 +36,7 @@ async function getEmployee(employeeId) {
 
 async function handleGetEmployeeData(employeeId) {
   try {
-    // responseContainer.textContent = 'loading...';
+    responseContainer.innerHTML = 'loading...';
     const employeeData = await getEmployee(employeeId);
     console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
@@ -49,12 +49,14 @@ async function handleGetEmployeeData(employeeId) {
       employeeName
     );
     if (employeeData & !localEmployeeData) {
+      responseContainer.innerHTML = '';
       await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
     } else if (localEmployeeData && employeeData) {
       if (
         localEmployeeData._id === _id &&
         localEmployeeData.employeeName === employeeName
       ) {
+        responseContainer.innerHTML = '';
         await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
