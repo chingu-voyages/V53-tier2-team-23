@@ -85,8 +85,14 @@ function viewEmployee(
   container.classList.add('employee-container');
   // employee name
   const h2Element = document.createElement('h2');
-  h2Element.textContent = `Employee Name: ${employeeName}`;
+  h2Element.textContent = `${employeeName}`;
   container.appendChild(h2Element);
+
+  //diet category
+  const mainDiet = dietaryRestrictions[0];
+  const spanElement = document.createElement('h2');
+  spanElement.textContent = `${mainDiet}`;
+  container.appendChild(spanElement);
 
   // allergies list
   const allergiesContainer = document.createElement('div');
