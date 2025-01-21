@@ -26,6 +26,7 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
       const { employees, employeesNumber } = await getEmployees();
+      console.log(employees);
 
       return {
         statusCode: 200,
@@ -215,7 +216,15 @@ async function getEmployees() {
     const db = await getDb(); // Get the database connection
 
     // Fetch all employees using Mongoose
-    const employees = await Employee.find({});
+    const foundEmployees = await Employee.find({})
+      .populate('allergies') // populate allergies
+      .lean(); //faster query
+
+    const employees = foundEmployees.map((employee) => ({
+      ...employee,
+      allergies: employee.allergies || [], // if array allergies empty
+    }));
+
     const employeesNumber = await Employee.countDocuments(); // Get total employees
 
     return {
@@ -233,7 +242,6 @@ async function getEmployee(employeeId) {
   try {
     const db = await getDb();
     if (!employeeId || !mongoose.Types.ObjectId.isValid(employeeId)) {
-      console.log(employeeId);
       // check if valid mongodb id
       // https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/
       // throw new Error('employee id not valid');
