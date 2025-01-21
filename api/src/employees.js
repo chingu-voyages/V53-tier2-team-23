@@ -216,9 +216,9 @@ async function getEmployees() {
     const db = await getDb(); // Get the database connection
 
     // Fetch all employees using Mongoose
-    const employees = await Employee.find({});
-    .populate('allergies', '_id allergenName') // Populate allergies with both _id and allergenName
-    .exec(); // Don't use .lean() to keep the full mongoose document
+    const employees = await Employee.find({})
+      .populate('allergies', '_id allergenName') // Populate allergies with both _id and allergenName
+      .exec();
 
     // const employees = foundEmployees.map((employee) => ({
     //   ...employee,
