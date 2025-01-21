@@ -17,12 +17,10 @@ const dishesSchema = new Schema({
     type: [String], // an array of strings
     required: true,
   },
-  allergens: [
-    {
-      type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
-      ref: 'Allergen',
-    },
-  ],
+  allergens: {
+    type: [String],
+    required: false,
+  },
   calories: {
     type: Number,
     required: true,
