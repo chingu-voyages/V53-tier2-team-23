@@ -17,7 +17,8 @@ const employeeSchema = new Schema(
     },
     allergies: [
       {
-        type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
+        //type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
+        type: String,
         ref: 'Allergen',
         required: false,
       },
