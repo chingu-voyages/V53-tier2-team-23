@@ -1,4 +1,6 @@
-const mongoose = require('mongoose');
+// to consider for should have/nice to have feature
+
+/* const mongoose = require('mongoose');
 
 const allergenSchema = new mongoose.Schema({
   allergenName: {
@@ -10,4 +12,4 @@ const allergenSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Allergen', allergenSchema);
+module.exports = mongoose.model('Allergen', allergenSchema); */
