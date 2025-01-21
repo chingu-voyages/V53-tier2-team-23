@@ -288,7 +288,7 @@ async function viewEmployee(
   allergiesTitle.textContent = 'Allergies:';
   allergiesContainer.appendChild(allergiesTitle);
   const allergiesList = document.createElement('ul');
-  for (const allergye of allergies) {
+  for (const allergy of allergies) {
     const allergenName = await getAllergen(allergy);
     const allergyElement = document.createElement('li');
     allergyElement.textContent = allergenName;
