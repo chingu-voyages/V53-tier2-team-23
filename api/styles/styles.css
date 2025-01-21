@@ -29,7 +29,7 @@ label {
 .employees-container {
   display: flex;
   align-items: flex-start;
-  width: 75%;
+  width: 100%;
   height: auto;
   flex: 1 0 0;
   align-content: space-around;
