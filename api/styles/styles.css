@@ -22,16 +22,22 @@ label {
 .container {
   width: 100%;
   display: flex;
-  flex: 1 0 0;
   align-items: center;
   flex-direction: column;
 }
 
 .employees-container {
   display: flex;
-  align-items: center;
-  width: auto;
+  align-items: flex-start;
+  width: 75%;
   height: auto;
+  flex: 1 0 0;
+  align-content: space-around;
+  justify-content: space-evenly;
+  justify-items: center;
+  gap: 5%;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
 .form-container {
@@ -97,8 +103,9 @@ label {
   padding: 20px;
   margin: 20px 0;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  width: 75%;
-  max-width: 500px;
+  width: auto;
+  max-width: 400px;
+  min-width: 400px;
 }
 
 .employee-container h2 {

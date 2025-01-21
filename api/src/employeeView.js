@@ -1,4 +1,7 @@
 const submitButton = document.querySelector('#submitButton');
+const formContainerButtons = document.querySelectorAll(
+  'form-container__button'
+);
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
 const form = document.querySelector('.form');
@@ -284,6 +287,12 @@ async function viewEmployee(
   dietaryRestrictionsContainer.appendChild(dietaryRestrictionsList);
   container.appendChild(dietaryRestrictionsContainer);
 
+  // button view
+  const buttonElement = document.createElement('button');
+  buttonElement.classList('form-container__button');
+  buttonElement.textContent = 'Manage employee';
+  container.appendChild(buttonElement);
+
   // Finally, append the entire container to the body or another parent element
   appendContainer.appendChild(container);
   // responseContainer.appendChild(container);
@@ -303,4 +312,9 @@ submitButton.addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', async function () {
   await handleGetEmployeesData();
+  formContainerButtons.forEach((button, index) => {
+    button.addEventListener('click', (event) => {
+      form.addEventListener('submit', submitForm);
+    });
+  });
 });
