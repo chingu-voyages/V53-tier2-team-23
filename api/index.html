@@ -4,29 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" type="text/css" href="styles/styles.css" />
-    <title>Test API form Manage Employee</title>
+    <title>Manager Dashboard</title>
   </head>
   <body>
-    <div class="form-container">
-      <h2 class="form-container__title">Manage Employee</h2>
-      <form class="form form-container__form">
-        <label for="id">Employee id</label>
-        <input
-          type="text"
-          id="id"
-          class="form-container__input"
-          placeholder="..."
-          required
-        />
-        <button id="submitButton" type="submit" class="form-container__button">
-          View Employee
-        </button>
-      </form>
+    <div class="container">
+      <div class="employees-container"></div>
+      <div class="form-container">
+        <h2 class="form-container__title">Manage Employee</h2>
+        <form class="form form-container__form">
+          <label for="id">Employee id</label>
+          <input
+            type="text"
+            id="id"
+            class="form-container__input"
+            placeholder="..."
+            required
+          />
+          <button
+            id="submitButton"
+            type="submit"
+            class="form-container__button"
+          >
+            View Employee
+          </button>
+        </form>
 
-      <div class="form-container__response">
-        The response will be shown here ✅
+        <div class="form-container__response">
+          The response will be shown here ✅
+        </div>
       </div>
     </div>
+
     <script src="src/employeeView.js"></script>
   </body>
 </html>

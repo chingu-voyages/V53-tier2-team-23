@@ -7,6 +7,114 @@ async function getDataFromLocalStorage() {
   return localData ? JSON.parse(localData) : null; // parse data
 }
 
+async function getEmployeesDataFromLocalStorage() {
+  const localEmployeesData = localStorage.getItem('employeesData');
+  return localEmployeesData ? JSON.parse(localEmployeesData) : null; // parse data
+}
+
+async function getAllEmployees() {
+  const URL = `https://eatodishes.netlify.app/.netlify/functions/employees`;
+  try {
+    const response = await fetch(URL, {
+      method: 'GET',
+    });
+
+    // check response success
+    if (!response.ok) {
+      throw new Error(`Failed to fetch employee data: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    const employeesData = responseData.data.employees;
+
+    console.log('employeesData: ', employeesData);
+
+    localStorage.setItem('employeesData', JSON.stringify(employeesData));
+    return employeesData;
+  } catch (error) {
+    console.error('Error fetching employee:', error);
+    // Return null
+    return null;
+  }
+}
+
+async function handleGetEmployeesData() {
+  try {
+    responseContainer.innerHTML = 'loading...';
+    const employeesData = await getEmployees();
+    const localEmployeesData = await getEmployeesDataFromLocalStorage();
+    if (employeesData & !localEmployeeDatas) {
+      responseContainer.innerHTML = '';
+      employeesData.map(employee, index => {
+        const { _id, employeeName, allergies, dietaryRestrictions } = employee;
+        await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+      })
+    } else if (localEmployeeData && employeeData) {
+      if (
+        localEmployeeData._id === _id &&
+        localEmployeeData.employeeName === employeeName
+      ) {
+        responseContainer.innerHTML = '';
+        employeesData.map(employee, index => {
+          const { _id, employeeName, allergies, dietaryRestrictions } = employee;
+          await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+        })
+      } else {
+        console.log('The data is different');
+        responseContainer.textContent = 'Employee data has changed.';
+      }
+    } else {
+      responseContainer.textContent = 'No user';
+      console.log('No user');
+      localStorage.removeItem('employeeData');
+    }
+  } catch (error) {
+    responseContainer.textContent = `Error:  ${error} , getting employee:`;
+    console.error(`Error:  ${error} , getting employee:`);
+  }
+}
+
+async function handleGetEmployeeData(employeeId) {
+  try {
+    responseContainer.innerHTML = 'loading...';
+    const employeeData = await getEmployee(employeeId);
+    console.log('handleGetEmployeeData: ', employeeData);
+    const localEmployeeData = await getDataFromLocalStorage();
+    console.log('localEmployeeData: ', localEmployeeData);
+    const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
+    console.log(
+      localEmployeeData._id,
+      _id,
+      localEmployeeData.employeeName,
+      employeeName
+    );
+    if (employeeData & !localEmployeeData) {
+      responseContainer.innerHTML = '';
+      await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+    } else if (localEmployeeData && employeeData) {
+      if (
+        localEmployeeData._id === _id &&
+        localEmployeeData.employeeName === employeeName
+      ) {
+        responseContainer.innerHTML = '';
+        await viewEmployee(_id, employeeName, allergies, dietaryRestrictions);
+        //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
+      } else {
+        console.log('The data is different');
+        responseContainer.textContent = 'Employee data has changed.';
+      }
+    } else {
+      responseContainer.textContent = 'No user';
+      console.log('No user');
+      localStorage.removeItem('employeeData');
+    }
+  } catch (error) {
+    responseContainer.textContent = `Error:  ${error} , getting employee:`;
+    console.error(`Error:  ${error} , getting employee:`);
+  }
+}
+
 async function getEmployee(employeeId) {
   const URL = `https://eatodishes.netlify.app/.netlify/functions/employees/${employeeId}/dishes`;
   try {
@@ -136,4 +244,8 @@ async function submitForm(event) {
 
 submitButton.addEventListener('click', () => {
   form.addEventListener('submit', submitForm);
+});
+
+document.addEventListener('DOMContentLoaded', async function () {
+  await handleGetEmployeesData();
 });

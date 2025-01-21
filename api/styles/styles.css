@@ -12,10 +12,26 @@ form {
   box-sizing: border-box;
   padding: 30px;
 }
+
 label {
   font-weight: 900;
   -webkit-font-smoothing: antialiased;
   font-variant: all-small-caps;
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  flex: 1 0 0;
+  align-items: center;
+  flex-direction: column;
+}
+
+.employees-container {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: auto;
 }
 
 .form-container {
@@ -43,6 +59,7 @@ label {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  font-weight: 900;
 }
 
 .form-container__button {
@@ -80,7 +97,7 @@ label {
   padding: 20px;
   margin: 20px 0;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  width: auto;
+  width: 75%;
   max-width: 500px;
 }
 
