@@ -48,7 +48,7 @@ async function getEmployees(employeesData) {
     );
     const { _id, employeeName, allergies, dietaryRestrictions } = employee;
     await viewEmployee(
-      'employeesContainer',
+      employeesContainer,
       index + 1,
       employeeIndex,
       _id,
@@ -93,20 +93,20 @@ async function handleGetEmployeeData(employeeId) {
   try {
     responseContainer.innerHTML = 'loading...';
     const employeeData = await getEmployee(employeeId);
-    console.log('handleGetEmployeeData: ', employeeData);
+    //console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
-    console.log('localEmployeeData: ', localEmployeeData);
+    // console.log('localEmployeeData: ', localEmployeeData);
     const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
-    console.log(
-      localEmployeeData._id,
-      _id,
-      localEmployeeData.employeeName,
-      employeeName
-    );
+    // console.log(
+    //   localEmployeeData._id,
+    //   _id,
+    //   localEmployeeData.employeeName,
+    //   employeeName
+    // );
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
-        'responseContainer',
+        responseContainer,
         _id,
         employeeName,
         allergies,
@@ -119,7 +119,7 @@ async function handleGetEmployeeData(employeeId) {
       ) {
         responseContainer.innerHTML = '';
         await viewEmployee(
-          'responseContainer',
+          responseContainer,
           _id,
           employeeName,
           allergies,
@@ -182,7 +182,7 @@ async function handleGetEmployeeData(employeeId) {
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
-        'responseContainer',
+        responseContainer,
         _id,
         employeeName,
         allergies,
@@ -195,7 +195,7 @@ async function handleGetEmployeeData(employeeId) {
       ) {
         responseContainer.innerHTML = '';
         await viewEmployee(
-          'responseContainer',
+          responseContainer,
           _id,
           employeeName,
           allergies,
