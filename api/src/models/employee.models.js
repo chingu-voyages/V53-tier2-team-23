@@ -31,11 +31,6 @@ const diet = [
 ];
 
 const employeeSchema = new Schema({
-  employeeId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
   employeeName: {
     type: String,
     required: true,
