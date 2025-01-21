@@ -1,4 +1,6 @@
-const Allergen = require('../models/allergen.models');
+// for should have/nice to have features
+
+/* const Allergen = require('../models/allergen.models');
 
 class AllergenController {
   async createAllergen(req, res) {
@@ -29,3 +31,4 @@ class AllergenController {
 }
 
 module.exports = AllergenController;
+ */
