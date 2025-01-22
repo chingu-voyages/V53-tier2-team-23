@@ -1,6 +1,7 @@
 const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
+const dishesContainer = document.querySelector('.dishes-container');
 const form = document.querySelector('.form');
 const formInput = document.querySelector('.form input');
 
@@ -12,6 +13,11 @@ async function getDataFromLocalStorage() {
 async function getEmployeesDataFromLocalStorage() {
   const localEmployeesData = localStorage.getItem('employeesData');
   return localEmployeesData ? JSON.parse(localEmployeesData) : null; // parse data
+}
+
+async function getEmployeesDishesFromLocalStorage() {
+  const localEmployeesDishes = localStorage.getItem('employeesDishes');
+  return localEmployeesDishes ? JSON.parse(localEmployeesDishes) : null; // parse data
 }
 
 async function getAllEmployees() {
@@ -105,14 +111,6 @@ async function handleGetEmployeeData(employeeId) {
       allergies = [],
       dietaryRestrictions = [],
     } = employeeData;
-
-    // console.log(
-    //   localEmployeeData._id,
-    //   _id,
-    //   localEmployeeData.employeeName,
-    //   employeeName
-    // );
-    // console.log('handleGetEmployeeData: ', employeeData);
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployeeById(
@@ -175,6 +173,92 @@ async function getEmployee(employeeId) {
     console.error('Error fetching employee:', error);
     // Return null
     return null;
+  }
+}
+
+async function getEmployeeDishes(employeeId) {
+  const URL = `https://eatodishes.netlify.app/.netlify/functions/employees/${employeeId}/dishes`;
+  try {
+    const response = await fetch(URL, {
+      method: 'GET',
+    });
+
+    // check response success
+    if (!response.ok) {
+      throw new Error(`Failed to fetch employee data: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    const employeeDishes = responseData.data.dishes;
+
+    //console.log('employeeData: ', employeeData);
+
+    localStorage.setItem('employeeDishes', JSON.stringify(employeeDishes));
+    return employeeDishes;
+  } catch (error) {
+    console.error('Error fetching employee:', error);
+    // Return null
+    return null;
+  }
+}
+
+async function handleGetEmployeeDishes(employeeId) {
+  try {
+    dishesContainer.innerHTML = 'loading...';
+    const employeeDishes = await getEmployeeDishes(employeeId);
+    //console.log('handleGetEmployeeData: ', employeeData);
+    const localEmployeeDishes = await getDishesFromLocalStorage();
+    // console.log('localEmployeeData: ', localEmployeeData);
+
+    const {
+      _id,
+      category,
+      dishName,
+      ingredients = [],
+      calories,
+      imageUrl,
+    } = employeeDishes;
+
+    if (employeeDishes & !localEmployeeDishes) {
+      responseContainer.innerHTML = '';
+      await viewEmployeeDishes(
+        dishesContainer,
+        _id,
+        category,
+        dishName,
+        ingredients,
+        calories,
+        imageUrl
+      );
+    } else if (localEmployeeDishes && employeeDishes) {
+      if (
+        localEmployeeDishes._id === _id &&
+        localEmployeeDishes.dishName === dishName
+      ) {
+        dishesContainer.innerHTML = '';
+        await viewEmployeeDishes(
+          dishesContainer,
+          _id,
+          category,
+          dishName,
+          ingredients,
+          calories,
+          imageUrl
+        );
+        //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
+      } else {
+        console.log('The data is different');
+        responseContainer.textContent = 'Employee data has changed.';
+      }
+    } else {
+      responseContainer.textContent = 'No user';
+      console.log('No user');
+      localStorage.removeItem('employeeData');
+    }
+  } catch (error) {
+    responseContainer.textContent = `Error:  ${error} , getting employee:`;
+    console.error(`Error:  ${error} , getting employee:`);
   }
 }
 
@@ -399,6 +483,75 @@ async function viewEmployeeById(
 
   dietaryRestrictionsContainer.appendChild(dietaryRestrictionsList);
   container.appendChild(dietaryRestrictionsContainer);
+
+  // button view
+  const buttonElement = document.createElement('button');
+  buttonElement.classList.add('form-container__button');
+  buttonElement.classList.add('dishes-container__button');
+  buttonElement.textContent = 'View dishes';
+  container.appendChild(buttonElement);
+
+  // Finally, append the entire container to the body or another parent element
+  appendContainer.appendChild(container);
+  // responseContainer.appendChild(container);
+  // employeesContainer.appendChild(container);
+  return new Promise((resolve) => setTimeout(resolve, 500));
+}
+
+async function viewEmployeeDishes(
+  appendContainer,
+  id,
+  category,
+  dishName,
+  ingredients = [],
+  calories,
+  imageUrl
+) {
+  // dishes container
+  const container = document.createElement('div');
+  container.classList.add('dishes-container');
+  // dish name
+  const dishNameElement = document.createElement('h2');
+  dishNameElement.textContent = `${dishName}`;
+  container.appendChild(dishNameElement);
+
+  // id
+  const dishIdElement = document.createElement('p');
+  dishIdElement.classList.add('dish-id');
+  dishIdElement.textContent = `dish ID: ${id}`;
+  container.appendChild(dishIdElement);
+
+  //dish category
+  const dishCategoryElement = document.createElement('h2');
+  dishCategoryElement.classList.add('dish-category');
+  dishCategoryElement.textContent = `${category}`;
+  container.appendChild(dishCategoryElement);
+
+  // ingredients list
+  const ingredientsContainer = document.createElement('div');
+  ingredientsContainer.classList.add('ingredients-container');
+  constingredientsTitle = document.createElement('h3');
+  ingredientsTitle.textContent = 'Ingredients:';
+  ingredientssContainer.appendChild(ingredientsTitle);
+  const ingredientsList = document.createElement('ul');
+  for (const ingredient of ingredients) {
+    const ingredientElement = document.createElement('li');
+    ingredientElement.textContent = ingredient;
+    ingredientsList.appendChild(ingredientElement);
+  }
+  ingredientsContainer.appendChild(ingredientsList);
+  container.appendChild(ingredientsContainer);
+
+  // Create and append the dietary restrictions list
+  const caloriesContainer = document.createElement('div');
+  caloriesContainer.classList.add('calories-container');
+  const caloriesTitle = document.createElement('h3');
+  caloriesTitle.textContent = 'calories: ';
+  caloriesContainer.appendChild(caloriesTitle);
+  const caloriesElement = document.createElement('p');
+  caloriesElement.textContent = calories;
+  caloriesContainer.appendChild(caloriesElement);
+  container.appendChild(caloriesContainer);
 
   // Finally, append the entire container to the body or another parent element
   appendContainer.appendChild(container);

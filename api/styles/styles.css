@@ -72,7 +72,7 @@ label {
   width: 100%;
   padding: 10px;
   color: #100f0f;
-  border: none;
+  border: 2px solid #00da90;
   border-radius: 4px;
   cursor: pointer;
   margin: 15px auto;
@@ -83,6 +83,7 @@ label {
 }
 
 .form-container__button:hover {
+  color: white;
   background-color: #00da90;
 }
 

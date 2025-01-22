@@ -300,7 +300,7 @@ async function getEmployeeDishes(employeeId) {
   try {
     const db = await getDb();
     if (!employeeId || !mongoose.Types.ObjectId.isValid(employeeId)) {
-      console.log(employeeId);
+      //console.log(employeeId);
       // check if valid mongodb id [ https://www.geeksforgeeks.org/how-to-check-if-a-string-is-valid-mongodb-objectid-in-node-js/ ]
       throw new Error('employee id not valid');
     }
