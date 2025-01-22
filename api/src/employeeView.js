@@ -577,17 +577,18 @@ async function submitDishesForm(event) {
   await handleGetEmployeeDishes(employeeId);
 }
 
-submitButton.addEventListener('click', () => {
-  form.addEventListener('submit', submitForm);
-});
-
-dishesContainerButton.addEventListener('click', () => {
-  form.addEventListener('submit', submitDishesForm);
-});
-
 document.addEventListener('DOMContentLoaded', async function () {
   await handleGetEmployeesData();
 
+  submitButton.addEventListener('click', () => {
+    form.addEventListener('submit', submitForm);
+  });
+
+  if (dishesContainerButton) {
+    dishesContainerButton.addEventListener('click', () => {
+      form.addEventListener('submit', submitDishesForm);
+    });
+  }
   employeesContainer.addEventListener('click', function (event) {
     if (event.target.classList.contains('form-container__button')) {
       const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
