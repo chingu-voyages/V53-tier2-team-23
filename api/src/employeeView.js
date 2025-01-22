@@ -572,7 +572,10 @@ async function submitForm(event) {
 
 async function submitDishesForm(event) {
   event.preventDefault();
-  const employeeId = document.getElementById('id').value;
+
+  const employeeId = document.querySelector(
+    '.form-container__response .employee-id'
+  ).textContent;
   // console.log('submitForm', employeeId);
   await handleGetEmployeeDishes(employeeId);
 }
