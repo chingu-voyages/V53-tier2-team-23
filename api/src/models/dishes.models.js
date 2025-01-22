@@ -13,6 +13,10 @@ const dishesSchema = new Schema({
     type: String,
     required: true,
   },
+  category: {
+    type: String,
+    required: true,
+  },
   ingredients: {
     type: [String], // an array of strings
     required: true,
