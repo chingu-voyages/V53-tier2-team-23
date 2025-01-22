@@ -51,7 +51,7 @@ async function getEmployees(employeesData) {
     const { _id, employeeName, allergies, dietaryRestrictions } = employee;
     await viewEmployee(
       employeesContainer,
-      employeeIndex,
+      employeeIndex + 1,
       _id,
       employeeName,
       allergies,
@@ -260,7 +260,7 @@ async function viewEmployee(
   // employeeIndex
   if (employeeIndex !== null) {
     const employeeIndexElement = document.createElement('p');
-    employeeIndexElement.textContent = `${employeeIndex++}`;
+    employeeIndexElement.textContent = `${employeeIndex}`;
     container.appendChild(employeeIndexElement);
   }
 
