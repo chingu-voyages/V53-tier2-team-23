@@ -489,7 +489,6 @@ async function viewEmployeeById(
 
   // button view
   const buttonElement = document.createElement('button');
-  buttonElement.classList.add('form-container__button');
   buttonElement.classList.add('dishes-container__button');
   buttonElement.textContent = 'View dishes';
   container.appendChild(buttonElement);
@@ -533,9 +532,9 @@ async function viewEmployeeDishes(
   // ingredients list
   const ingredientsContainer = document.createElement('div');
   ingredientsContainer.classList.add('ingredients-container');
-  constingredientsTitle = document.createElement('h3');
+  const ingredientsTitle = document.createElement('h3');
   ingredientsTitle.textContent = 'Ingredients:';
-  ingredientssContainer.appendChild(ingredientsTitle);
+  ingredientsContainer.appendChild(ingredientsTitle);
   const ingredientsList = document.createElement('ul');
   for (const ingredient of ingredients) {
     const ingredientElement = document.createElement('li');
