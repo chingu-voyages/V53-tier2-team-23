@@ -583,16 +583,18 @@ document.addEventListener('DOMContentLoaded', async function () {
     form.addEventListener('submit', submitForm);
   });
 
-  const dishesContainerButton = document.querySelector(
-    '.dishes-container__button'
-  );
-  if (dishesContainerButton) {
-    dishesContainerButton.addEventListener('click', () => {
-      console.log('click');
-      form.addEventListener('submit', submitDishesForm);
-    });
-  }
   employeesContainer.addEventListener('click', function (event) {
+    if (event.target.classList.contains('dishes-container__button')) {
+      const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
+      const dishesContainerButton = employeeContainer.querySelector(
+        '.dishes-container__button'
+      );
+      dishesContainerButton.addEventListener('click', () => {
+        console.log('click');
+        form.addEventListener('submit', submitDishesForm);
+      });
+    }
+
     if (event.target.classList.contains('form-container__button')) {
       const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
       const inputValueElement =
