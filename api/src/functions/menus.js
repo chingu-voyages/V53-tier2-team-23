@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const connectDatabase = require('../config/database.config');
 const Menus = require('../models/menu.models');
 const Dishes = require('../models/dishes.models');
-const dishesModels = require('../models/dishes.models');
 
 const handleError = (error, method) => {
   console.error(`Error ${method} menu: `, error);
