@@ -112,7 +112,7 @@ async function handleGetEmployeeData(employeeId) {
     //   localEmployeeData.employeeName,
     //   employeeName
     // );
-    console.log('handleGetEmployeeData: ', employeeData);
+    // console.log('handleGetEmployeeData: ', employeeData);
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
@@ -257,8 +257,8 @@ async function viewEmployee(
   employeeIndex = null,
   id,
   employeeName,
-  allergies = [],
-  dietaryRestrictions = []
+  allergies,
+  dietaryRestrictions
 ) {
   // employee container
   const container = document.createElement('div');
@@ -336,7 +336,7 @@ async function viewEmployee(
 async function submitForm(event) {
   event.preventDefault();
   const employeeId = document.getElementById('id').value;
-  console.log('submitForm', employeeId);
+  // console.log('submitForm', employeeId);
   await handleGetEmployeeData(employeeId);
 }
 
@@ -352,13 +352,13 @@ document.addEventListener('DOMContentLoaded', async function () {
       const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
       const inputValueElement =
         employeeContainer.querySelector('p.employee-id');
-      console.log(inputValueElement.textContent);
+      // console.log(inputValueElement.textContent);
       const inputValue = inputValueElement.textContent
         .replace('Employee ID:', '')
         .trim();
-      console.log(inputValue);
+      // console.log(inputValue);
       const button = employeeContainer.querySelector('button');
-      console.log('clicked');
+      // console.log('clicked');
       formInput.value = inputValue;
       form.removeEventListener('submit', submitForm); // Remove previous listeners
       form.addEventListener('submit', submitForm);
