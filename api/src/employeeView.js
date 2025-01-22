@@ -265,9 +265,9 @@ async function viewEmployee(
   }
 
   // id
-  const idElement = document.createElement('p');
-  indexElement.textContent = `Employee ID: ${_id}`;
-  container.appendChild(idElement);
+  const employeeIdElement = document.createElement('p');
+  employeeIdElement.textContent = `Employee ID: ${_id}`;
+  container.appendChild(employeeIdElement);
 
   //diet category
   const mainDiet = dietaryRestrictions[0];
