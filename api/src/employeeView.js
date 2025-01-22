@@ -101,7 +101,7 @@ async function handleGetEmployeeData(employeeId) {
     //   localEmployeeData.employeeName,
     //   employeeName
     // );
-    console.log('handleGetEmployeeData: ', allergies.allergenName);
+    console.log('handleGetEmployeeData: ', allergies);
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
@@ -285,7 +285,7 @@ async function viewEmployee(
   const allergiesList = document.createElement('ul');
   for (const allergy of allergies) {
     const allergyElement = document.createElement('li');
-    allergyElement.textContent = allergy.allergenName;
+    allergyElement.textContent = allergy;
     allergiesList.appendChild(allergyElement);
   }
   allergiesContainer.appendChild(allergiesList);
