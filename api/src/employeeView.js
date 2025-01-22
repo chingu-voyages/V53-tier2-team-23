@@ -155,7 +155,7 @@ async function getEmployee(employeeId) {
 
     const employeeData = responseData.data.employee;
 
-    console.log('employeeData: ', employeeData);
+    //console.log('employeeData: ', employeeData);
 
     localStorage.setItem('employeeData', JSON.stringify(employeeData));
     return employeeData;
@@ -197,7 +197,7 @@ async function handleGetEmployeeData(employeeId) {
   try {
     responseContainer.innerHTML = 'loading...';
     const employeeData = await getEmployee(employeeId);
-    // console.log('handleGetEmployeeData: ', employeeData);
+    console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
     //console.log('localEmployeeData: ', localEmployeeData);
     const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
@@ -320,6 +320,7 @@ async function viewEmployee(
 async function submitForm(event) {
   event.preventDefault();
   const employeeId = document.getElementById('id').value;
+  console.log('submitForm', employeeId);
   await handleGetEmployeeData(employeeId);
 }
 
