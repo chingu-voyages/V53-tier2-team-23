@@ -222,7 +222,9 @@ async function getEmployees() {
 
     const employees = foundEmployees.map((employee) => ({
       ...employee,
-      allergies: employee.allergies || [], // if array allergies empty
+      allergies: employee.allergies
+        ? employee.allergies.map((allergy) => allergy.allergenName)
+        : [], // Extract allergenName
     }));
 
     console.log(employees);
