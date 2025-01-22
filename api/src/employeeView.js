@@ -2,9 +2,7 @@ const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
 const dishesContainer = document.querySelector('.dishes-container');
-const dishesContainerButton = document.querySelector(
-  '.dishes-container__button'
-);
+
 const form = document.querySelector('.form');
 const formInput = document.querySelector('.form input');
 
@@ -374,8 +372,6 @@ async function viewEmployee(
   if (dietaryRestrictions && dietaryRestrictions.length > 0) {
     //diet category
     const mainDiet = dietaryRestrictions[0];
-    console.log(dietaryRestrictions);
-    console.log(mainDiet);
     const mainDietElement = document.createElement('h2');
     mainDietElement.classList.add('main-diet');
     mainDietElement.textContent = `${mainDiet}`;
@@ -450,8 +446,6 @@ async function viewEmployeeById(
   if (dietaryRestrictions && dietaryRestrictions.length > 0) {
     //diet category
     const mainDiet = dietaryRestrictions[0];
-    console.log(dietaryRestrictions);
-    console.log(mainDiet);
     const mainDietElement = document.createElement('h2');
     mainDietElement.classList.add('main-diet');
     mainDietElement.textContent = `${mainDiet}`;
@@ -588,6 +582,9 @@ document.addEventListener('DOMContentLoaded', async function () {
     form.addEventListener('submit', submitForm);
   });
 
+  const dishesContainerButton = document.querySelector(
+    '.dishes-container__button'
+  );
   if (dishesContainerButton) {
     dishesContainerButton.addEventListener('click', () => {
       form.addEventListener('submit', submitDishesForm);
