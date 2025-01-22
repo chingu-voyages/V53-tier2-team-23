@@ -283,6 +283,8 @@ async function viewEmployee(
 
   //diet category
   const mainDiet = dietaryRestrictions[0];
+  console.log(dietaryRestrictions);
+  console.log(mainDiet);
   const spanElement = document.createElement('h2');
   spanElement.textContent = `${mainDiet}`;
   container.appendChild(spanElement);
