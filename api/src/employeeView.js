@@ -588,6 +588,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   );
   if (dishesContainerButton) {
     dishesContainerButton.addEventListener('click', () => {
+      console.log('click');
       form.addEventListener('submit', submitDishesForm);
     });
   }
