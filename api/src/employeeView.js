@@ -101,6 +101,7 @@ async function handleGetEmployeeData(employeeId) {
     //   localEmployeeData.employeeName,
     //   employeeName
     // );
+    console.log('handleGetEmployeeData: ', allergies.allergenName);
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
@@ -166,85 +167,79 @@ async function getEmployee(employeeId) {
   }
 }
 
-async function getAllergen(allergenId) {
-  const URL = `https://eatodishes.netlify.app/.netlify/functions/allergens/${allergenId}`;
-  try {
-    const response = await fetch(URL, {
-      method: 'GET',
-    });
+// async function getAllergen(allergenId) {
+//   const URL = `https://eatodishes.netlify.app/.netlify/functions/allergens/${allergenId}`;
+//   try {
+//     const response = await fetch(URL, {
+//       method: 'GET',
+//     });
 
-    // check response success
-    if (!response.ok) {
-      throw new Error(`Failed to fetch allergen data: ${response.status}`);
-    }
+//     // check response success
+//     if (!response.ok) {
+//       throw new Error(`Failed to fetch allergen data: ${response.status}`);
+//     }
 
-    const responseData = await response.json();
+//     const responseData = await response.json();
 
-    const allergenData = responseData.data.allergen;
+//     const allergenData = responseData.data.allergen;
 
-    console.log('allergenData: ', allergenData);
+//     console.log('allergenData: ', allergenData);
 
-    localStorage.setItem('allergenData', JSON.stringify(allergenData));
-    return allergenData;
-  } catch (error) {
-    console.error('Error fetching allergen:', error);
-    // Return null
-    return null;
-  }
-}
+//     localStorage.setItem('allergenData', JSON.stringify(allergenData));
+//     return allergenData;
+//   } catch (error) {
+//     console.error('Error fetching allergen:', error);
+//     // Return null
+//     return null;
+//   }
+// }
 
-async function handleGetEmployeeData(employeeId) {
-  try {
-    responseContainer.innerHTML = 'loading...';
-    const employeeData = await getEmployee(employeeId);
-    console.log('handleGetEmployeeData: ', employeeData);
-    const localEmployeeData = await getDataFromLocalStorage();
-    //console.log('localEmployeeData: ', localEmployeeData);
-    const { _id, employeeName } = employeeData;
-    const dietaryRestrictions = Array.isArray(employeeData.dietaryRestrictions)
-      ? employeeData.dietaryRestrictions
-      : [];
-    const allergies = Array.isArray(employeeData.allergies)
-      ? employeeData.allergies
-      : [];
+// async function handleGetEmployeeData(employeeId) {
+//   try {
+//     responseContainer.innerHTML = 'loading...';
+//     const employeeData = await getEmployee(employeeId);
+//     console.log('handleGetEmployeeData: ', employeeData);
+//     const localEmployeeData = await getDataFromLocalStorage();
+//     //console.log('localEmployeeData: ', localEmployeeData);
+//     const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
 
-    if (employeeData & !localEmployeeData) {
-      responseContainer.innerHTML = '';
-      await viewEmployee(
-        responseContainer,
-        _id,
-        employeeName,
-        allergies,
-        dietaryRestrictions
-      );
-    } else if (localEmployeeData && employeeData) {
-      if (
-        localEmployeeData._id === _id &&
-        localEmployeeData.employeeName === employeeName
-      ) {
-        responseContainer.innerHTML = '';
-        await viewEmployee(
-          responseContainer,
-          _id,
-          employeeName,
-          allergies,
-          dietaryRestrictions
-        );
-        //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
-      } else {
-        console.log('The data is different');
-        responseContainer.textContent = 'Employee data has changed.';
-      }
-    } else {
-      responseContainer.textContent = 'No user';
-      console.log('No user');
-      localStorage.removeItem('employeeData');
-    }
-  } catch (error) {
-    responseContainer.textContent = `Error:  ${error} , getting employee:`;
-    console.error(`Error:  ${error} , getting employee:`);
-  }
-}
+//     if (employeeData & !localEmployeeData) {
+//       responseContainer.innerHTML = '';
+//       await viewEmployee(
+//         responseContainer,
+//         _id,
+//         employeeName,
+//         allergies,
+//         dietaryRestrictions
+//       );
+//     } else if (localEmployeeData && employeeData) {
+//       if (
+//         localEmployeeData._id === _id &&
+//         localEmployeeData.employeeName === employeeName
+//       ) {
+//         responseContainer.innerHTML = '';
+//         await viewEmployee(
+//           responseContainer,
+//           _id,
+//           employeeName,
+//           allergies,
+//           dietaryRestrictions
+//         );
+//         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
+//       } else {
+//         console.log('The data is different');
+//         responseContainer.textContent = 'Employee data has changed.';
+//       }
+//     } else {
+//       responseContainer.textContent = 'No user';
+//       console.log('No user');
+//       localStorage.removeItem('employeeData');
+//     }
+//   } catch (error) {
+//     responseContainer.textContent = `Error:  ${error} , getting employee:`;
+//     console.error(`Error:  ${error} , getting employee:`);
+//   }
+// }
 
 async function viewEmployee(
   appendContainer,

@@ -257,7 +257,8 @@ async function getEmployee(employeeId) {
 
     const employee = {
       ...foundEmployee,
-      allergies: foundEmployee.allergies || [],
+      allergies:
+        foundEmployee.allergies.map((allergy) => allergy.allergenName) || [],
     };
     // console.log('employeeId:', employeeId);
     // console.log('employee:', employee);
