@@ -16,7 +16,7 @@ async function getEmployeesDataFromLocalStorage() {
   return localEmployeesData ? JSON.parse(localEmployeesData) : null; // parse data
 }
 
-async function getEmployeesDishesFromLocalStorage() {
+async function getDishesFromLocalStorage() {
   const localEmployeesDishes = localStorage.getItem('employeesDishes');
   return localEmployeesDishes ? JSON.parse(localEmployeesDishes) : null; // parse data
 }
