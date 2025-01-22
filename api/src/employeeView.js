@@ -312,11 +312,13 @@ async function viewEmployee(
   dietaryRestrictionsTitle.textContent = 'Dietary Restrictions:';
   dietaryRestrictionsContainer.appendChild(dietaryRestrictionsTitle);
   const dietaryRestrictionsList = document.createElement('ul');
-  dietaryRestrictions.forEach((dietaryRestriction) => {
+
+  for (const dietaryRestriction of dietaryRestrictions) {
     const dietaryRestrictionElement = document.createElement('li');
     dietaryRestrictionElement.textContent = dietaryRestriction;
     dietaryRestrictionsList.appendChild(dietaryRestrictionElement);
-  });
+  }
+
   dietaryRestrictionsContainer.appendChild(dietaryRestrictionsList);
   container.appendChild(dietaryRestrictionsContainer);
 
