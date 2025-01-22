@@ -2,6 +2,9 @@ const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
 const dishesContainer = document.querySelector('.dishes-container');
+const dishesContainerButton = document.querySelector(
+  '.dishes-container__button'
+);
 const form = document.querySelector('.form');
 const formInput = document.querySelector('.form input');
 
@@ -567,8 +570,19 @@ async function submitForm(event) {
   await handleGetEmployeeData(employeeId);
 }
 
+async function submitDishesForm(event) {
+  event.preventDefault();
+  const employeeId = document.getElementById('id').value;
+  // console.log('submitForm', employeeId);
+  await handleGetEmployeeDishes(employeeId);
+}
+
 submitButton.addEventListener('click', () => {
   form.addEventListener('submit', submitForm);
+});
+
+dishesContainerButton.addEventListener('click', () => {
+  form.addEventListener('submit', submitDishesForm);
 });
 
 document.addEventListener('DOMContentLoaded', async function () {
