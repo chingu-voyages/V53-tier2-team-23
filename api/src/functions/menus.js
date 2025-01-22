@@ -10,14 +10,14 @@ const handleError = (error,method) => {
     };
 };
 
-const sendResponse = (code, data) => ({
-  statusCode: code,
-  body: JSON.stringify(data),
+const sendResponse = (statusCode, message, data = null) => ({
+  statusCode,
+  body: JSON.stringify(data ? {message, data} : {message}),
 });
 
 exports.handler = async (event) => {
   await connectDatabase();
-  const {httpMethod, path, body} = event;
+  const {httpMethod, path, body, queryStringParameters} = event;
 
   // create new Menu
   if (httpMethod === 'POST' && path.endsWith('/menus')) {
@@ -108,6 +108,28 @@ exports.handler = async (event) => {
       return sendResponse(200, updatedMenu);
     } catch(error) {
       return handleError(error, 'updating specific day')
+    }
+  }
+
+  // delete menu
+  if (httpMethod === 'DELETE' && path.endsWith(`/menus`)) {
+    try {
+      const {weekStartDate} = queryStringParameters;
+
+      if (!weekStartDate) {
+        return sendResponse(400, 'weekStartDate query parameter is required.');
+      }
+
+      const deletedMenu = await Menus.findOneAndDelete({weekStartDate: new Date(weekStartDate)});
+
+      if (!deletedMenu) {
+        return sendResponse(404, 'Menu not found for the given weekStartDate');
+      }
+
+      return sendResponse(200, 'Menu deleted successfully')
+      
+    } catch(error) {
+      handleError(error,'deleting');
     }
   }
 
