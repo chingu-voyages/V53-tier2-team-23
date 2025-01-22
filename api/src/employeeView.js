@@ -266,7 +266,7 @@ async function viewEmployee(
 
   // id
   const employeeIdElement = document.createElement('p');
-  employeeIdElement.textContent = `Employee ID: ${_id}`;
+  employeeIdElement.textContent = `Employee ID: ${id}`;
   container.appendChild(employeeIdElement);
 
   //diet category
