@@ -333,9 +333,13 @@ document.addEventListener('DOMContentLoaded', async function () {
   employeesContainer.addEventListener('click', function (event) {
     if (event.target.classList.contains('form-container__button')) {
       const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
+      const inputValueElement = employeeContainer.querySelector('.employee-id');
+      const inputValue = inputValueElement.textContent
+        .replace('Employee ID:', '')
+        .trim();
       const button = employeeContainer.querySelector('button');
       console.log('clicked');
-      formInput.value = employeeContainer.closest('.employee-id').value;
+      formInput.value = inputValue;
       form.addEventListener('submit', submitForm);
     }
   });
