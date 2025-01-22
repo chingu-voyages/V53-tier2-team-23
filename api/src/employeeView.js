@@ -39,7 +39,7 @@ async function getAllEmployees() {
 
     const employeesData = responseData.data.employees;
 
-    console.log('employeesData: ', employeesData);
+    //console.log('employeesData: ', employeesData);
 
     localStorage.setItem('employeesData', JSON.stringify(employeesData));
     return employeesData;
@@ -195,7 +195,8 @@ async function getEmployeeDishes(employeeId) {
 
     const employeeDishes = responseData.data.dishes;
 
-    //console.log('employeeData: ', employeeData);
+    console.log('responseData: ', responseData);
+    console.log(' employeeDishes: ', employeeDishes);
 
     localStorage.setItem('employeeDishes', JSON.stringify(employeeDishes));
     return employeeDishes;
@@ -210,7 +211,8 @@ async function handleGetEmployeeDishes(employeeId) {
   try {
     dishesContainer.innerHTML = 'loading...';
     const employeeDishes = await getEmployeeDishes(employeeId);
-    //console.log('handleGetEmployeeData: ', employeeData);
+
+    console.log('employeeDishes: ', employeeDishes);
     const localEmployeeDishes = await getDishesFromLocalStorage();
     // console.log('localEmployeeData: ', localEmployeeData);
 
@@ -575,7 +577,7 @@ async function submitDishesForm(event) {
   const employeeId = document.querySelector(
     '.form-container__response .employee-id'
   ).textContent;
-  // console.log('submitForm', employeeId);
+  console.log('submitDishesForm', employeeId);
   await handleGetEmployeeDishes(employeeId);
 }
 
