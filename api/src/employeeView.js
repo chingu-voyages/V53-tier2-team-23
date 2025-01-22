@@ -264,9 +264,9 @@ async function viewEmployee(
   const container = document.createElement('div');
   container.classList.add('employee-container');
   // employee name
-  const h2Element = document.createElement('h2');
-  h2Element.textContent = `${employeeName}`;
-  container.appendChild(h2Element);
+  const employeeNameElement = document.createElement('h2');
+  employeeNameElement.textContent = `${employeeName}`;
+  container.appendChild(employeeNameElement);
 
   // employeeIndex
   if (employeeIndex !== null) {
@@ -285,9 +285,9 @@ async function viewEmployee(
   const mainDiet = dietaryRestrictions[0];
   console.log(dietaryRestrictions);
   console.log(mainDiet);
-  const spanElement = document.createElement('h2');
-  spanElement.textContent = `${mainDiet}`;
-  container.appendChild(spanElement);
+  const mainDietElement = document.createElement('h2');
+  mainDietElement.textContent = `${mainDiet}`;
+  container.appendChild(mainDietElement);
 
   // allergies list
   const allergiesContainer = document.createElement('div');
