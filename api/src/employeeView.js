@@ -200,7 +200,14 @@ async function handleGetEmployeeData(employeeId) {
     console.log('handleGetEmployeeData: ', employeeData);
     const localEmployeeData = await getDataFromLocalStorage();
     //console.log('localEmployeeData: ', localEmployeeData);
-    const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
+    const { _id, employeeName } = employeeData;
+    const dietaryRestrictions = Array.isArray(employeeData.dietaryRestrictions)
+      ? employeeData.dietaryRestrictions
+      : [];
+    const allergies = Array.isArray(employeeData.allergies)
+      ? employeeData.allergies
+      : [];
+
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
