@@ -1,6 +1,6 @@
 const submitButton = document.querySelector('#submitButton');
 const formContainerButtons = document.querySelectorAll(
-  'form-container__button'
+  '.form-container__button'
 );
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
