@@ -343,6 +343,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       const button = employeeContainer.querySelector('button');
       console.log('clicked');
       formInput.value = inputValue;
+      form.removeEventListener('submit', submitForm); // Remove previous listeners
       form.addEventListener('submit', submitForm);
     }
   });
