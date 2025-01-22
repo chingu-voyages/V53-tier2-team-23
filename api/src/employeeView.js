@@ -281,14 +281,15 @@ async function viewEmployee(
   employeeIdElement.textContent = `Employee ID: ${id}`;
   container.appendChild(employeeIdElement);
 
-  //diet category
-  const mainDiet = dietaryRestrictions[0];
-  console.log(dietaryRestrictions);
-  console.log(mainDiet);
-  const mainDietElement = document.createElement('h2');
-  mainDietElement.textContent = `${mainDiet}`;
-  container.appendChild(mainDietElement);
-
+  if (dietaryRestrictions && dietaryRestrictions.length > 0) {
+    //diet category
+    const mainDiet = dietaryRestrictions[0];
+    console.log(dietaryRestrictions);
+    console.log(mainDiet);
+    const mainDietElement = document.createElement('h2');
+    mainDietElement.textContent = `${mainDiet}`;
+    container.appendChild(mainDietElement);
+  }
   // allergies list
   const allergiesContainer = document.createElement('div');
   allergiesContainer.classList.add('allergies-container');
