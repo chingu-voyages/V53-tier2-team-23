@@ -1,10 +1,8 @@
 const submitButton = document.querySelector('#submitButton');
-const formContainerButtons = document.querySelectorAll(
-  '.form-container__button'
-);
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
 const form = document.querySelector('.form');
+const formInput = document.querySelector('.form input');
 
 async function getDataFromLocalStorage() {
   const localData = localStorage.getItem('employeeData');
@@ -266,6 +264,7 @@ async function viewEmployee(
 
   // id
   const employeeIdElement = document.createElement('p');
+  employeeIdElement.classList.add('employee-id');
   employeeIdElement.textContent = `Employee ID: ${id}`;
   container.appendChild(employeeIdElement);
 
@@ -330,10 +329,14 @@ submitButton.addEventListener('click', () => {
 
 document.addEventListener('DOMContentLoaded', async function () {
   await handleGetEmployeesData();
-  formContainerButtons.forEach((button, index) => {
-    button.addEventListener('click', (event) => {
+
+  employeesContainer.addEventListener('click', function (event) {
+    if (event.target.classList.contains('form-container__button')) {
+      const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
+      const button = employeeContainer.querySelector('button');
       console.log('clicked');
+      formInput.value = employeeContainer.closest('.employee-id').value;
       form.addEventListener('submit', submitForm);
-    });
+    }
   });
 });
