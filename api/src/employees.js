@@ -251,7 +251,14 @@ async function getEmployee(employeeId) {
     // Find employee by _id using with findById() method
     // const mongooseEmployeeId = new mongoose.Types.ObjectId(employeeId); // create the ObjectId
     // const employee = await Employee.findById(mongooseEmployeeId);
-    const employee = await Employee.findById(employeeId);
+    const foundEmployee = await Employee.findById(employeeId)
+      .populate('allergies', 'allergenName -_id') // Populate allergies with allergenName and exclude _id
+      .lean();
+
+    const employee = {
+      ...foundEmployee,
+      allergies: foundEmployee.allergies || [],
+    };
     // console.log('employeeId:', employeeId);
     // console.log('employee:', employee);
     return employee || null;
