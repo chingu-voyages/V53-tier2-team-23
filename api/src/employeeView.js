@@ -115,7 +115,7 @@ async function handleGetEmployeeData(employeeId) {
     // console.log('handleGetEmployeeData: ', employeeData);
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
-      await viewEmployee(
+      await viewEmployeeById(
         responseContainer,
         _id,
         employeeName,
@@ -128,7 +128,7 @@ async function handleGetEmployeeData(employeeId) {
         localEmployeeData.employeeName === employeeName
       ) {
         responseContainer.innerHTML = '';
-        await viewEmployee(
+        await viewEmployeeById(
           responseContainer,
           _id,
           employeeName,
@@ -287,6 +287,7 @@ async function viewEmployee(
     console.log(dietaryRestrictions);
     console.log(mainDiet);
     const mainDietElement = document.createElement('h2');
+    mainDietElement.classList.add('main-diet');
     mainDietElement.textContent = `${mainDiet}`;
     container.appendChild(mainDietElement);
   }
@@ -327,6 +328,76 @@ async function viewEmployee(
   buttonElement.classList.add('form-container__button');
   buttonElement.textContent = 'Manage employee';
   container.appendChild(buttonElement);
+
+  // Finally, append the entire container to the body or another parent element
+  appendContainer.appendChild(container);
+  // responseContainer.appendChild(container);
+  // employeesContainer.appendChild(container);
+  return new Promise((resolve) => setTimeout(resolve, 500));
+}
+
+async function viewEmployeeById(
+  appendContainer,
+  id,
+  employeeName,
+  allergies = [],
+  dietaryRestrictions = []
+) {
+  // employee container
+  const container = document.createElement('div');
+  container.classList.add('employee-container');
+  // employee name
+  const employeeNameElement = document.createElement('h2');
+  employeeNameElement.textContent = `${employeeName}`;
+  container.appendChild(employeeNameElement);
+
+  // id
+  const employeeIdElement = document.createElement('p');
+  employeeIdElement.classList.add('employee-id');
+  employeeIdElement.textContent = `Employee ID: ${id}`;
+  container.appendChild(employeeIdElement);
+
+  if (dietaryRestrictions && dietaryRestrictions.length > 0) {
+    //diet category
+    const mainDiet = dietaryRestrictions[0];
+    console.log(dietaryRestrictions);
+    console.log(mainDiet);
+    const mainDietElement = document.createElement('h2');
+    mainDietElement.classList.add('main-diet');
+    mainDietElement.textContent = `${mainDiet}`;
+    container.appendChild(mainDietElement);
+  }
+  // allergies list
+  const allergiesContainer = document.createElement('div');
+  allergiesContainer.classList.add('allergies-container');
+  const allergiesTitle = document.createElement('h3');
+  allergiesTitle.textContent = 'Allergies:';
+  allergiesContainer.appendChild(allergiesTitle);
+  const allergiesList = document.createElement('ul');
+  for (const allergy of allergies) {
+    const allergyElement = document.createElement('li');
+    allergyElement.textContent = allergy;
+    allergiesList.appendChild(allergyElement);
+  }
+  allergiesContainer.appendChild(allergiesList);
+  container.appendChild(allergiesContainer);
+
+  // Create and append the dietary restrictions list
+  const dietaryRestrictionsContainer = document.createElement('div');
+  dietaryRestrictionsContainer.classList.add('dietary-restrictions-container');
+  const dietaryRestrictionsTitle = document.createElement('h3');
+  dietaryRestrictionsTitle.textContent = 'Dietary Restrictions:';
+  dietaryRestrictionsContainer.appendChild(dietaryRestrictionsTitle);
+  const dietaryRestrictionsList = document.createElement('ul');
+
+  for (const dietaryRestriction of dietaryRestrictions) {
+    const dietaryRestrictionElement = document.createElement('li');
+    dietaryRestrictionElement.textContent = dietaryRestriction;
+    dietaryRestrictionsList.appendChild(dietaryRestrictionElement);
+  }
+
+  dietaryRestrictionsContainer.appendChild(dietaryRestrictionsList);
+  container.appendChild(dietaryRestrictionsContainer);
 
   // Finally, append the entire container to the body or another parent element
   appendContainer.appendChild(container);
