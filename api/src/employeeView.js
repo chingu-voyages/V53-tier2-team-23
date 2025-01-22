@@ -105,13 +105,14 @@ async function handleGetEmployeeData(employeeId) {
       allergies = [],
       dietaryRestrictions = [],
     } = employeeData;
+
     // console.log(
     //   localEmployeeData._id,
     //   _id,
     //   localEmployeeData.employeeName,
     //   employeeName
     // );
-    console.log('handleGetEmployeeData: ', allergies);
+    console.log('handleGetEmployeeData: ', employeeData);
     if (employeeData & !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployee(
