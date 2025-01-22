@@ -111,8 +111,14 @@ label {
 .employee-container h2 {
   font-size: 22px;
   color: #23272a;
-  font-weight: 900;
+  font-weight: 700;
   margin-bottom: 10px;
+  width: auto;
+  max-width: fit-content;
+  text-align: center;
+  align-items: center;
+  display: flex;
+  margin: 0 auto;
 }
 
 .main-diet {
@@ -146,6 +152,26 @@ label {
   margin: 5px 0;
   border-radius: 4px;
   font-size: 16px;
+}
+
+.employee-index {
+  font-weight: 900;
+  border: 5px solid #292840;
+  outline: 5px solid #3dcc77;
+  width: max-content;
+  padding: 10px;
+  box-sizing: border-box;
+  color: whitesmoke;
+  background-color: #23272a;
+  height: 40px;
+  outline-style: dotted;
+  line-height: 10px;
+}
+
+.employee-id {
+  font-weight: 900;
+  -webkit-font-smoothing: antialiased;
+  font-variant: all-small-caps;
 }
 
 .employee-container li:hover {
