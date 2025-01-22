@@ -258,7 +258,7 @@ async function viewEmployee(
   container.appendChild(h2Element);
 
   // employeeIndex
-  if (employeeId !== null) {
+  if (employeeIndex !== null) {
     const employeeIndexElement = document.createElement('p');
     employeeIndexElement.textContent = `${employeeIndex}`;
     container.appendChild(employeeIndexElement);
