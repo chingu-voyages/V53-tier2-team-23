@@ -14,7 +14,7 @@ const menuSchema = new Schema({
       },
       dish: {
         type: Schema.Types.ObjectId, // Reference to the dishScehma
-        ref: 'Dish',
+        ref: 'Dishes',
         default: null, // Allow null for "Day Off"
       },
     },
@@ -27,31 +27,31 @@ const menuSchema = new Schema({
   "days": [
     {
       "date": "2025-01-22",
-      "dish": "ObjectId('64a76d1e2f8b2c39fc123456')" // References a dish
+      "dish": "678cc09c2dc717b2d7754bf4" 
     },
     {
       "date": "2025-01-23",
-      "dish": "ObjectId('64a76d1e2f8b2c39fc123457')"
+      "dish": "678cc09c2dc717b2d7754bf5"
     },
     {
       "date": "2025-01-24",
-      "dish": "ObjectId('64a76d1e2f8b2c39fc123458')"
+      "dish": "678cc09c2dc717b2d7754bdb"
     },
     {
       "date": "2025-01-25",
-      "dish": null // No dish assigned (Day Off)
+      "dish": null 
     },
     {
       "date": "2025-01-26",
-      "dish": "ObjectId('64a76d1e2f8b2c39fc123459')"
+      "dish": "678cc09c2dc717b2d7754bdd"
     },
     {
       "date": "2025-01-27",
-      "dish": "ObjectId('64a76d1e2f8b2c39fc123460')"
+      "dish": "678cc09c2dc717b2d7754bdf"
     },
     {
       "date": "2025-01-28",
-      "dish": "ObjectId('64a76d1e2f8b2c39fc123461')"
+      "dish": "678cc09c2dc717b2d7754be0"
     }
   ]
 } */
