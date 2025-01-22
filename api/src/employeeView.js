@@ -260,7 +260,7 @@ async function viewEmployee(
   // employeeIndex
   if (employeeIndex !== null) {
     const employeeIndexElement = document.createElement('p');
-    employeeIndexElement.textContent = `${employeeIndex}`;
+    employeeIndexElement.textContent = `${employeeIndex++}`;
     container.appendChild(employeeIndexElement);
   }
 
