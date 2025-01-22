@@ -44,7 +44,6 @@ async function getAllEmployees() {
 }
 
 async function getEmployees(employeesData) {
-  let index = 0;
   for (const employee of employeesData) {
     let employeeIndex = employeesData.findIndex(
       (index) => index._id == employee._id
@@ -52,14 +51,12 @@ async function getEmployees(employeesData) {
     const { _id, employeeName, allergies, dietaryRestrictions } = employee;
     await viewEmployee(
       employeesContainer,
-      index + 1,
       employeeIndex,
       _id,
       employeeName,
       allergies,
       dietaryRestrictions
     );
-    index++;
   }
 }
 
@@ -246,7 +243,6 @@ async function handleGetEmployeeData(employeeId) {
 
 async function viewEmployee(
   appendContainer,
-  index = null,
   employeeIndex = null,
   id,
   employeeName,
@@ -261,19 +257,17 @@ async function viewEmployee(
   h2Element.textContent = `${employeeName}`;
   container.appendChild(h2Element);
 
-  // index
-  if (index !== null) {
-    const indexElement = document.createElement('p');
-    indexElement.textContent = `${index}`;
-    container.appendChild(indexElement);
-  }
-
   // employeeIndex
-  if (employeeIndex !== null) {
+  if (employeeId !== null) {
     const employeeIndexElement = document.createElement('p');
-    employeeIndexElement.textContent = `EmployeeIndex: ${employeeIndex}`;
+    employeeIndexElement.textContent = `${employeeIndex}`;
     container.appendChild(employeeIndexElement);
   }
+
+  // id
+  const idElement = document.createElement('p');
+  indexElement.textContent = `Employee ID: ${_id}`;
+  container.appendChild(idElement);
 
   //diet category
   const mainDiet = dietaryRestrictions[0];
