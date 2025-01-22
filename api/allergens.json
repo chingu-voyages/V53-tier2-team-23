@@ -1,12 +1,15 @@
 [
-  { "allergenName": "peanut" },
-  { "allergenName": "shellfish" },
-  { "allergenName": "milk" },
-  { "allergenName": "soy" },
-  { "allergenName": "egg" },
-  { "allergenName": "wheat" },
-  { "allergenName": "tree nut" },
-  { "allergenName": "fish" },
-  { "allergenName": "sesame" },
-  { "allergenName": "gluten" }
+  { "_id": { "$oid": "678cc8725d233468717b8641" }, "allergenName": "peanut" },
+  {
+    "_id": { "$oid": "678cc8725d233468717b8642" },
+    "allergenName": "shellfish"
+  },
+  { "_id": { "$oid": "678cc8725d233468717b8643" }, "allergenName": "milk" },
+  { "_id": { "$oid": "678cc8725d233468717b8644" }, "allergenName": "soy" },
+  { "_id": { "$oid": "678cc8725d233468717b8645" }, "allergenName": "egg" },
+  { "_id": { "$oid": "678cc8725d233468717b8646" }, "allergenName": "wheat" },
+  { "_id": { "$oid": "678cc8725d233468717b8647" }, "allergenName": "tree nut" },
+  { "_id": { "$oid": "678cc8725d233468717b8648" }, "allergenName": "fish" },
+  { "_id": { "$oid": "678cc8725d233468717b8649" }, "allergenName": "sesame" },
+  { "_id": { "$oid": "678cc8725d233468717b8650" }, "allergenName": "gluten" }
 ]

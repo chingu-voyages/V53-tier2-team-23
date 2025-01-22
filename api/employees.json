@@ -1,50 +1,66 @@
 [
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99001" },
     "employeeName": "John Doe",
-    "allergies": ["peanut", "shellfish"],
+    "allergies": [
+      { "$oid": "678cc8725d233468717b8641" },
+      { "$oid": "678cc8725d233468717b8642" }
+    ],
     "dietaryRestrictions": ["vegetarian", "glutenFree"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99002" },
     "employeeName": "Jane Smith",
-    "allergies": ["milk"],
+    "allergies": [{ "$oid": "678cc8725d233468717b8643" }],
     "dietaryRestrictions": ["vegan", "lactose-free"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99003" },
     "employeeName": "Sam Brown",
-    "allergies": ["soy"],
+    "allergies": [{ "$oid": "678cc8725d233468717b8644" }],
     "dietaryRestrictions": ["pescatarian"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99004" },
     "employeeName": "Lisa White",
-    "allergies": ["egg"],
+    "allergies": [{ "$oid": "678cc8725d233468717b8645" }],
     "dietaryRestrictions": ["keto", "diabetes-friendly"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99005" },
     "employeeName": "Michael Green",
     "allergies": [],
     "dietaryRestrictions": ["paleo"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99006" },
     "employeeName": "Emily Clark",
-    "allergies": ["wheat"],
+    "allergies": [{ "$oid": "678cc8725d233468717b8646" }],
     "dietaryRestrictions": ["glutenFree", "standard"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99007" },
     "employeeName": "David Harris",
-    "allergies": ["tree nut", "fish"],
+    "allergies": [
+      { "$oid": "678cc8725d233468717b8647" },
+      { "$oid": "678cc8725d233468717b8648" }
+    ],
     "dietaryRestrictions": ["vegan", "diabetes-friendly"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99008" },
     "employeeName": "Sophia Lewis",
-    "allergies": ["sesame"],
+    "allergies": [{ "$oid": "678cc8725d233468717b8649" }],
     "dietaryRestrictions": ["vegetarian"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99009" },
     "employeeName": "James Young",
-    "allergies": ["gluten"],
+    "allergies": [{ "$oid": "678cc8725d233468717b8650" }],
     "dietaryRestrictions": ["lactose-free", "keto"]
   },
   {
+    "_id": { "$oid": "678d1c696b29fd6dada99010" },
     "employeeName": "Olivia Martin",
     "allergies": [],
     "dietaryRestrictions": ["pescatarian", "glutenFree"]
