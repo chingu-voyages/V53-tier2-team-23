@@ -241,15 +241,6 @@ async function handleGetEmployeeDishes(employeeId) {
     const localEmployeeDishes = await getDishesFromLocalStorage();
     // console.log('localEmployeeData: ', localEmployeeData);
 
-    const {
-      _id,
-      category,
-      dishName,
-      ingredients = [],
-      calories,
-      imageUrl,
-    } = employeeDishes;
-
     if (employeeDishes & !localEmployeeDishes) {
       responseContainer.innerHTML = '';
       await getDishes(employeeDishes);
