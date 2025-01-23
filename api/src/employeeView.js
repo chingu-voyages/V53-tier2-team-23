@@ -2,6 +2,7 @@ const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
 const dishesContainer = document.querySelector('.dishes-container');
+const formContainer = document.querySelector('.form-container');
 
 const form = document.querySelector('.form');
 const formInput = document.querySelector('.form input');
@@ -583,13 +584,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     form.addEventListener('submit', submitForm);
   });
 
-  employeesContainer.addEventListener('click', function (event) {
-    console.log('clicked employeesContainer');
+  formContainer.addEventListener('click', function (event) {
+    console.log('clicked formContainer');
     if (event.target.classList.contains('dishes-container__button')) {
       console.log('clicked dishes-container__button');
-      const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
-      console.log('clicked employeeContainer');
-      const dishesContainerButton = employeeContainer.querySelector(
+      const formResponseContainer = event.target.closest(
+        '.form-container__response'
+      ); // Get the parent container
+      console.log('clicked formResponseContainer');
+      const dishesContainerButton = formResponseContainer.querySelector(
         '.dishes-container__button'
       );
       console.log('clicked dishesContainerButton', dishesContainerButton);
@@ -598,7 +601,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         form.addEventListener('submit', submitDishesForm);
       });
     }
+  });
 
+  employeesContainer.addEventListener('click', function (event) {
     if (event.target.classList.contains('form-container__button')) {
       const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
       const inputValueElement =
