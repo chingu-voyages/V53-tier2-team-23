@@ -584,11 +584,15 @@ document.addEventListener('DOMContentLoaded', async function () {
   });
 
   employeesContainer.addEventListener('click', function (event) {
+    console.log('clicked employeesContainer');
     if (event.target.classList.contains('dishes-container__button')) {
+      console.log('clicked dishes-container__button');
       const employeeContainer = event.target.closest('.employee-container'); // Get the parent container
+      console.log('clicked employeeContainer');
       const dishesContainerButton = employeeContainer.querySelector(
         '.dishes-container__button'
       );
+      console.log('clicked dishesContainerButton', dishesContainerButton);
       dishesContainerButton.addEventListener('click', () => {
         console.log('click');
         form.addEventListener('submit', submitDishesForm);
