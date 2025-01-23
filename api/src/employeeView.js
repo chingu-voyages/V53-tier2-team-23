@@ -60,6 +60,7 @@ async function getEmployees(employeesData) {
       allergies = [],
       dietaryRestrictions = [],
     } = employee;
+
     await viewEmployee(
       employeesContainer,
       employeeIndex + 1,
@@ -81,7 +82,7 @@ async function getDishes(dishesData) {
       ingredients = [],
       calories,
       imageUrl,
-    } = employeeDishes;
+    } = dish;
 
     await viewEmployee(
       dishesContainer,
