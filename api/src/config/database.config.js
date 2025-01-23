@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 // using dotenv just for local testing as I don't have access to netlify
-// const dotenv = require('dotenv');
-// dotenv.config();
+const dotenv = require('dotenv');
+dotenv.config();
 
 let client = null; // Cache for database connection
 
@@ -22,7 +22,7 @@ const connectDatabase = async () => {
       useUnifiedTopology: true,
     });
 
-    console.log('Connected to DB:', mongoose.connection.db.databaseName);
+    // console.log('Connected to DB:', mongoose.connection.db.databaseName);
 
     client = connection; // Cache the Mongoose connection
     console.log('MongoDB connected succesfully');

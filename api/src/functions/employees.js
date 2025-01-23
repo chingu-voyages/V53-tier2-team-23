@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const connectDatabase = require('../config/database.config');
+const authenticate = require('../functions/authMiddleware');
 const Employee = require('../models/employee.models');
 
 // Validations
@@ -94,6 +95,15 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body } = event;
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
+
+  // Check authentication
+  const authResult = authenticate(event);
+  if (authResult.statusCode !== 200) {
+    return authResult; // Return early if authentication fails
+  }
+
+  // Proceed if authenticated
+  const user = authResult.user;
 
   // create new employee. removed employeId since database didn't include it
   if (httpMethod === 'POST' && path.endsWith('/employees')) {

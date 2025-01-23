@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const connectDatabase = require('../config/database.config');
 const Menus = require('../models/menu.models');
 const Dishes = require('../models/dishes.models');
+const authenticate = require('../functions/authMiddleware');
 
 const handleError = (error, method) => {
   console.error(`Error ${method} menu: `, error);
@@ -20,7 +21,18 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body, queryStringParameters } = event;
 
-  // create new Menu
+  // Check authentication for all methods except GET
+  if (httpMethod !== 'GET') {
+    const authResult = authenticate(event);
+    if (authResult.statusCode !== 200) {
+      return authResult; // Return early if authentication fails
+    }
+
+    // Proceed if authenticated
+    const user = authResult.user;
+  }
+
+  // Create new Menu (POST)
   if (httpMethod === 'POST' && path.endsWith('/menus')) {
     try {
       const { weekStartDate, days } = JSON.parse(body);
@@ -51,37 +63,14 @@ exports.handler = async (event) => {
         days,
       });
 
-      return sendResponse(200, newMenu);
+      return sendResponse(200, 'Menu created successfully', newMenu);
     } catch (error) {
       return handleError(error, 'creating');
     }
   }
 
-  // getting menu with the startDate
-  if (httpMethod === 'GET' && path.endsWith(`/menus`)) {
-    try {
-      const { weekStartDate } = queryStringParameters;
-
-      if (!weekStartDate) {
-        return sendResponse(400, 'weekStartDate query parameter is required.');
-      }
-
-      const menu = await Menus.findOne({
-        weekStartDate: new Date(weekStartDate),
-      }).populate('days.dish');
-
-      if (!menu) {
-        return sendResponse(404, 'Menu not found for the given weekStartDate.');
-      }
-
-      return sendResponse(200, 'Menu fetched successfully', menu);
-    } catch (error) {
-      return handleError(error, 'fetching');
-    }
-  }
-
-  // editing menu
-  if (httpMethod === 'PUT' && path.endsWith(`/menus`)) {
+  // Edit menu (PUT)
+  if (httpMethod === 'PUT' && path.endsWith('/menus')) {
     try {
       const { weekStartDate, date, dish } = JSON.parse(body);
 
@@ -125,8 +114,8 @@ exports.handler = async (event) => {
     }
   }
 
-  // delete menu
-  if (httpMethod === 'DELETE' && path.endsWith(`/menus`)) {
+  // Delete menu (DELETE)
+  if (httpMethod === 'DELETE' && path.endsWith('/menus')) {
     try {
       const { weekStartDate } = queryStringParameters;
 
@@ -144,12 +133,39 @@ exports.handler = async (event) => {
 
       return sendResponse(200, 'Menu deleted successfully');
     } catch (error) {
-      handleError(error, 'deleting');
+      return handleError(error, 'deleting');
+    }
+  }
+
+  // Get menu with start date (GET) - No Authentication Required
+  if (httpMethod === 'GET' && path.endsWith('/menus')) {
+    try {
+      const { weekStartDate } = queryStringParameters;
+
+      if (!weekStartDate) {
+        return sendResponse(400, 'weekStartDate query parameter is required.');
+      }
+
+      const menu = await Menus.findOne({
+        weekStartDate: new Date(weekStartDate),
+      }).populate('days.dish');
+
+      if (!menu) {
+        return sendResponse(404, 'Menu not found for the given weekStartDate.');
+      }
+
+      return sendResponse(200, 'Menu fetched successfully', menu);
+    } catch (error) {
+      return handleError(error, 'fetching');
     }
   }
 
   return {
     statusCode: 405,
     body: JSON.stringify({ error: 'Method not allowed.' }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
   };
 };
