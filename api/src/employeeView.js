@@ -5,7 +5,7 @@ const dishesContainer = document.querySelector('.dishes-container');
 const formContainer = document.querySelector('.form-container');
 
 const form = document.querySelector('.form');
-const formInput = document.querySelector('.form input');
+const formInput = document.querySelector('.form-container__input');
 
 async function getDataFromLocalStorage() {
   const localData = localStorage.getItem('employeeData');
@@ -238,28 +238,28 @@ async function handleGetEmployeeDishes(employeeId) {
     const employeeDishes = await getEmployeeDishes(employeeId);
 
     console.log('employeeDishes: ', employeeDishes);
-    const localEmployeeDishes = await getDishesFromLocalStorage();
+    // const localEmployeeDishes = await getDishesFromLocalStorage();
     // console.log('localEmployeeData: ', localEmployeeData);
-
-    if (employeeDishes & !localEmployeeDishes) {
-      responseContainer.innerHTML = '';
-      await getDishes(employeeDishes);
-    } else if (localEmployeeDishes && employeeDishes) {
-      if (
-        JSON.stringify(localEmployeeDishes) === JSON.stringify(employeeDishes)
-      ) {
-        dishesContainer.innerHTML = '';
-        await getDishes(employeeDishes);
-        //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
-      } else {
-        console.log('The data is different');
-        responseContainer.textContent = 'Employee data has changed.';
-      }
-    } else {
-      responseContainer.textContent = 'No user';
-      console.log('No user');
-      localStorage.removeItem('employeeData');
-    }
+    await getDishes(employeeDishes);
+    // if (employeeDishes & !localEmployeeDishes) {
+    //   dishesContainer.innerHTML = '';
+    //   await getDishes(employeeDishes);
+    // } else if (localEmployeeDishes && employeeDishes) {
+    //   if (
+    //     JSON.stringify(localEmployeeDishes) === JSON.stringify(employeeDishes)
+    //   ) {
+    //     dishesContainer.innerHTML = '';
+    //     await getDishes(employeeDishes);
+    //     //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
+    //   } else {
+    //     console.log('The data is different');
+    //     responseContainer.textContent = 'Employee data has changed.';
+    //   }
+    // } else {
+    //   responseContainer.textContent = 'No user';
+    //   console.log('No user');
+    //   localStorage.removeItem('employeeData');
+    // }
   } catch (error) {
     responseContainer.textContent = `Error:  ${error} , getting employee:`;
     console.error(`Error:  ${error} , getting employee:`);
@@ -584,7 +584,8 @@ async function submitDishesForm(event) {
   // const employeeId = document.querySelector(
   //   '.form-container__response .employee-id'
   // ).textContent;
-  const employeeId = formInput.value;
+  const employeeId = document.getElementById('id').value;
+  // const employeeId = formInput.value;
   console.log('submitDishesForm', employeeId);
   await handleGetEmployeeDishes(employeeId);
 }
