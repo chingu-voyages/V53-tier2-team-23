@@ -246,8 +246,7 @@ async function handleGetEmployeeDishes(employeeId) {
       await getDishes(employeeDishes);
     } else if (localEmployeeDishes && employeeDishes) {
       if (
-        localEmployeeDishes._id === _id &&
-        localEmployeeDishes.dishName === dishName
+        JSON.stringify(localEmployeeDishes) === JSON.stringify(employeeDishes)
       ) {
         dishesContainer.innerHTML = '';
         await getDishes(employeeDishes);
