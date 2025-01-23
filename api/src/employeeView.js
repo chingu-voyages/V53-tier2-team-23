@@ -90,7 +90,7 @@ async function getDishes(dishesData) {
       _id,
       category,
       dishName,
-      (ingredients = []),
+      ingredients,
       calories,
       imageUrl
     );
@@ -238,28 +238,28 @@ async function handleGetEmployeeDishes(employeeId) {
     const employeeDishes = await getEmployeeDishes(employeeId);
 
     console.log('employeeDishes: ', employeeDishes);
-    // const localEmployeeDishes = await getDishesFromLocalStorage();
+    const localEmployeeDishes = await getDishesFromLocalStorage();
     // console.log('localEmployeeData: ', localEmployeeData);
-    await getDishes(employeeDishes);
-    // if (employeeDishes & !localEmployeeDishes) {
-    //   dishesContainer.innerHTML = '';
-    //   await getDishes(employeeDishes);
-    // } else if (localEmployeeDishes && employeeDishes) {
-    //   if (
-    //     JSON.stringify(localEmployeeDishes) === JSON.stringify(employeeDishes)
-    //   ) {
-    //     dishesContainer.innerHTML = '';
-    //     await getDishes(employeeDishes);
-    //     //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
-    //   } else {
-    //     console.log('The data is different');
-    //     responseContainer.textContent = 'Employee data has changed.';
-    //   }
-    // } else {
-    //   responseContainer.textContent = 'No user';
-    //   console.log('No user');
-    //   localStorage.removeItem('employeeData');
-    // }
+
+    if (employeeDishes & !localEmployeeDishes) {
+      dishesContainer.innerHTML = '';
+      await getDishes(employeeDishes);
+    } else if (localEmployeeDishes && employeeDishes) {
+      if (
+        JSON.stringify(localEmployeeDishes) === JSON.stringify(employeeDishes)
+      ) {
+        dishesContainer.innerHTML = '';
+        await getDishes(employeeDishes);
+        //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
+      } else {
+        console.log('The data is different');
+        responseContainer.textContent = 'Employee data has changed.';
+      }
+    } else {
+      responseContainer.textContent = 'No user';
+      console.log('No user');
+      localStorage.removeItem('employeeData');
+    }
   } catch (error) {
     responseContainer.textContent = `Error:  ${error} , getting employee:`;
     console.error(`Error:  ${error} , getting employee:`);
