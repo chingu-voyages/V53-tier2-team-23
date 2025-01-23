@@ -26,7 +26,8 @@ label {
   flex-direction: column;
 }
 
-.employees-container {
+.employees-container,
+.dishes-container {
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -100,7 +101,8 @@ label {
 }
 
 /* Employee  */
-.employee-container {
+.employee-container,
+.dish-container {
   background-color: #f8f9fa;
   padding: 20px;
   margin: 20px 0;
@@ -110,7 +112,8 @@ label {
   min-width: 20rem;
 }
 
-.employee-container h2 {
+.employee-container h2,
+.dish-container h2 {
   font-size: 22px;
   color: #23272a;
   font-weight: 700;
@@ -123,7 +126,8 @@ label {
   margin: 0 auto;
 }
 
-.main-diet {
+.main-diet,
+.dish-category {
   font-size: 22px;
   color: #ffffff;
   margin-bottom: 10px;
@@ -140,14 +144,21 @@ label {
   color: #007bff;
   margin-top: 15px;
 }
+.dish-container h3 {
+  font-size: 18px;
+  color: #007bff;
+  margin-top: 15px;
+}
 
 /* Allergies - Dietary Restrictions) */
-.employee-container ul {
+.employee-container ul,
+.dish-container ul {
   list-style-type: none;
   padding-left: 0;
 }
 
-.employee-container li {
+.employee-container li,
+.dish-container li {
   background-color: #fff;
   border: 1px solid #ccc;
   padding: 8px 12px;
@@ -156,7 +167,8 @@ label {
   font-size: 16px;
 }
 
-.employee-index {
+.employee-index,
+.dish-index {
   font-weight: 900;
   border: 5px solid #292840;
   outline: 5px solid #3dcc77;
@@ -170,7 +182,8 @@ label {
   line-height: 10px;
 }
 
-.employee-id {
+.employee-id,
+.dish-id {
   font-weight: 900;
   -webkit-font-smoothing: antialiased;
   font-variant: all-small-caps;
@@ -180,11 +193,13 @@ label {
   background-color: #e9ecef;
 }
 
-.allergies-container {
+.allergies-container,
+.ingredients-container {
   margin-top: 10px;
 }
 
-.allergies-container h3 {
+.allergies-container h3,
+.ingredients-container h3 {
   color: #f4cf4b;
 }
 
