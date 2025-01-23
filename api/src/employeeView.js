@@ -18,8 +18,8 @@ async function getEmployeesDataFromLocalStorage() {
 }
 
 async function getDishesFromLocalStorage() {
-  const localEmployeesDishes = localStorage.getItem('employeesDishes');
-  return localEmployeesDishes ? JSON.parse(localEmployeesDishes) : null; // parse data
+  const localEmployeeDishes = localStorage.getItem('employeeDishes');
+  return localEmployeeDishes ? JSON.parse(localEmployeeDishes) : null; // parse data
 }
 
 async function getAllEmployees() {
@@ -194,8 +194,8 @@ async function getEmployeeDishes(employeeId) {
 
     const employeeDishes = responseData.data.dishes;
 
-    console.log('responseData: ', responseData);
-    console.log(' employeeDishes: ', employeeDishes);
+    //console.log('responseData: ', responseData);
+    //console.log(' employeeDishes: ', employeeDishes);
 
     localStorage.setItem('employeeDishes', JSON.stringify(employeeDishes));
     return employeeDishes;
@@ -487,6 +487,7 @@ async function viewEmployeeById(
   // button view
   const buttonElement = document.createElement('button');
   buttonElement.classList.add('dishes-container__button');
+  buttonElement.type = 'button';
   buttonElement.textContent = 'View dishes';
   container.appendChild(buttonElement);
 
@@ -563,8 +564,8 @@ async function submitForm(event) {
   event.preventDefault();
   const employeeId = document.getElementById('id').value;
   // console.log('submitForm', employeeId);
-  await handleGetEmployeeDishes(employeeId);
-  //await handleGetEmployeeData(employeeId);
+
+  await handleGetEmployeeData(employeeId);
 }
 
 async function submitDishesForm(event) {
@@ -573,15 +574,28 @@ async function submitDishesForm(event) {
   // const employeeId = document.querySelector(
   //   '.form-container__response .employee-id'
   // ).textContent;
-  const employeeId = document.getElementById('id').value;
+  const employeeId = formInput.getElementById('id').value;
   console.log('submitDishesForm', employeeId);
   await handleGetEmployeeDishes(employeeId);
 }
 
 function selectFormSubmit(submitFormEvent) {
+  if (!form) {
+    console.error('Form not found.');
+    return;
+  }
+
+  // Remove previous submit event listeners
   form.removeEventListener('submit', submitForm);
   form.removeEventListener('submit', submitDishesForm);
+
+  // Add the new submit event listener
   form.addEventListener('submit', submitFormEvent);
+
+  // Manually submit the form (if needed)
+  setTimeout(() => {
+    form.requestSubmit(); // More reliable than dispatchEvent for native form submission
+  }, 0);
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -599,6 +613,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       //   '.dishes-container__button'
       // );
       // console.log('clicked dishesContainerButton', dishesContainerButton);
+
       selectFormSubmit(submitDishesForm);
     }
   });
