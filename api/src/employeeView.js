@@ -71,6 +71,31 @@ async function getEmployees(employeesData) {
   }
 }
 
+async function getDishes(dishesData) {
+  for (const dish of dishesData) {
+    let dishIndex = dishesData.findIndex((index) => index._id == dish._id);
+    const {
+      _id,
+      category,
+      dishName,
+      ingredients = [],
+      calories,
+      imageUrl,
+    } = employeeDishes;
+
+    await viewEmployee(
+      dishesContainer,
+      dishIndex + 1,
+      _id,
+      category,
+      dishName,
+      (ingredients = []),
+      calories,
+      imageUrl
+    );
+  }
+}
+
 async function handleGetEmployeesData() {
   try {
     responseContainer.innerHTML = 'loading...';
@@ -226,30 +251,14 @@ async function handleGetEmployeeDishes(employeeId) {
 
     if (employeeDishes & !localEmployeeDishes) {
       responseContainer.innerHTML = '';
-      await viewEmployeeDishes(
-        dishesContainer,
-        _id,
-        category,
-        dishName,
-        ingredients,
-        calories,
-        imageUrl
-      );
+      await getDishes(employeeDishes);
     } else if (localEmployeeDishes && employeeDishes) {
       if (
         localEmployeeDishes._id === _id &&
         localEmployeeDishes.dishName === dishName
       ) {
         dishesContainer.innerHTML = '';
-        await viewEmployeeDishes(
-          dishesContainer,
-          _id,
-          category,
-          dishName,
-          ingredients,
-          calories,
-          imageUrl
-        );
+        await getDishes(employeeDishes);
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
         console.log('The data is different');
@@ -500,6 +509,7 @@ async function viewEmployeeById(
 
 async function viewEmployeeDishes(
   appendContainer,
+  dishIndex = null,
   id,
   category,
   dishName,
@@ -510,6 +520,15 @@ async function viewEmployeeDishes(
   // dishes container
   const container = document.createElement('div');
   container.classList.add('dish-container');
+
+  // dishIndex
+  if (dishIndex !== null) {
+    const dishIndexElement = document.createElement('p');
+    dishIndexElement.classList.add('dish-index');
+    dishIndexElement.textContent = `${dishIndex}`;
+    container.appendChild(dishIndexElement);
+  }
+
   // dish name
   const dishNameElement = document.createElement('h2');
   dishNameElement.textContent = `${dishName}`;
