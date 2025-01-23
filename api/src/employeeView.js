@@ -84,7 +84,7 @@ async function getDishes(dishesData) {
       imageUrl,
     } = dish;
 
-    await viewEmployee(
+    await viewEmployeeDishes(
       dishesContainer,
       dishIndex + 1,
       _id,
