@@ -577,29 +577,28 @@ async function submitDishesForm(event) {
   await handleGetEmployeeDishes(employeeId);
 }
 
+function selectFormSubmit(submitFormEvent) {
+  form.removeEventListener('submit', submitForm);
+  form.removeEventListener('submit', submitDishesForm);
+  form.addEventListener('submit', submitFormEvent);
+}
+
 document.addEventListener('DOMContentLoaded', async function () {
   await handleGetEmployeesData();
-
-  submitButton.addEventListener('click', () => {
-    form.addEventListener('submit', submitForm);
-  });
 
   formContainer.addEventListener('click', function (event) {
     console.log('clicked formContainer');
     if (event.target.classList.contains('dishes-container__button')) {
       console.log('clicked dishes-container__button');
-      const formResponseContainer = event.target.closest(
-        '.form-container__response'
-      ); // Get the parent container
-      console.log('clicked formResponseContainer');
-      const dishesContainerButton = formResponseContainer.querySelector(
-        '.dishes-container__button'
-      );
-      console.log('clicked dishesContainerButton', dishesContainerButton);
-      dishesContainerButton.addEventListener('click', () => {
-        console.log('click');
-        form.addEventListener('submit', submitDishesForm);
-      });
+      // const formResponseContainer = event.target.closest(
+      //   '.form-container__response'
+      // ); // Get the parent container
+      // console.log('clicked formResponseContainer');
+      // const dishesContainerButton = formResponseContainer.querySelector(
+      //   '.dishes-container__button'
+      // );
+      // console.log('clicked dishesContainerButton', dishesContainerButton);
+      selectFormSubmit(submitDishesForm);
     }
   });
 
@@ -613,11 +612,13 @@ document.addEventListener('DOMContentLoaded', async function () {
         .replace('Employee ID:', '')
         .trim();
       // console.log(inputValue);
-      const button = employeeContainer.querySelector('button');
+      // const button = employeeContainer.querySelector('button');
+      // submitButton.addEventListener('click', () => {
+      //   form.addEventListener('submit', submitForm);
+      // });
       // console.log('clicked');
       formInput.value = inputValue;
-      form.removeEventListener('submit', submitForm); // Remove previous listeners
-      form.addEventListener('submit', submitForm);
+      selectFormSubmit(submitForm); // Remove previous listeners
     }
   });
 });
