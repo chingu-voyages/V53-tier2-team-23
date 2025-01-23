@@ -509,7 +509,7 @@ async function viewEmployeeDishes(
 ) {
   // dishes container
   const container = document.createElement('div');
-  container.classList.add('dishes-container');
+  container.classList.add('dish-container');
   // dish name
   const dishNameElement = document.createElement('h2');
   dishNameElement.textContent = `${dishName}`;
