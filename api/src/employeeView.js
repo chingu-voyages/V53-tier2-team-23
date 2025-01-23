@@ -525,17 +525,23 @@ async function viewEmployeeDishes(
   dishNameElement.textContent = `${dishName}`;
   container.appendChild(dishNameElement);
 
+  const dishImageElement = document.createElement('div');
+  dishImageElement.classList.add('dish-image');
+  const imageElement = new Image();
+  imageElement.src = imageUrl;
+  dishImageElement.appendChild(imageElement);
+  //dish category
+  const dishCategoryElement = document.createElement('h2');
+  dishCategoryElement.classList.add('dish-category');
+  dishCategoryElement.textContent = `${category}`;
+  dishImageElement.appendChild(dishCategoryElement);
+  container.appendChild(dishImageElement);
+
   // id
   const dishIdElement = document.createElement('p');
   dishIdElement.classList.add('dish-id');
   dishIdElement.textContent = `dish ID: ${id}`;
   container.appendChild(dishIdElement);
-
-  //dish category
-  const dishCategoryElement = document.createElement('h2');
-  dishCategoryElement.classList.add('dish-category');
-  dishCategoryElement.textContent = `${category}`;
-  container.appendChild(dishCategoryElement);
 
   // ingredients list
   const ingredientsContainer = document.createElement('div');

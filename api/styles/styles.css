@@ -126,8 +126,23 @@ label {
   margin: 0 auto;
 }
 
-.main-diet,
 .dish-category {
+  position: absolute;
+  bottom: 10px;
+  right: -3px;
+  border-top-left-radius: 500rem;
+  border-bottom-left-radius: 500rem;
+  padding-right: 25px;
+  padding-left: 35px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-weight: 700;
+  font-size: 22px;
+  color: #fff;
+  background: #538e00;
+}
+
+.main-diet {
   font-size: 22px;
   color: #ffffff;
   margin-bottom: 10px;
@@ -155,6 +170,8 @@ label {
 .dish-container ul {
   list-style-type: none;
   padding-left: 0;
+  font-family: 'PT Serif', serif;
+  font-weight: 700;
 }
 
 .employee-container li,
@@ -167,8 +184,7 @@ label {
   font-size: 16px;
 }
 
-.employee-index,
-.dish-index {
+.employee-index {
   font-weight: 900;
   border: 5px solid #292840;
   outline: 5px solid #3dcc77;
@@ -180,6 +196,36 @@ label {
   height: 40px;
   outline-style: dotted;
   line-height: 10px;
+}
+
+.dish-index {
+  font-weight: 900;
+  width: max-content;
+  padding: 5px;
+  box-sizing: border-box;
+  color: #23272a;
+  height: 20px;
+  line-height: 10px;
+}
+
+.dish-image {
+  max-height: 250px;
+  position: relative;
+}
+.dish-image img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.calories-container p {
+  color: #8c1cf9;
+  font-weight: 900;
+  background-color: aquamarine;
+  max-width: fit-content;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 .employee-id,
