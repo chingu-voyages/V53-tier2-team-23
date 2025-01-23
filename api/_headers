@@ -1,2 +1,2 @@
 /*
-  Content-Security-Policy: default-src 'self'; connect-src *;
+  Content-Security-Policy: default-src 'self'; connect-src *; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
