@@ -15,6 +15,13 @@ const dishesContainer = document.querySelector('.dishes-container');
 const formContainer = document.querySelector('.form-container');
 
 const form = document.querySelector('.form');
+const employeesContainerForm = document.querySelector(
+  '.employees-form-container .form'
+);
+
+const dishesContainerForm = document.querySelector(
+  '.dishes-form-container .form'
+);
 const formInput = document.querySelector('.form-container__input');
 
 async function getDataFromLocalStorage() {
@@ -678,7 +685,7 @@ async function allergenfreeDishesSubmitForm(event) {
   await handleGetAllergenfreeDishes();
 }
 //allergenfreeDishesSubmitButton
-function selectFormSubmit(submitFormEvent) {
+function selectFormSubmit(form, submitFormEvent) {
   if (!form) {
     console.error('Form not found.');
     return;
@@ -687,6 +694,7 @@ function selectFormSubmit(submitFormEvent) {
   // Remove previous submit event listeners
   form.removeEventListener('submit', submitForm);
   form.removeEventListener('submit', submitDishesForm);
+  form.removeEventListener('submit', allergenfreeDishesSubmitForm);
 
   // Add the new submit event listener
   form.addEventListener('submit', submitFormEvent);
@@ -704,7 +712,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log('clicked dishesFormContainer');
     if (event.target.classList.contains('allergen-free-dishes__submitButton')) {
       console.log('clicked allergen-free-dishes__submitButton');
-      selectFormSubmit(submitDishesForm);
+      selectFormSubmit(dishesContainerForm, allergenfreeDishesSubmitForm);
     }
   });
 
@@ -721,7 +729,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // );
       // console.log('clicked dishesContainerButton', dishesContainerButton);
 
-      selectFormSubmit(allergenfreeDishesSubmitForm);
+      selectFormSubmit(employeesContainerForm, submitDishesForm);
     }
   });
 
@@ -741,7 +749,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // });
       // console.log('clicked');
       formInput.value = inputValue;
-      selectFormSubmit(submitForm); // Remove previous listeners
+      selectFormSubmit(employeesContainerForm, submitForm); // Remove previous listeners
     }
   });
 });
