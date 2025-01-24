@@ -445,9 +445,9 @@ async function getEmployeeDishes(employeeId) {
       } || null
     );
   } catch (error) {
-    console.error('Error fetching employee:', error);
+    console.error('Error fetching employee dishes:', error);
     console.log(employeeId);
-    throw new Error('Error fetching employee');
+    throw new Error('Error fetching employee dishes');
   }
 }
 
