@@ -6,7 +6,7 @@ const employeesFormContainer = document.querySelector(
 );
 const employeesContainer = document.querySelector('.employees-container');
 const allergenfreeDishesContainer = document.querySelector(
-  '.allergenfree-dishes-container'
+  '#allergenfree-dishes-container'
 );
 const allergenfreeDishesSubmitButton = document.querySelector(
   '.allergen-free-dishes__submitButton'
