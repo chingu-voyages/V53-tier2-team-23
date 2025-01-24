@@ -373,42 +373,37 @@ async function getAllergen(allergenId) {
 
 async function getEmployeeAllergenfreeDishes() {
   try {
-    try {
-      const db = await getDb(); // Get the database connection
+    const db = await getDb(); // Get the database connection
 
-      const images = await Image.find().exec();
-      // Generate the Cloudinary URL
+    const images = await Image.find().exec();
+    // Generate the Cloudinary URL
 
-      const allergies = await Allergen.find({}).exec();
+    const allergies = await Allergen.find({}).exec();
 
-      const allergenNames = allergies.map((allergen) => allergen.allergenName);
+    const allergenNames = allergies.map((allergen) => allergen.allergenName);
 
-      // Fetch all dishes using Mongoose
-      const dishesNoAllergens = await Dish.find({
-        allergens: { $nin: allergenNames }, // Exclude allergens
-      });
+    // Fetch all dishes using Mongoose
+    const dishesNoAllergens = await Dish.find({
+      allergens: { $nin: allergenNames }, // Exclude allergens
+    });
 
-      const dishes = dishesNoAllergens.map((dish, index) => {
-        const imageUrl = images[index]?.url
-          ? `https://res.cloudinary.com/dspxn4ees/image/upload/w_120,h_120,c_fill,g_auto/${images[index].url}`
-          : '';
-
-        return {
-          ...dish.toObject(),
-          imageUrl,
-        };
-      });
-
-      const countdishes = await Dish.countDocuments(); // Get total dishes
+    const dishes = dishesNoAllergens.map((dish, index) => {
+      const imageUrl = images[index]?.url
+        ? `https://res.cloudinary.com/dspxn4ees/image/upload/w_120,h_120,c_fill,g_auto/${images[index].url}`
+        : '';
 
       return {
-        dishes: dishes,
-        countdishes: countdishes,
+        ...dish.toObject(),
+        imageUrl,
       };
-    } catch (error) {
-      console.error('Error fetching dishes:', error);
-      throw new Error('Failed to fetch dishes');
-    }
+    });
+
+    const countdishes = await Dish.countDocuments(); // Get total dishes
+
+    return {
+      dishes: dishes,
+      countdishes: countdishes,
+    };
   } catch (error) {
     console.error('Error fetching dishes:', error);
     console.log(dishes);
