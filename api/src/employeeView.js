@@ -5,6 +5,7 @@ const employeesFormContainer = document.querySelector(
   '.employees-form-container'
 );
 const employeesContainer = document.querySelector('.employees-container');
+const calendarContainer = document.querySelector('.calendar-container');
 const allergenfreeDishesContainer = document.querySelector(
   '.allergenfree-dishes-container'
 );
@@ -182,6 +183,7 @@ async function handleGetAllergenfreeDishes() {
   try {
     allergenfreeDishesContainer.innerHTML = 'loading...';
     const allergenfreeDishes = await getAllergenfreeDishes();
+    await createCalendar(allergenfreeDishes);
     const localAllergenfreeDishes =
       await getAllergenfreeDishesFromLocalStorage();
     if (allergenfreeDishes & !localAllergenfreeDishes) {
@@ -313,6 +315,194 @@ async function getEmployeeDishes(employeeId) {
     // Return null
     return null;
   }
+}
+
+const calendarTemplate = `
+<div class="wrapper">
+  <h1>Meal planner</h1>
+  <div class="table">
+    <div class="tracks" name="myElements">
+      <div class="track yellow">
+        <div class="track">
+          <div class="heading">Monday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details">
+            <h3>Lorem ipsum dolor sit.</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere!</p>
+          </div>
+        </div>
+      </div>
+      <div class="track turq">
+        <div class="track">
+          <div class="heading">Tuesday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details">
+            <h3>Lorem ipsum dolor sit.</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
+          </div>
+        </div>
+      </div>
+      <div class="track blue">
+        <div class="track">
+          <div class="heading">Wednesday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details">
+            <h3>Lorem ipsum dolor sit.</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
+          </div>
+        </div>
+      </div>
+      <div class="track green">
+        <div class="track">
+          <div class="heading">Thursday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details">
+            <h3>Lorem ipsum dolor sit.</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, omnis voluptas?</p>
+          </div>
+        </div>
+      </div>
+      <div class="track purple">
+        <div class="track">
+          <div class="heading">Friday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details">
+            <h3>Lorem ipsum dolor sit.</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
+          </div>
+        </div>
+      </div>
+      <div class="track gray">
+        <div class="track">
+          <div class="heading">Saturday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details">
+            <h3>Lorem ipsum dolor sit.</h3>
+            <p>Lorem ipsum dolor sit amet.</p>
+          </div>
+        </div>
+      </div>
+      <div class="track">
+        <div class="track">
+          <div class="heading">Sunday</div>
+        </div>
+        <div class="entry fullh">
+          <div class="details dayoff">
+            <h3>Dayoff</h3>
+            <p>Dayoff</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+async function createCalendar(dishes) {
+  const daysOfWeek = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  const colors = ['yellow', 'turq', 'blue', 'green', 'purple', 'gray', '']; // No color for Sunday
+
+  const uniqueDishesMap = new Map();
+
+  const shuffle = (array: string[]) => {
+    return array
+      .map((a) => ({ sort: Math.random(), value: a }))
+      .sort((a, b) => a.sort - b.sort)
+      .map((a) => a.value);
+  };
+
+  const shuffledDishes = shuffle(dishes);
+
+  const shuffledDishesMap: Map<string, string> = new Map();
+
+  daysOfWeek.forEach((day, index) => {
+    if (shuffledDishes[index]) {
+      shuffledDishesMap.set(day, shuffledDishes[index]);
+    }
+  });
+
+  console.log(shuffledDishesMap);
+
+  // // Create wrapper
+  // const wrapper = document.createElement('div');
+  // wrapper.classList.add('wrapper');
+
+  // // Create title
+  // const title = document.createElement('h1');
+  // title.textContent = 'Meal Planner';
+  // wrapper.appendChild(title);
+
+  // // Create table container
+  // const table = document.createElement('div');
+  // table.classList.add('table');
+  // wrapper.appendChild(table);
+
+  // // Create tracks container
+  // const tracksContainer = document.createElement('div');
+  // tracksContainer.classList.add('tracks');
+  // tracksContainer.setAttribute('name', 'myElements');
+  // table.appendChild(tracksContainer);
+
+  // // Loop through days and create elements
+  // daysOfWeek.forEach((day, index) => {
+  //   const track = document.createElement('div');
+  //   track.classList.add('track');
+
+  //   if (colors[index]) {
+  //     track.classList.add(colors[index]); // Apply color class
+  //   }
+
+  //   // Heading
+  //   const headingContainer = document.createElement('div');
+  //   headingContainer.classList.add('track');
+
+  //   const heading = document.createElement('div');
+  //   heading.classList.add('heading');
+  //   heading.textContent = day;
+  //   headingContainer.appendChild(heading);
+
+  //   // Entry container
+  //   const entry = document.createElement('div');
+  //   entry.classList.add('entry', 'fullh');
+
+  //   const details = document.createElement('div');
+  //   details.classList.add('details');
+
+  //   if (day === 'Sunday') {
+  //     details.classList.add('dayoff');
+  //     details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
+  //   } else {
+  //     details.innerHTML = `
+  //       <h3>Meal for ${day}</h3>
+  //       <p>Delicious meal for today!</p>
+  //     `;
+  //   }
+
+  //   entry.appendChild(details);
+  //   track.appendChild(headingContainer);
+  //   track.appendChild(entry);
+  //   tracksContainer.appendChild(track);
+  // });
+
+  // // Append wrapper to body
+  // calendarContainer.appendChild(wrapper);
+  return new Promise((resolve) => setTimeout(resolve, 500));
 }
 
 async function handleGetEmployeeDishes(employeeId) {

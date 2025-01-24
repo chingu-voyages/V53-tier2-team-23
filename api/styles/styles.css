@@ -1,3 +1,12 @@
+:root {
+  --body-bg: #fdfdfd;
+  --thead-bg: #f7f9fb;
+  --thead-color: hsl(210, 5%, 40%);
+  --bd-color: #ebebeb;
+  --time-color: hsl(210, 5%, 70%);
+  --time-width: 75px;
+}
+
 body {
   font-family: Arial, sans-serif;
   padding: 20px;
@@ -257,4 +266,237 @@ label {
 
 .dietary-restrictions-container h3 {
   color: #8c1cf9;
+}
+
+/* Calendar */
+
+/* body {
+  background: var(--body-bg);
+} */
+
+.wrapper {
+  padding: 15px;
+  margin: 2em auto 3em;
+  max-width: 100%;
+}
+
+h1 {
+  font-size: 9vmin;
+  text-align: center;
+  line-height: 1;
+  color: #333;
+  font-family: 'Courgette', cursive;
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.table {
+  position: relative;
+  border: solid var(--bd-color);
+  border-width: 0 1px 0 0;
+  overscroll-behavior: contain;
+}
+
+.tracks {
+  display: flex;
+}
+
+.tracks {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.track {
+  flex: 1 0 22%;
+}
+
+.track + .track {
+  margin-left: -1px;
+}
+
+.time {
+  flex: 0 0 var(--time-width);
+}
+
+.headers .time {
+  z-index: 5;
+}
+
+.tracks .time {
+  box-shadow: 20px 0 50px rgba(0, 0, 0, 0.05);
+}
+
+time {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.03em;
+}
+
+time {
+  color: hsl(210, 5%, 70%);
+  text-align: right;
+}
+
+.time .heading {
+  justify-content: flex-end;
+  padding-right: 1em;
+  font-weight: 500;
+  background: #f9f9f9;
+}
+
+.heading {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  border: solid var(--bd-color);
+  border-width: 1px;
+  color: hsla(210, 5%, 40%, 1);
+  z-index: 1;
+  background: var(--thead-bg);
+  font-weight: 700;
+}
+
+.entry {
+  border: 1px solid #ebebeb;
+  border-top: 0;
+  background: var(--body-bg);
+  height: 9em;
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.entry:not(:last-of-type) {
+  border-bottom-style: dashed;
+}
+
+.track:last-of-type > div {
+  border-right: 0;
+}
+
+.time .entry,
+.time .heading {
+  position: relative;
+  border-color: transparent var(--bd-color) var(--bd-color) transparent;
+  border-color: transparent var(--bd-color) transparent transparent;
+}
+
+.time .entry:after,
+.time .heading:after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 50%;
+  height: 1px;
+  z-index: 3;
+  background: linear-gradient(to left, var(--bd-color), var(--body-bg));
+}
+
+.double {
+  height: 18em;
+}
+.fullh {
+  height: 27em;
+}
+
+.details {
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid #ebecee;
+  padding: 10px;
+  border-left: 5px solid var(--theme-bg);
+  height: 100%;
+}
+
+h3 {
+  font-size: 12px;
+  background: var(--theme-bg);
+  padding: 2px 5px;
+  font-weight: 600;
+  line-height: 1.4;
+  border-radius: 2px;
+  color: var(--theme-color);
+  width: max-content;
+}
+
+.yellow {
+  --theme-color: hsl(40, 50%, 30%);
+  --theme-bg: #ffd800;
+}
+
+.turq {
+  --theme-color: hsl(180, 50%, 30%);
+  --theme-bg: #00facd;
+}
+
+.blue {
+  --theme-color: hsl(200, 50%, 30%);
+  --theme-bg: #52f0fa;
+}
+
+.green {
+  --theme-color: #2d4710;
+  --theme-bg: #86f250;
+}
+
+.purple {
+  --theme-color: hsl(235, 75%, 90%);
+  --theme-bg: #473bbe;
+}
+
+.gray {
+  --theme-color: var(--thead-bg);
+  --theme-bg: #bbbcbc;
+}
+
+.dayoff {
+  background: repeating-linear-gradient(
+    -45deg,
+    #444cf7,
+    #444cf7 5px,
+    #e5e5f7 5px,
+    #e5e5f7 25px
+  );
+}
+
+p {
+  font-size: 12px;
+  color: #333;
+  font-weight: 500;
+  margin: 0;
+}
+
+p + p {
+  color: #858585;
+  margin-top: 5px;
+  font-weight: 400;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  z-index: 6;
+  height: 100%;
+  padding: 1px 0;
+  width: calc(100% - var(--time-width));
+}
+
+@media (max-width: 720px) {
+  .tracks {
+    flex-direction: column;
+  }
+
+  .track:not(.time) {
+    flex: 1 0 calc(50% + 7px);
+  }
 }
