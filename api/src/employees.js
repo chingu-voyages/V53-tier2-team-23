@@ -95,14 +95,10 @@ const handler = async (event, context) => {
     }
   }
 
-  if (
-    httpMethod === 'GET' &&
-    path.includes('/employees/') &&
-    path.includes('/allergen-free-dishes')
-  ) {
+  if (httpMethod === 'GET' && path.includes('/allergen-free-dishes')) {
     try {
       const { dishes, countdishes } = await getEmployeeAllergenfreeDishes();
-      if (!dishes) {
+      if (!dishes || dishes.length === 0) {
         return {
           statusCode: 404,
           headers,
@@ -136,52 +132,48 @@ const handler = async (event, context) => {
     }
   }
 
-  if (
-    httpMethod === 'GET' &&
-    path.includes('/employees/') &&
-    !path.includes('/dishes')
-  ) {
-    const employeeId = path.split('/')[4]; // Extract employee ID // Extract employee id from path
-    console.log(employeeId);
-    try {
-      const employee = await getEmployee(employeeId);
-      if (!employee) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ message: 'Employee not found' }),
-        };
-      }
-      return {
-        statusCode: 200,
-        headers, // Include the headers in the response
-        body: JSON.stringify({
-          success: true,
-          data: {
-            employee,
-            employeeId,
-          },
-        }),
-      };
-    } catch (error) {
-      console.error('Error:', error);
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({
-          success: false,
-          message: 'An internal server error occurred.',
-          error: error.message, // Include error details for debugging
-        }),
-      };
-    }
-  }
+  // if (
+  //   httpMethod === 'GET' &&
+  //   path.includes('/employees/') &&
+  //   !path.includes('/dishes')
+  // ) {
+  //   const employeeId = path.split('/')[4]; // Extract employee ID // Extract employee id from path
+  //   console.log(employeeId);
+  //   try {
+  //     const employee = await getEmployee(employeeId);
+  //     if (!employee) {
+  //       return {
+  //         statusCode: 404,
+  //         headers,
+  //         body: JSON.stringify({ message: 'Employee not found' }),
+  //       };
+  //     }
+  //     return {
+  //       statusCode: 200,
+  //       headers, // Include the headers in the response
+  //       body: JSON.stringify({
+  //         success: true,
+  //         data: {
+  //           employee,
+  //           employeeId,
+  //         },
+  //       }),
+  //     };
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //     return {
+  //       statusCode: 500,
+  //       headers,
+  //       body: JSON.stringify({
+  //         success: false,
+  //         message: 'An internal server error occurred.',
+  //         error: error.message, // Include error details for debugging
+  //       }),
+  //     };
+  //   }
+  // }
 
-  if (
-    httpMethod === 'GET' &&
-    path.includes('/employees/') &&
-    path.includes('/dishes')
-  ) {
+  if (httpMethod === 'GET' && path.includes('/dishes')) {
     try {
       const employeeId = path.split('/')[4]; // '/employees/{id}/dishes'
       const { employee, dishes } = await getEmployeeDishes(employeeId);
