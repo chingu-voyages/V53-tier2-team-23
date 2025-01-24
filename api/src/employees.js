@@ -381,12 +381,12 @@ async function getEmployeeAllergenfreeDishes() {
 
     const allergies = await Allergen.find({}).exec();
 
-    const allergenNames = allergies.map((allergen) => allergen.allergenName);
-    const allergenIds = allergies.map((allergen) => allergen._id);
-
+    //const allergenNames = allergies.map((allergen) => allergen.allergenName);
+    //const allergenIds = allergies.map((allergen) => allergen._id);
+    const allergens = allergies.map((allergen) => allergen._id);
     // Fetch all dishes using Mongoose
     const dishesNoAllergens = await Dish.find({
-      allergens: { $nin: allergenId }, // Exclude allergens
+      allergens: { $nin: allergens }, // Exclude allergens
     });
 
     const dishes = dishesNoAllergens.map((dish, index) => {
