@@ -379,14 +379,14 @@ async function getEmployeeAllergenfreeDishes() {
     const images = await Image.find({}).exec();
 
     const allergies = await Allergen.find({}).exec();
-
+    const limit = 10;
     //const allergenNames = allergies.map((allergen) => allergen.allergenName);
     //const allergenIds = allergies.map((allergen) => allergen._id);
     const allergens = allergies.map((allergen) => allergen._id);
     // Fetch all dishes using Mongoose
     const dishesNoAllergens = await Dish.find({
       allergens: { $nin: allergens }, // Exclude allergens
-    });
+    }).limit(limit); // limit
 
     const dishes = dishesNoAllergens.map((dish, index) => {
       const imageUrl = images[index]?.url
