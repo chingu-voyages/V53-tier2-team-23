@@ -420,7 +420,7 @@ async function createCalendar(dishes) {
 
   const uniqueDishesMap = new Map();
 
-  const shuffle = (array: string[]) => {
+  const shuffle = (array) => {
     return array
       .map((a) => ({ sort: Math.random(), value: a }))
       .sort((a, b) => a.sort - b.sort)
