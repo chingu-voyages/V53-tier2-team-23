@@ -429,7 +429,7 @@ async function createCalendar(dishes) {
 
   const shuffledDishes = shuffle(dishes);
 
-  const shuffledDishesMap: Map<string, string> = new Map();
+  const shuffledDishesMap = new Map();
 
   daysOfWeek.forEach((day, index) => {
     if (shuffledDishes[index]) {
