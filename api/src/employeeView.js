@@ -528,7 +528,9 @@ async function viewEmployeeDishes(
   const dishImageElement = document.createElement('div');
   dishImageElement.classList.add('dish-image');
   const imageElement = new Image();
-  imageElement.src = imageUrl;
+  const imageName = imageUrl.split('/').pop();
+  const imagePath = `https://res.cloudinary.com/dspxn4ees/image/upload/w_120,h_120,c_fill,g_auto/${imageName}`;
+  imageElement.src = imagePath;
   dishImageElement.appendChild(imageElement);
   //dish category
   const dishCategoryElement = document.createElement('h2');

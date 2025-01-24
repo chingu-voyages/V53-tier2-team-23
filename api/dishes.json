@@ -322,7 +322,7 @@
     "category": "vegan",
     "dishName": "Vegan Pad Thai",
     "ingredients": ["Rice Noodles", "Tofu", "Peanuts", "Lime", "Tamari Sauce"],
-    "allergens": [],
+    "allergens": ["peanut"],
     "calories": 350,
     "imageUrl": "imagesPath/vegan-pad-thai.jpg"
   },
