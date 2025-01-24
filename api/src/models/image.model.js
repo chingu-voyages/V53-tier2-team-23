@@ -8,7 +8,6 @@ const imageUrlSchema = new mongoose.Schema({
     trim: true,
     lowercase: true,
   },
-  ,
   { collection: 'imagesurl' }
 });
 
