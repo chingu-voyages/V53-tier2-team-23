@@ -124,7 +124,7 @@ async function getEmployees(employeesData) {
   }
 }
 
-async function getDishes(dishesData) {
+async function getDishes(container, dishesData) {
   for (const dish of dishesData) {
     let dishIndex = dishesData.findIndex((index) => index._id == dish._id);
     const {
@@ -137,7 +137,7 @@ async function getDishes(dishesData) {
     } = dish;
 
     await viewEmployeeDishes(
-      dishesContainer,
+      container,
       dishIndex + 1,
       _id,
       category,
@@ -186,14 +186,14 @@ async function handleGetAllergenfreeDishes() {
       await getAllergenfreeDishesFromLocalStorage();
     if (allergenfreeDishes & !localAllergenfreeDishes) {
       allergenfreeDishesContainer.innerHTML = '';
-      await getDishes(allergenfreeDishes);
+      await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
     } else if (localAllergenfreeDishes && allergenfreeDishes) {
       if (
         JSON.stringify(localAllergenfreeDishes) ===
         JSON.stringify(allergenfreeDishes)
       ) {
         allergenfreeDishesContainer.innerHTML = '';
-        await getDishes(allergenfreeDishes);
+        await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
       } else {
         console.log('The data is different');
         allergenfreeDishesContainer.textContent = 'Employee data has changed.';
@@ -326,13 +326,13 @@ async function handleGetEmployeeDishes(employeeId) {
 
     if (employeeDishes & !localEmployeeDishes) {
       dishesContainer.innerHTML = '';
-      await getDishes(employeeDishes);
+      await getDishes(dishesContainer, employeeDishes);
     } else if (localEmployeeDishes && employeeDishes) {
       if (
         JSON.stringify(localEmployeeDishes) === JSON.stringify(employeeDishes)
       ) {
         dishesContainer.innerHTML = '';
-        await getDishes(employeeDishes);
+        await getDishes(dishesContainer, employeeDishes);
         //responseContainer.textContent = `${JSON.stringify(localEmployeeData)}`;
       } else {
         console.log('The data is different');
