@@ -69,20 +69,20 @@ async function getAllergenfreeDishes() {
 
     // check response success
     if (!response.ok) {
-      throw new Error(`Failed to fetch employee data: ${response.status}`);
+      throw new Error(`Failed to fetch dishes data: ${response.status}`);
     }
 
     const responseData = await response.json();
 
     const allergenfreeDishes = responseData.data.dishes;
 
-    //console.log('employeesData: ', employeesData);
+    console.log('allergenfreeDishes: ', allergenfreeDishes);
 
     localStorage.setItem(
       'allergenfreeDishes',
       JSON.stringify(allergenfreeDishes)
     );
-    return employeesData;
+    return allergenfreeDishes;
   } catch (error) {
     console.error('Error fetching dishes:', error);
     // Return null
