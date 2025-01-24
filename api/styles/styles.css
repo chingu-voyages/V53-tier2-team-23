@@ -27,7 +27,8 @@ label {
 }
 
 .employees-container,
-.dishes-container {
+.dishes-container,
+.allergenfree-dishes-container {
   display: flex;
   align-items: flex-start;
   width: 100%;
@@ -70,7 +71,8 @@ label {
 }
 
 .form-container__button,
-.dishes-container__button {
+.dishes-container__button,
+.allergen-free-dishes__submitButton {
   width: 100%;
   padding: 10px;
   color: #100f0f;
