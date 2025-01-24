@@ -26,7 +26,7 @@ const handler = async (event, context) => {
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
       const { employees, employeesNumber } = await getEmployees();
-      console.log(employees);
+      //console.log(employees);
 
       return {
         statusCode: 200,
@@ -36,6 +36,88 @@ const handler = async (event, context) => {
           data: {
             employees,
             employeesNumber,
+          },
+        }),
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: 'An internal server error occurred.',
+          error: error.message, // Include error details for debugging
+        }),
+      };
+    }
+  }
+
+  if (
+    httpMethod === 'GET' &&
+    path.includes('/employees/') &&
+    !path.includes('/dishes')
+  ) {
+    const employeeId = path.split('/')[4]; // Extract employee ID // Extract employee id from path
+    console.log(employeeId);
+    try {
+      const employee = await getEmployee(employeeId);
+      if (!employee) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({ message: 'Employee not found' }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers, // Include the headers in the response
+        body: JSON.stringify({
+          success: true,
+          data: {
+            employee,
+            employeeId,
+          },
+        }),
+      };
+    } catch (error) {
+      console.error('Error:', error);
+      return {
+        statusCode: 500,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          message: 'An internal server error occurred.',
+          error: error.message, // Include error details for debugging
+        }),
+      };
+    }
+  }
+
+  if (
+    httpMethod === 'GET' &&
+    path.includes('/employees/') &&
+    path.includes('/allergen-free-dishes')
+  ) {
+    try {
+      const { dishes, countdishes } = await getEmployeeAllergenfreeDishes();
+      if (!dishes) {
+        return {
+          statusCode: 404,
+          headers,
+          body: JSON.stringify({
+            message: 'Dishes not found',
+          }),
+        };
+      }
+      return {
+        statusCode: 200,
+        headers, // Include the headers in the response
+        body: JSON.stringify({
+          success: true,
+          data: {
+            dishes,
+            countdishes,
           },
         }),
       };
@@ -293,6 +375,37 @@ async function getAllergen(allergenId) {
   } catch (error) {
     console.error('Error fetching allergen:', error);
     throw new Error('Error fetching allergen');
+  }
+}
+
+async function getEmployeeAllergenfreeDishes() {
+  try {
+    try {
+      const db = await getDb(); // Get the database connection
+
+      const allergies = await Allergen.find({}).exec();
+
+      const allergenNames = allergies.map((allergen) => allergen.allergenName);
+
+      // Fetch all dishes using Mongoose
+      const dishes = await Dish.find({
+        allergens: { $nin: allergenNames }, // Exclude allergens
+      });
+
+      const countdishes = await Dish.countDocuments(); // Get total dishes
+
+      return {
+        dishes: dishes,
+        countdishes: countdishes,
+      };
+    } catch (error) {
+      console.error('Error fetching dishes:', error);
+      throw new Error('Failed to fetch dishes');
+    }
+  } catch (error) {
+    console.error('Error fetching employee:', error);
+    console.log(employeeId);
+    throw new Error('Error fetching employee');
   }
 }
 
