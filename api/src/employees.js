@@ -178,7 +178,7 @@ const handler = async (event, context) => {
     try {
       const employeeId = path.split('/')[4]; // '/employees/{id}/dishes'
       const { employee, dishes } = await getEmployeeDishes(employeeId);
-      console.log('httpreq:', employeeId);
+      //console.log('httpreq:', employeeId);
       if (!dishes) {
         return {
           statusCode: 404,
@@ -382,10 +382,11 @@ async function getEmployeeAllergenfreeDishes() {
     const allergies = await Allergen.find({}).exec();
 
     const allergenNames = allergies.map((allergen) => allergen.allergenName);
+    const allergenIds = allergies.map((allergen) => allergen._id);
 
     // Fetch all dishes using Mongoose
     const dishesNoAllergens = await Dish.find({
-      allergens: { $nin: allergenNames }, // Exclude allergens
+      allergens: { $nin: allergenId }, // Exclude allergens
     });
 
     const dishes = dishesNoAllergens.map((dish, index) => {
