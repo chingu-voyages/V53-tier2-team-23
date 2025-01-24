@@ -439,69 +439,69 @@ async function createCalendar(dishes) {
 
   console.log(shuffledDishesMap);
 
-  // // Create wrapper
-  // const wrapper = document.createElement('div');
-  // wrapper.classList.add('wrapper');
+  // Create wrapper
+  const wrapper = document.createElement('div');
+  wrapper.classList.add('wrapper');
 
-  // // Create title
-  // const title = document.createElement('h1');
-  // title.textContent = 'Meal Planner';
-  // wrapper.appendChild(title);
+  // Create title
+  const title = document.createElement('h1');
+  title.textContent = 'Meal Planner';
+  wrapper.appendChild(title);
 
-  // // Create table container
-  // const table = document.createElement('div');
-  // table.classList.add('table');
-  // wrapper.appendChild(table);
+  // Create table container
+  const table = document.createElement('div');
+  table.classList.add('table');
+  wrapper.appendChild(table);
 
-  // // Create tracks container
-  // const tracksContainer = document.createElement('div');
-  // tracksContainer.classList.add('tracks');
-  // tracksContainer.setAttribute('name', 'myElements');
-  // table.appendChild(tracksContainer);
+  // Create tracks container
+  const tracksContainer = document.createElement('div');
+  tracksContainer.classList.add('tracks');
+  tracksContainer.setAttribute('name', 'myElements');
+  table.appendChild(tracksContainer);
 
-  // // Loop through days and create elements
-  // daysOfWeek.forEach((day, index) => {
-  //   const track = document.createElement('div');
-  //   track.classList.add('track');
+  // Loop through days and create elements
+  daysOfWeek.forEach((day, index) => {
+    const track = document.createElement('div');
+    track.classList.add('track');
 
-  //   if (colors[index]) {
-  //     track.classList.add(colors[index]); // Apply color class
-  //   }
+    if (colors[index]) {
+      track.classList.add(colors[index]); // Apply color class
+    }
 
-  //   // Heading
-  //   const headingContainer = document.createElement('div');
-  //   headingContainer.classList.add('track');
+    // Heading
+    const headingContainer = document.createElement('div');
+    headingContainer.classList.add('track');
 
-  //   const heading = document.createElement('div');
-  //   heading.classList.add('heading');
-  //   heading.textContent = day;
-  //   headingContainer.appendChild(heading);
+    const heading = document.createElement('div');
+    heading.classList.add('heading');
+    heading.textContent = day;
+    headingContainer.appendChild(heading);
 
-  //   // Entry container
-  //   const entry = document.createElement('div');
-  //   entry.classList.add('entry', 'fullh');
+    // Entry container
+    const entry = document.createElement('div');
+    entry.classList.add('entry', 'fullh');
 
-  //   const details = document.createElement('div');
-  //   details.classList.add('details');
+    const details = document.createElement('div');
+    details.classList.add('details');
 
-  //   if (day === 'Sunday') {
-  //     details.classList.add('dayoff');
-  //     details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
-  //   } else {
-  //     details.innerHTML = `
-  //       <h3>Meal for ${day}</h3>
-  //       <p>Delicious meal for today!</p>
-  //     `;
-  //   }
+    if (day === 'Sunday') {
+      details.classList.add('dayoff');
+      details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
+    } else {
+      details.innerHTML = `
+        <h3>Meal for ${day}</h3>
+        <p>Delicious meal for today!</p>
+      `;
+    }
 
-  //   entry.appendChild(details);
-  //   track.appendChild(headingContainer);
-  //   track.appendChild(entry);
-  //   tracksContainer.appendChild(track);
-  // });
+    entry.appendChild(details);
+    track.appendChild(headingContainer);
+    track.appendChild(entry);
+    tracksContainer.appendChild(track);
+  });
 
-  // // Append wrapper to body
-  // calendarContainer.appendChild(wrapper);
+  // Append wrapper to body
+  calendarContainer.appendChild(wrapper);
   return new Promise((resolve) => setTimeout(resolve, 500));
 }
 
