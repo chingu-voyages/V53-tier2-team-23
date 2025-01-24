@@ -1,6 +1,12 @@
 const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
 const employeesContainer = document.querySelector('.employees-container');
+const allergenfreeDishesContainer = document.querySelector(
+  '.allergenfree-dishes-container'
+);
+const allergenfreeDishesSubmitButton = document.querySelector(
+  '.allergen-free-dishes__submitButton'
+);
 const dishesContainer = document.querySelector('.dishes-container');
 const formContainer = document.querySelector('.form-container');
 
@@ -20,6 +26,11 @@ async function getEmployeesDataFromLocalStorage() {
 async function getDishesFromLocalStorage() {
   const localEmployeeDishes = localStorage.getItem('employeeDishes');
   return localEmployeeDishes ? JSON.parse(localEmployeeDishes) : null; // parse data
+}
+
+async function getAllergenfreeDishesFromLocalStorage() {
+  const localAllergenfreeDishes = localStorage.getItem('allergenfreeDishes');
+  return localAllergenfreeDishes ? JSON.parse(localAllergenfreeDishes) : null; // parse data
 }
 
 async function getAllEmployees() {
@@ -44,6 +55,36 @@ async function getAllEmployees() {
     return employeesData;
   } catch (error) {
     console.error('Error fetching employee:', error);
+    // Return null
+    return null;
+  }
+}
+
+async function getAllergenfreeDishes() {
+  const URL = `https://eatodishes.netlify.app/.netlify/functions/employees/allergen-free-dishes`;
+  try {
+    const response = await fetch(URL, {
+      method: 'GET',
+    });
+
+    // check response success
+    if (!response.ok) {
+      throw new Error(`Failed to fetch employee data: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+
+    const allergenfreeDishes = responseData.data.dishes;
+
+    //console.log('employeesData: ', employeesData);
+
+    localStorage.setItem(
+      'allergenfreeDishes',
+      JSON.stringify(allergenfreeDishes)
+    );
+    return employeesData;
+  } catch (error) {
+    console.error('Error fetching dishes:', error);
     // Return null
     return null;
   }
@@ -123,6 +164,37 @@ async function handleGetEmployeesData() {
   } catch (error) {
     responseContainer.textContent = `Error:  ${error} , getting employee:`;
     console.error(`Error:  ${error} , getting employee:`);
+  }
+}
+
+async function handleGetAllergenfreeDishes() {
+  try {
+    allergenfreeDishesContainer.innerHTML = 'loading...';
+    const allergenfreeDishes = await getAllergenfreeDishes();
+    const localAllergenfreeDishes =
+      await getAllergenfreeDishesFromLocalStorage();
+    if (allergenfreeDishes & !localAllergenfreeDishes) {
+      allergenfreeDishesContainer.innerHTML = '';
+      await getDishes(allergenfreeDishes);
+    } else if (localAllergenfreeDishes && allergenfreeDishes) {
+      if (
+        JSON.stringify(localAllergenfreeDishes) ===
+        JSON.stringify(allergenfreeDishes)
+      ) {
+        allergenfreeDishesContainer.innerHTML = '';
+        await getDishes(allergenfreeDishes);
+      } else {
+        console.log('The data is different');
+        allergenfreeDishesContainer.textContent = 'Employee data has changed.';
+      }
+    } else {
+      allergenfreeDishesContainer.textContent = 'No dishes';
+      console.log('No dishes');
+      localStorage.removeItem('allergenfreeDishes');
+    }
+  } catch (error) {
+    allergenfreeDishesContainer.textContent = `Error:  ${error} , getting dishes:`;
+    console.error(`Error:  ${error} , getting dishes:`);
   }
 }
 
@@ -528,10 +600,9 @@ async function viewEmployeeDishes(
   const dishImageElement = document.createElement('div');
   dishImageElement.classList.add('dish-image');
   const imageElement = new Image();
-  const imageName = imageUrl.split('/').pop();
-  const imagePath = `https://res.cloudinary.com/dspxn4ees/image/upload/w_120,h_120,c_fill,g_auto/${imageName}`;
-  imageElement.src = imagePath;
+  imageElement.src = imageUrl;
   dishImageElement.appendChild(imageElement);
+
   //dish category
   const dishCategoryElement = document.createElement('h2');
   dishCategoryElement.classList.add('dish-category');
@@ -598,6 +669,11 @@ async function submitDishesForm(event) {
   await handleGetEmployeeDishes(employeeId);
 }
 
+async function allergenfreeDishesSubmitForm(event) {
+  event.preventDefault();
+  await handleGetAllergenfreeDishes();
+}
+//allergenfreeDishesSubmitButton
 function selectFormSubmit(submitFormEvent) {
   if (!form) {
     console.error('Form not found.');
@@ -618,7 +694,15 @@ function selectFormSubmit(submitFormEvent) {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-  await handleGetEmployeesData();
+  //await handleGetEmployeesData();
+
+  formContainer.addEventListener('click', function (event) {
+    console.log('clicked formContainer');
+    if (event.target.classList.contains('allergen-free-dishes__submitButton')) {
+      console.log('clicked allergen-free-dishes__submitButton');
+      selectFormSubmit(submitDishesForm);
+    }
+  });
 
   formContainer.addEventListener('click', function (event) {
     console.log('clicked formContainer');
@@ -633,7 +717,7 @@ document.addEventListener('DOMContentLoaded', async function () {
       // );
       // console.log('clicked dishesContainerButton', dishesContainerButton);
 
-      selectFormSubmit(submitDishesForm);
+      selectFormSubmit(allergenfreeDishesSubmitForm);
     }
   });
 

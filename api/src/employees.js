@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
 const Allergen = require('./models/allergen.model'); // Import the Allergen model
 const Employee = require('./models/employee.model'); // Import employee model
+const Image = require('./models/imageurl.model');
 const Dish = require('./models/dish.model'); // Import dish model
 //const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
@@ -383,13 +384,27 @@ async function getEmployeeAllergenfreeDishes() {
     try {
       const db = await getDb(); // Get the database connection
 
+      const images = await Image.find().exec();
+      // Generate the Cloudinary URL
+
       const allergies = await Allergen.find({}).exec();
 
       const allergenNames = allergies.map((allergen) => allergen.allergenName);
 
       // Fetch all dishes using Mongoose
-      const dishes = await Dish.find({
+      const dishesNoAllergens = await Dish.find({
         allergens: { $nin: allergenNames }, // Exclude allergens
+      });
+
+      const dishes = dishesNoAllergens.map((dish, index) => {
+        const imageUrl = images[index]?.url
+          ? `https://res.cloudinary.com/dspxn4ees/image/upload/w_120,h_120,c_fill,g_auto/${images[index].url}`
+          : '';
+
+        return {
+          ...dish.toObject(),
+          imageUrl,
+        };
       });
 
       const countdishes = await Dish.countDocuments(); // Get total dishes
@@ -403,9 +418,9 @@ async function getEmployeeAllergenfreeDishes() {
       throw new Error('Failed to fetch dishes');
     }
   } catch (error) {
-    console.error('Error fetching employee:', error);
-    console.log(employeeId);
-    throw new Error('Error fetching employee');
+    console.error('Error fetching dishes:', error);
+    console.log(dishes);
+    throw new Error('Error fetching dishes');
   }
 }
 
