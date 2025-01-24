@@ -1,5 +1,9 @@
 const submitButton = document.querySelector('#submitButton');
 const responseContainer = document.querySelector('.form-container__response');
+const dishesFormContainer = document.querySelector('.dishes-form-container');
+const employeesFormContainer = document.querySelector(
+  '.employees-form-container'
+);
 const employeesContainer = document.querySelector('.employees-container');
 const allergenfreeDishesContainer = document.querySelector(
   '.allergenfree-dishes-container'
@@ -696,16 +700,16 @@ function selectFormSubmit(submitFormEvent) {
 document.addEventListener('DOMContentLoaded', async function () {
   //await handleGetEmployeesData();
 
-  formContainer.addEventListener('click', function (event) {
-    console.log('clicked formContainer');
+  dishesFormContainer.addEventListener('click', function (event) {
+    console.log('clicked dishesFormContainer');
     if (event.target.classList.contains('allergen-free-dishes__submitButton')) {
       console.log('clicked allergen-free-dishes__submitButton');
       selectFormSubmit(submitDishesForm);
     }
   });
 
-  formContainer.addEventListener('click', function (event) {
-    console.log('clicked formContainer');
+  employeesFormContainer.addEventListener('click', function (event) {
+    console.log('clicked employeesFormContainer');
     if (event.target.classList.contains('dishes-container__button')) {
       console.log('clicked dishes-container__button');
       // const formResponseContainer = event.target.closest(
