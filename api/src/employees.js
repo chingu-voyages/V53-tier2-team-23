@@ -95,7 +95,7 @@ const handler = async (event, context) => {
     }
   }
 
-  if (httpMethod === 'GET' && path.includes('/allergen-free-dishes')) {
+  if (httpMethod === 'GET' && path.endsWith('/allergen-free-dishes')) {
     try {
       const { dishes, countdishes } = await getEmployeeAllergenfreeDishes();
       if (!dishes || dishes.length === 0) {
