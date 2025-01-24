@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
 const Allergen = require('./models/allergen.model'); // Import the Allergen model
 const Employee = require('./models/employee.model'); // Import employee model
-const Image = require('./models/imageurl.model');
+const Image = require('./models/image.model');
 const Dish = require('./models/dish.model'); // Import dish model
 //const { ObjectId } = require('mongodb'); // import ObjectId method to convert the _id field value to string [ https://www.mongodb.com/docs/manual/reference/method/ObjectId/ ]
 
@@ -376,8 +376,7 @@ async function getEmployeeAllergenfreeDishes() {
   try {
     const db = await getDb(); // Get the database connection
 
-    const images = await Image.find().exec();
-    // Generate the Cloudinary URL
+    const images = await Image.find({}).exec();
 
     const allergies = await Allergen.find({}).exec();
 
