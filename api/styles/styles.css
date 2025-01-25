@@ -483,7 +483,7 @@ time {
   border-radius: 2px;
   color: var(--theme-color);
   width: max-content;
-  font-size: 1.4vw;
+  font-size: 1em;
 }
 
 h3 {
@@ -507,13 +507,19 @@ h3 {
   border-radius: 2px;
   width: max-content;
   padding: 5px;
-  font-size: 1.3vw;
+  font-size: 1em;
 }
+.details p.category {
+  font-size: 1em;
+}
+
 .details p.calories {
   color: #8c1cf9;
   font-weight: 900;
   background-color: aquamarine;
   max-width: fit-content;
+  font-size: 1em;
+  padding: 5px;
 }
 
 .yellow {
