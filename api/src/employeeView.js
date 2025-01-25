@@ -439,7 +439,7 @@ async function createCalendar(appendContainer, dishes) {
     }
   });
 
-  console.log(shuffledDishesMap);
+  //console.log(shuffledDishesMap);
 
   // Create wrapper
   const wrapper = document.createElement('div');
@@ -516,6 +516,7 @@ async function createCalendar(appendContainer, dishes) {
   });
 
   // Append wrapper to body
+  appendContainer.innerHTML = '';
   appendContainer.appendChild(wrapper);
   return new Promise((resolve) => setTimeout(resolve, 500));
 }
