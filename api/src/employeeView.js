@@ -501,9 +501,9 @@ async function createCalendar(appendContainer, dishes) {
     } else {
       details.innerHTML = `
           <h3>Meal for ${day}</h3>
-          <p>Dish: ${dish.dishName}</p>
+          <p class="dish-name">Dish: ${dish.dishName}</p>
           <p>Category: ${dish.category}</p>
-          <p>Calories: ${dish.calories}</p>
+          <p class="calories">Calories: ${dish.calories}</p>
           <div class="dish-background-image-container" style="background-image: url('${dish.imageUrl}');">
             <h2 class="dish-background-image-container__dish-name">Delicious meal for today!</h2>
             <div class="dish-label">${dish.dishName}</div>
