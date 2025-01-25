@@ -495,7 +495,7 @@ async function createCalendar(appendContainer, dishes) {
     // console.log(`Calories: ${dish.calories}`);
     // console.log(`Image: ${dish.imageUrl}`);
     const dishIngredients = dish.ingredients;
-    const ingredientsList = dishIngredients.forEach((ingredient) => {
+    const ingredientsList = dishIngredients.map((ingredient) => {
       `<li>${ingredient}</li>`;
     });
 
