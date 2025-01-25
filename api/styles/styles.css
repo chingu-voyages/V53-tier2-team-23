@@ -162,17 +162,16 @@ label {
   background-repeat: no-repeat;
   background-size: cover;
   color: white;
-  margin: 0.5vw auto;
-  height: auto;
+  margin: 0.5vw 0 auto;
+  height: 100%;
   width: 100%;
-  min-height: 76%;
+  min-height: auto;
   min-width: 100%;
   flex-direction: row;
   flex-wrap: wrap;
   padding: 15px;
   box-sizing: border-box;
   position: relative;
-  overflow: hidden;
 }
 
 h2.dish-background-image-container__dish-name {
@@ -365,6 +364,8 @@ h1 {
 
 .track {
   flex: 1 0 22%;
+  min-width: 250px;
+  max-width: 300px;
 }
 
 .track + .track {
@@ -470,9 +471,8 @@ time {
   box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.5);
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   border: 1px solid #ebecee;
-  padding: 10px;
   border-left: 5px solid var(--theme-bg);
-  height: auto;
+  height: 100%;
 }
 
 .details h3 {
