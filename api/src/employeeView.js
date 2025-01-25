@@ -155,7 +155,7 @@ async function handleGetEmployeesData() {
     responseContainer.innerHTML = 'loading...';
     const employeesData = await getAllEmployees();
     const localEmployeesData = await getEmployeesDataFromLocalStorage();
-    if (employeesData & !localEmployeesData) {
+    if (employeesData && !localEmployeesData) {
       responseContainer.innerHTML = '';
       await getEmployees(employeesData);
     } else if (localEmployeesData && employeesData) {
@@ -186,7 +186,7 @@ async function handleGetAllergenfreeDishes() {
     const allergenfreeDishes = await getAllergenfreeDishes();
     const localAllergenfreeDishes =
       await getAllergenfreeDishesFromLocalStorage();
-    if (allergenfreeDishes & !localAllergenfreeDishes) {
+    if (allergenfreeDishes && !localAllergenfreeDishes) {
       allergenfreeDishesContainer.innerHTML = '';
       // await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
       await createCalendar(calendarContainer, allergenfreeDishes);
@@ -226,7 +226,7 @@ async function handleGetEmployeeData(employeeId) {
       allergies = [],
       dietaryRestrictions = [],
     } = employeeData;
-    if (employeeData & !localEmployeeData) {
+    if (employeeData && !localEmployeeData) {
       responseContainer.innerHTML = '';
       await viewEmployeeById(
         responseContainer,
@@ -486,24 +486,27 @@ async function createCalendar(appendContainer, dishes) {
     const details = document.createElement('div');
     details.classList.add('details');
 
-    for (const dish of shuffledDishesMap) {
-      console.log(`Dish: ${dish.dishName}`);
-      console.log(`Category: ${dish.category}`);
-      console.log(`Calories: ${dish.calories}`);
-      console.log(`Image: ${dish.imageUrl}`);
+    const dish = shuffledDishesMap.get(day);
 
-      if (day === 'Sunday') {
-        details.classList.add('dayoff');
-        details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
-      } else {
-        details.innerHTML = `
+    // console.log(`Dish: ${dish.dishName}`);
+    // console.log(`Category: ${dish.category}`);
+    // console.log(`Calories: ${dish.calories}`);
+    // console.log(`Image: ${dish.imageUrl}`);
+
+    if (day === 'Sunday') {
+      details.classList.add('dayoff');
+      details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
+    } else {
+      details.innerHTML = `
           <h3>Meal for ${day}</h3>
-          <p>Delicious meal for today!</p>
           <p>Dish: ${dish.dishName}</p>
           <p>Category: ${dish.category}</p>
           <p>Calories: ${dish.calories}</p>
+          <div class="dish-background-image-container" style="background-image: url('${dish.imageUrl}');">
+            <h2 class="dish-background-image-container__dish-name">Delicious meal for today!</h2>
+            <div class="dish-label">${dish.dishName}</div>
+          </div>
         `;
-      }
     }
 
     entry.appendChild(details);
@@ -526,7 +529,7 @@ async function handleGetEmployeeDishes(employeeId) {
     const localEmployeeDishes = await getDishesFromLocalStorage();
     // console.log('localEmployeeData: ', localEmployeeData);
 
-    if (employeeDishes & !localEmployeeDishes) {
+    if (employeeDishes && !localEmployeeDishes) {
       dishesContainer.innerHTML = '';
       await getDishes(dishesContainer, employeeDishes);
     } else if (localEmployeeDishes && employeeDishes) {
@@ -587,7 +590,7 @@ async function handleGetEmployeeDishes(employeeId) {
 //     //console.log('localEmployeeData: ', localEmployeeData);
 //     const { _id, employeeName, allergies, dietaryRestrictions } = employeeData;
 
-//     if (employeeData & !localEmployeeData) {
+//     if (employeeData && !localEmployeeData) {
 //       responseContainer.innerHTML = '';
 //       await viewEmployee(
 //         responseContainer,
