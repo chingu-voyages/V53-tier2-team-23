@@ -494,6 +494,10 @@ async function createCalendar(appendContainer, dishes) {
     // console.log(`Category: ${dish.category}`);
     // console.log(`Calories: ${dish.calories}`);
     // console.log(`Image: ${dish.imageUrl}`);
+    const dishIngredients = dish.ingredients;
+    const ingredientsList = dishIngredients.forEach((ingredient) => {
+      `<li>${ingredient}</li>`;
+    });
 
     if (day === 'Sunday') {
       details.classList.add('dayoff');
@@ -504,6 +508,7 @@ async function createCalendar(appendContainer, dishes) {
           <p class="dish-name">Dish: ${dish.dishName}</p>
           <p>Category: ${dish.category}</p>
           <p class="calories">Calories: ${dish.calories}</p>
+          <ul class="dish-container">${ingredientsList}</ul>
           <div class="dish-background-image-container" style="background-image: url('${dish.imageUrl}');">
             <h2 class="dish-background-image-container__dish-name">Delicious meal for today!</h2>
             <div class="dish-label">${dish.dishName}</div>
