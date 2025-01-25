@@ -88,7 +88,7 @@ async function getAllergenfreeDishes() {
 
     const allergenfreeDishes = responseData.data.dishes;
 
-    console.log('allergenfreeDishes: ', allergenfreeDishes);
+    //console.log('allergenfreeDishes: ', allergenfreeDishes);
 
     localStorage.setItem(
       'allergenfreeDishes',
@@ -188,6 +188,7 @@ async function handleGetAllergenfreeDishes() {
       await getAllergenfreeDishesFromLocalStorage();
     if (allergenfreeDishes && !localAllergenfreeDishes) {
       allergenfreeDishesContainer.innerHTML = '';
+      calendarContainer.innerHTML = '';
       // await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
       await createCalendar(calendarContainer, allergenfreeDishes);
     } else if (localAllergenfreeDishes && allergenfreeDishes) {
@@ -196,6 +197,7 @@ async function handleGetAllergenfreeDishes() {
         JSON.stringify(allergenfreeDishes)
       ) {
         allergenfreeDishesContainer.innerHTML = '';
+        calendarContainer.innerHTML = '';
         //await getDishes(allergenfreeDishesContainer, localAllergenfreeDishes);
         await createCalendar(calendarContainer, localAllergenfreeDishes);
       } else {
