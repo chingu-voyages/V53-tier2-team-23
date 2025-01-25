@@ -182,23 +182,25 @@ async function handleGetEmployeesData() {
 async function handleGetAllergenfreeDishes() {
   try {
     allergenfreeDishesContainer.innerHTML = 'loading...';
+    calendarContainer.innerHTML = 'loading...';
     const allergenfreeDishes = await getAllergenfreeDishes();
-    await createCalendar(allergenfreeDishes);
     const localAllergenfreeDishes =
       await getAllergenfreeDishesFromLocalStorage();
     if (allergenfreeDishes & !localAllergenfreeDishes) {
       allergenfreeDishesContainer.innerHTML = '';
       await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
+      await createCalendar(calendarContainer, allergenfreeDishes);
     } else if (localAllergenfreeDishes && allergenfreeDishes) {
       if (
         JSON.stringify(localAllergenfreeDishes) ===
         JSON.stringify(allergenfreeDishes)
       ) {
         allergenfreeDishesContainer.innerHTML = '';
-        await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
+        await getDishes(allergenfreeDishesContainer, localAllergenfreeDishes);
+        await createCalendar(calendarContainer, localAllergenfreeDishes);
       } else {
         console.log('The data is different');
-        allergenfreeDishesContainer.textContent = 'Employee data has changed.';
+        allergenfreeDishesContainer.textContent = 'dishes data has changed.';
       }
     } else {
       allergenfreeDishesContainer.textContent = 'No dishes';
@@ -317,96 +319,96 @@ async function getEmployeeDishes(employeeId) {
   }
 }
 
-const calendarTemplate = `
-<div class="wrapper">
-  <h1>Meal planner</h1>
-  <div class="table">
-    <div class="tracks" name="myElements">
-      <div class="track yellow">
-        <div class="track">
-          <div class="heading">Monday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details">
-            <h3>Lorem ipsum dolor sit.</h3>
-            <p>Lorem ipsum dolor sit amet.</p>
-            <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere!</p>
-          </div>
-        </div>
-      </div>
-      <div class="track turq">
-        <div class="track">
-          <div class="heading">Tuesday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details">
-            <h3>Lorem ipsum dolor sit.</h3>
-            <p>Lorem ipsum dolor sit amet.</p>
-          </div>
-        </div>
-      </div>
-      <div class="track blue">
-        <div class="track">
-          <div class="heading">Wednesday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details">
-            <h3>Lorem ipsum dolor sit.</h3>
-            <p>Lorem ipsum dolor sit amet.</p>
-          </div>
-        </div>
-      </div>
-      <div class="track green">
-        <div class="track">
-          <div class="heading">Thursday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details">
-            <h3>Lorem ipsum dolor sit.</h3>
-            <p>Lorem ipsum dolor sit amet.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, omnis voluptas?</p>
-          </div>
-        </div>
-      </div>
-      <div class="track purple">
-        <div class="track">
-          <div class="heading">Friday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details">
-            <h3>Lorem ipsum dolor sit.</h3>
-            <p>Lorem ipsum dolor sit amet.</p>
-          </div>
-        </div>
-      </div>
-      <div class="track gray">
-        <div class="track">
-          <div class="heading">Saturday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details">
-            <h3>Lorem ipsum dolor sit.</h3>
-            <p>Lorem ipsum dolor sit amet.</p>
-          </div>
-        </div>
-      </div>
-      <div class="track">
-        <div class="track">
-          <div class="heading">Sunday</div>
-        </div>
-        <div class="entry fullh">
-          <div class="details dayoff">
-            <h3>Dayoff</h3>
-            <p>Dayoff</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-`;
+// const calendarTemplate = `
+// <div class="wrapper">
+//   <h1>Meal planner</h1>
+//   <div class="table">
+//     <div class="tracks" name="myElements">
+//       <div class="track yellow">
+//         <div class="track">
+//           <div class="heading">Monday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details">
+//             <h3>Lorem ipsum dolor sit.</h3>
+//             <p>Lorem ipsum dolor sit amet.</p>
+//             <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Facere!</p>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="track turq">
+//         <div class="track">
+//           <div class="heading">Tuesday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details">
+//             <h3>Lorem ipsum dolor sit.</h3>
+//             <p>Lorem ipsum dolor sit amet.</p>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="track blue">
+//         <div class="track">
+//           <div class="heading">Wednesday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details">
+//             <h3>Lorem ipsum dolor sit.</h3>
+//             <p>Lorem ipsum dolor sit amet.</p>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="track green">
+//         <div class="track">
+//           <div class="heading">Thursday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details">
+//             <h3>Lorem ipsum dolor sit.</h3>
+//             <p>Lorem ipsum dolor sit amet.</p>
+//             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus, omnis voluptas?</p>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="track purple">
+//         <div class="track">
+//           <div class="heading">Friday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details">
+//             <h3>Lorem ipsum dolor sit.</h3>
+//             <p>Lorem ipsum dolor sit amet.</p>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="track gray">
+//         <div class="track">
+//           <div class="heading">Saturday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details">
+//             <h3>Lorem ipsum dolor sit.</h3>
+//             <p>Lorem ipsum dolor sit amet.</p>
+//           </div>
+//         </div>
+//       </div>
+//       <div class="track">
+//         <div class="track">
+//           <div class="heading">Sunday</div>
+//         </div>
+//         <div class="entry fullh">
+//           <div class="details dayoff">
+//             <h3>Dayoff</h3>
+//             <p>Dayoff</p>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+// `;
 
-async function createCalendar(dishes) {
+async function createCalendar(appendContainer, dishes) {
   const daysOfWeek = [
     'Monday',
     'Tuesday',
@@ -501,7 +503,7 @@ async function createCalendar(dishes) {
   });
 
   // Append wrapper to body
-  calendarContainer.appendChild(wrapper);
+  appendContainer.appendChild(wrapper);
   return new Promise((resolve) => setTimeout(resolve, 500));
 }
 
