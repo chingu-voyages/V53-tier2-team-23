@@ -163,12 +163,18 @@ label {
   background-size: cover;
   color: white;
   margin: 0.5vw;
-  height: 11vw;
-  width: 11vw;
+  height: auto;
+  width: auto;
+  min-height: 11vw;
+  min-width: 11vw;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 h2.dish-background-image-container__dish-name {
-  font-size: 5vw;
+  font-size: 2vw;
+  color: rgba(255, 255, 255, 1);
+  background-color: rgba(0, 0, 0, 0.5);
   text-shadow: 0 0 1vw rgba(0, 0, 0, 0.25);
 }
 
@@ -177,10 +183,9 @@ h2.dish-background-image-container__dish-name {
   align-items: center;
   justify-content: center;
   width: 11vw;
-  position: absolute;
-  color: rgba(255, 255, 255, 0);
+  color: rgb(255 255 255);
   background-color: rgba(0, 0, 0, 0);
-  font-size: 1vw;
+  font-size: 2vw;
 }
 
 .main-diet {
