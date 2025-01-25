@@ -489,7 +489,7 @@ async function createCalendar(appendContainer, dishes) {
     details.classList.add('details');
 
     const dish = shuffledDishesMap.get(day);
-
+    console.log(dish);
     // console.log(`Dish: ${dish.dishName}`);
     // console.log(`Category: ${dish.category}`);
     // console.log(`Calories: ${dish.calories}`);
