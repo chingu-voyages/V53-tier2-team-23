@@ -321,7 +321,7 @@ h2.dish-background-image-container__dish-name {
 }
 
 h1 {
-  font-size: 9vmin;
+  font-size: 4vmin;
   text-align: center;
   line-height: 1;
   color: #333;
@@ -531,6 +531,11 @@ p + p {
   width: calc(100% - var(--time-width));
 }
 
+@media (max-width: 520px) {
+  h1 {
+    font-size: 9vmin;
+  }
+}
 @media (max-width: 720px) {
   .tracks {
     flex-direction: column;
