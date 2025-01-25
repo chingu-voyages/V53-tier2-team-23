@@ -188,7 +188,7 @@ async function handleGetAllergenfreeDishes() {
       await getAllergenfreeDishesFromLocalStorage();
     if (allergenfreeDishes & !localAllergenfreeDishes) {
       allergenfreeDishesContainer.innerHTML = '';
-      await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
+      // await getDishes(allergenfreeDishesContainer, allergenfreeDishes);
       await createCalendar(calendarContainer, allergenfreeDishes);
     } else if (localAllergenfreeDishes && allergenfreeDishes) {
       if (
@@ -196,7 +196,7 @@ async function handleGetAllergenfreeDishes() {
         JSON.stringify(allergenfreeDishes)
       ) {
         allergenfreeDishesContainer.innerHTML = '';
-        await getDishes(allergenfreeDishesContainer, localAllergenfreeDishes);
+        //await getDishes(allergenfreeDishesContainer, localAllergenfreeDishes);
         await createCalendar(calendarContainer, localAllergenfreeDishes);
       } else {
         console.log('The data is different');
@@ -486,14 +486,24 @@ async function createCalendar(appendContainer, dishes) {
     const details = document.createElement('div');
     details.classList.add('details');
 
-    if (day === 'Sunday') {
-      details.classList.add('dayoff');
-      details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
-    } else {
-      details.innerHTML = `
-        <h3>Meal for ${day}</h3>
-        <p>Delicious meal for today!</p>
-      `;
+    for (const dish of shuffledDishesMap) {
+      console.log(`Dish: ${dish.dishName}`);
+      console.log(`Category: ${dish.category}`);
+      console.log(`Calories: ${dish.calories}`);
+      console.log(`Image: ${dish.imageUrl}`);
+
+      if (day === 'Sunday') {
+        details.classList.add('dayoff');
+        details.innerHTML = `<h3>Day Off</h3><p>Enjoy your rest day!</p>`;
+      } else {
+        details.innerHTML = `
+          <h3>Meal for ${day}</h3>
+          <p>Delicious meal for today!</p>
+          <p>Dish: ${dish.dishName}</p>
+          <p>Category: ${dish.category}</p>
+          <p>Calories: ${dish.calories}</p>
+        `;
+      }
     }
 
     entry.appendChild(details);
