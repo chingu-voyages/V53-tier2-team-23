@@ -390,7 +390,7 @@ async function getEmployeeAllergenfreeDishes() {
 
     const dishes = dishesNoAllergens.map((dish, index) => {
       const imageUrl = images[index]?.url
-        ? `https://res.cloudinary.com/dspxn4ees/image/upload/w_120,h_120,c_fill,g_auto/${images[index].url}.jpg`
+        ? `https://res.cloudinary.com/dspxn4ees/image/upload/${images[index].url}.jpg`
         : '';
 
       return {
