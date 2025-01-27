@@ -1,15 +1,26 @@
 [
-  { "_id": { "$oid": "678cc8725d233468717b8641" }, "allergenName": "peanut" },
+  { "_id": { "$oid": "678cc8725d233468717b8641" }, "allergenName": "peanuts" },
   {
     "_id": { "$oid": "678cc8725d233468717b8642" },
-    "allergenName": "shellfish"
+    "allergenName": "seafood"
   },
-  { "_id": { "$oid": "678cc8725d233468717b8643" }, "allergenName": "milk" },
+  { "_id": { "$oid": "678cc8725d233468717b8643" }, "allergenName": "corn" },
   { "_id": { "$oid": "678cc8725d233468717b8644" }, "allergenName": "soy" },
   { "_id": { "$oid": "678cc8725d233468717b8645" }, "allergenName": "egg" },
-  { "_id": { "$oid": "678cc8725d233468717b8646" }, "allergenName": "wheat" },
-  { "_id": { "$oid": "678cc8725d233468717b8647" }, "allergenName": "tree nut" },
-  { "_id": { "$oid": "678cc8725d233468717b8648" }, "allergenName": "fish" },
-  { "_id": { "$oid": "678cc8725d233468717b8649" }, "allergenName": "sesame" },
-  { "_id": { "$oid": "678cc8725d233468717b8650" }, "allergenName": "gluten" }
+  { "_id": { "$oid": "678cc8725d233468717b8646" }, "allergenName": "dairy" },
+  {
+    "_id": { "$oid": "678cc8725d233468717b8647" },
+    "allergenName": "tree nuts"
+  },
+  { "_id": { "$oid": "678cc8725d233468717b8648" }, "allergenName": "legumes" },
+  {
+    "_id": { "$oid": "678cc8725d233468717b8649" },
+    "allergenName": "sesame seeds"
+  },
+  { "_id": { "$oid": "678cc8725d233468717b8650" }, "allergenName": "milk" },
+  { "_id": { "$oid": "678cc8725d233468717b8651" }, "allergenName": "wheat" },
+  { "_id": { "$oid": "678cc8725d233468717b8652" }, "allergenName": "mustard" },
+  { "_id": { "$oid": "678cc8725d233468717b8653" }, "allergenName": "gluten" },
+  { "_id": { "$oid": "678cc8725d233468717b8654" }, "allergenName": "allium" },
+  { "_id": { "$oid": "678cc8725d233468717b8655" }, "allergenName": "coconut" }
 ]
