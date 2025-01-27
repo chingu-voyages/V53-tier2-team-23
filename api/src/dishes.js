@@ -153,7 +153,7 @@ async function getDishes() {
       };
     });
 
-    console.log(unsafeIngredients);
+    console.log(allergies);
     return {
       dishes: dishes,
     };
