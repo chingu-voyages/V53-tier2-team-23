@@ -110,13 +110,11 @@ async function getDishes() {
     const db = await getDb(); // Get the database connection
     const limit = 10;
 
-    const allergies = await Allergen.find({}).exec();
+    const allergies = await Allergen.find({}).lean().exec();
     const allergensArray = allergies.map((allergen) => allergen.allergenName);
 
-    const databaseDishes = await Dish.find({})
-      //.limit(limit)
-      .exec();
-
+    const databaseDishes = await Dish.find({}).exec();
+    //.limit(limit)
     const ingredientsArray = databaseDishes.flatMap(
       (dish) => dish.ingredients.map((ingredient) => ingredient.toLowerCase()) // return ingredients in lowercase
     );
