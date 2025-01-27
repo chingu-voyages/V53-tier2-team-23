@@ -128,8 +128,10 @@ async function getDishes() {
     //     dish.ingredients.every((ingredient) => !allergensSet.has(ingredient)) // for every ingredient of dish AllergenSet must not have the ingredient
     // );
 
-    const unsafeIngredients = [...ingredientsSet].filter(
-      (ingredient) => allergensSet.has(ingredient.toLowerCase()) // for each ingredient that allergenSet has ingredient its unsafe
+    const unsafeIngredients = [...ingredientsSet].filter((ingredient) =>
+      [...allergensSet].some(
+        (allergen) => ingredient.includes(allergen) // Check if allergen is a substring of the ingredient
+      )
     );
 
     const safeDishes = databaseDishes.filter(
@@ -139,8 +141,7 @@ async function getDishes() {
           (ingredient) =>
             unsafeIngredients.every(
               // check all unsafe ingredients
-              (unsafeIngredient) =>
-                !ingredient.toLowerCase().includes(unsafeIngredient) // filter the ingredients that don't include an unsafe ingredient
+              (unsafeIngredient) => !ingredient.includes(unsafeIngredient) // filter the ingredients that don't include an unsafe ingredient
             )
         ) // for every ingredient of dish unsafeIngredients must not include the ingredient
     );
