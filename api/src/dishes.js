@@ -69,10 +69,10 @@ async function getDishes() {
     const db = await getDb(); // Get the database connection
     const limit = 10;
 
-    const employees = await Employee.find({}).lean();
+    const employees = await Employee.find({}).exec();
 
     const allergensArray = employees.flatMap(
-      (employee) => employee.allergens || []
+      (employee) => employee.allergies || []
     );
 
     const databaseDishes = await Dish.find({})

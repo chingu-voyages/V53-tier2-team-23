@@ -15,13 +15,17 @@ const employeeSchema = new Schema(
       type: String,
       required: true,
     },
-    allergies: [
-      {
-        type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
-        ref: 'Allergen',
-        required: false,
-      },
-    ],
+    // allergies: [
+    //   {
+    //     type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
+    //     ref: 'Allergen',
+    //     required: false,
+    //   },
+    // ],
+    allergies: {
+      type: [String],
+      default: [],
+    },
     dietaryRestrictions: [
       {
         type: String,
