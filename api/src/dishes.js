@@ -151,8 +151,7 @@ async function getDishes() {
       };
     });
 
-    console.log('allergensSet', allergensSet);
-    console.log('ingredientsSet', ingredientsSet);
+    console.log('unsafeIngredients', unsafeIngredients);
 
     return {
       dishes: dishes,
