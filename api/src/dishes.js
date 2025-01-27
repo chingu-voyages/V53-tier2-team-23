@@ -52,13 +52,13 @@ async function handler(event, context) {
       const dishes = await getDishes();
       return {
         statusCode: 200,
-        body: JSON.stringify(
+        body: JSON.stringify({
           success: true,
           data: {
             dishes,
             countdishes,
           },
-        ),
+        }),
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -109,28 +109,43 @@ async function handler(event, context) {
 async function getDishes() {
   try {
     const db = await getDb(); // Get the database connection
+    const limit = 10;
 
     const allergies = await Allergen.find({}).exec();
-    const limit = 10;
-    //const allergenNames = allergies.map((allergen) => allergen.allergenName);
-    //const allergenIds = allergies.map((allergen) => allergen._id);
-    const allergens = allergies.map((allergen) => allergen.allergenName);
+    const allergensArray = allergies.map((allergen) => allergen.allergenName);
 
-    const ingrediends = await Dish.find({ ingrediends }).toArray();
+    const dishes = await Dish.find({}).limit(limit).exec();
 
-    // // Fetch all dishes using Mongoose
-    // const dishesNoAllergens = await Dish.find({
-    //   allergens: { $nin: allergens }, // Exclude allergens
-    // }).limit(limit); // limit
+    const ingredientsArray = dishes.flatMap((dish) => dish.ingredients);
 
-    // const dishes = dishesNoAllergens.map((dish, index) => {
-    //   return {
-    //     ...dish.toObject(),
-    //   };
-    // });
+    const allergensSet = new Set(allergensArray); // collection of unique values
+    const ingredientsSet = new Set(ingredientsArray);
+
+    // Fetch all dishes excluding allergens
+    // const safeDishes = dishes.filter(
+    //   (dish) =>
+    //     dish.ingredients.every((ingredient) => !allergensSet.has(ingredient)) // for every ingredient of dish AllergenSet must not have the ingredient
+    // );
+
+    const notsafeIngredients = ingredients.filter(
+      (ingredient) => allergensSet.has(ingredient) // for each ingredient allergenSet has ingredient so its unsafe
+    );
+
+    const safeDishes = dishes.filter(
+      (dish) =>
+        dish.ingredients.every(
+          (ingredient) => !notsafeIngredients.includes(ingredient)
+        ) // for every ingredient of dish notsafeIngredients must not include the ingredient
+    );
+
+    const dishes = dishesNoAllergens.map((dish, index) => {
+      return {
+        ...dish.toObject(),
+      };
+    });
 
     // const countdishes = await Dish.countDocuments(); // Get total dishes
-    console.log(ingrediends, allergens);
+    console.log(safeDishes, notsafeIngredients);
     return {
       dishes: dishes,
       // countdishes: countdishes,
