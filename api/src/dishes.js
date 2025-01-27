@@ -39,9 +39,9 @@ async function handler(event, context) {
         body: JSON.stringify({
           success: true,
           data: {
-            dishes: dishes,
-            allergens: allergensSet,
-            unsafeIngredients: unsafeIngredients,
+            dishes
+            allergens,
+            unsafeIngredients,
           },
         }),
         headers: {
