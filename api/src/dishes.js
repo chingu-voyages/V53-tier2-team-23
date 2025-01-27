@@ -72,7 +72,7 @@ async function getDishes() {
     const employees = await Employee.find({}).exec();
 
     const allergensArray = employees.flatMap(
-      (employee) => employee.allergies || []
+      (employee) => employee.allergens || []
     );
 
     const databaseDishes = await Dish.find({})
