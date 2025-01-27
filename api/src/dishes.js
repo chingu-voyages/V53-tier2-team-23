@@ -151,7 +151,7 @@ async function getDishes() {
       };
     });
 
-    console.log(allergensArray);
+    console.log(ingredientsArray);
     return {
       dishes: dishes,
     };
