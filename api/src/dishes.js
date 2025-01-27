@@ -114,9 +114,11 @@ async function getDishes() {
     const allergies = await Allergen.find({}).exec();
     const allergensArray = allergies.map((allergen) => allergen.allergenName);
 
-    const dishes = await Dish.find({}).limit(limit).exec();
+    const databaseDishes = await Dish.find({})
+      //.limit(limit)
+      .exec();
 
-    const ingredientsArray = dishes.flatMap((dish) => dish.ingredients);
+    const ingredientsArray = databaseDishes.flatMap((dish) => dish.ingredients);
 
     const allergensSet = new Set(allergensArray); // collection of unique values
     const ingredientsSet = new Set(ingredientsArray);
@@ -131,14 +133,14 @@ async function getDishes() {
       (ingredient) => allergensSet.has(ingredient) // for each ingredient allergenSet has ingredient so its unsafe
     );
 
-    const safeDishes = dishes.filter(
+    const safeDishes = databaseDishes.filter(
       (dish) =>
         dish.ingredients.every(
           (ingredient) => !notsafeIngredients.includes(ingredient)
         ) // for every ingredient of dish notsafeIngredients must not include the ingredient
     );
 
-    const dishes = dishesNoAllergens.map((dish, index) => {
+    const dishes = safeDishes.map((dish, index) => {
       return {
         ...dish.toObject(),
       };
