@@ -9,6 +9,14 @@ const headers = {
   'Access-Control-Allow-Headers': 'Content-Type',
 };
 
+const handleError = (error, method) => {
+  console.error(`Error ${method} employee: `, error);
+  return {
+    statusCode: 500,
+    body: JSON.stringify({ error: error.message }),
+  };
+};
+
 async function handler(event, context) {
   const { httpMethod, path, queryStringParameters, body } = event;
 
