@@ -39,7 +39,7 @@ async function handler(event, context) {
         body: JSON.stringify({
           success: true,
           data: {
-            dishes
+            dishes,
             allergens,
             unsafeIngredients,
           },
