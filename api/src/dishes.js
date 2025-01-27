@@ -108,6 +108,7 @@ async function getDishes() {
       };
     });
 
+    console.log(allergensArray);
     return {
       dishes,
       allergens: [...allergensSet],
