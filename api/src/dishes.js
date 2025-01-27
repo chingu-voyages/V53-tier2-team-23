@@ -123,28 +123,18 @@ async function getDishes() {
     const ingredientsSet = new Set(ingredientsArray);
 
     // Fetch all dishes excluding allergens
-    // const safeDishes = dishes.filter(
-    //   (dish) =>
-    //     dish.ingredients.every((ingredient) => !allergensSet.has(ingredient)) // for every ingredient of dish AllergenSet must not have the ingredient
-    // );
+    const safeDishes = databaseDishes.filter((dish) =>
+      dish.ingredients.every((ingredient) =>
+        allergensArray.every(
+          (allergen) => !ingredient.toLowerCase()includes(allergen) // Ensure allergen is not part of the ingredient
+        )
+      )
+    );
 
     const unsafeIngredients = [...ingredientsSet].filter((ingredient) =>
       [...allergensSet].some(
         (allergen) => ingredient.includes(allergen) // Check if allergen is a substring of the ingredient
       )
-    );
-
-    const safeDishes = databaseDishes.filter(
-      (dish) =>
-        dish.ingredients.every(
-          // all ingredients in the dish.
-          (ingredient) =>
-            unsafeIngredients.every(
-              // check all unsafe ingredients
-              (unsafeIngredient) =>
-                !ingredient.toLowerCase().includes(unsafeIngredient) // filter the ingredients that don't include an unsafe ingredient
-            )
-        ) // for every ingredient of dish unsafeIngredients must not include the ingredient
     );
 
     const dishes = safeDishes.map((dish, index) => {
@@ -157,6 +147,8 @@ async function getDishes() {
 
     return {
       dishes: dishes,
+      allergens: allergensSet,
+      unsafeIngredients: unsafeIngredients,
     };
   } catch (error) {
     console.error('Error fetching dishes:', error);
