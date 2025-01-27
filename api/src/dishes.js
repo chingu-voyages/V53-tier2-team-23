@@ -56,7 +56,6 @@ async function handler(event, context) {
           success: true,
           data: {
             dishes,
-            countdishes,
           },
         }),
         headers: {
@@ -148,11 +147,9 @@ async function getDishes() {
       };
     });
 
-    // const countdishes = await Dish.countDocuments(); // Get total dishes
     console.log(safeDishes, notsafeIngredients);
     return {
       dishes: dishes,
-      // countdishes: countdishes,
     };
   } catch (error) {
     console.error('Error fetching dishes:', error);
