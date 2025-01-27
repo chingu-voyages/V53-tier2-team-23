@@ -130,15 +130,21 @@ async function getDishes() {
     //     dish.ingredients.every((ingredient) => !allergensSet.has(ingredient)) // for every ingredient of dish AllergenSet must not have the ingredient
     // );
 
-    const notsafeIngredients = [...ingredientsSet].filter(
-      (ingredient) => allergensSet.has(ingredient) // for each ingredient that allergenSet has ingredient its unsafe
+    const unsafeIngredients = [...ingredientsSet].filter(
+      (ingredient) => allergensSet.has(ingredient.toLowerCase()) // for each ingredient that allergenSet has ingredient its unsafe
     );
 
     const safeDishes = databaseDishes.filter(
       (dish) =>
         dish.ingredients.every(
-          (ingredient) => !notsafeIngredients.includes(ingredient)
-        ) // for every ingredient of dish notsafeIngredients must not include the ingredient
+          // all ingredients in the dish.
+          (ingredient) =>
+            unsafeIngredients.every(
+              // check all unsafe ingredients
+              (unsafeIngredient) =>
+                !ingredient.toLowerCase().includes(unsafeIngredient) // filter the ingredients that don't include an unsafe ingredient
+            )
+        ) // for every ingredient of dish unsafeIngredients must not include the ingredient
     );
 
     const dishes = safeDishes.map((dish, index) => {
@@ -147,7 +153,7 @@ async function getDishes() {
       };
     });
 
-    console.log(safeDishes, notsafeIngredients);
+    console.log(unsafeIngredients);
     return {
       dishes: dishes,
     };
