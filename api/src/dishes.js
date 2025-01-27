@@ -101,7 +101,7 @@ async function getDishes() {
     const unsafeIngredients = [...ingredientsSet].filter((ingredient) =>
       [...allergensSet].some(
         (allergen) =>
-          ingredient.includes(allergen) || // Check if allergen is a substring of the ingredient
+          ingredient.includes(allergen) && // Check if allergen is a substring of the ingredient
           !ingredient.toLowerCase().includes('-free')
       )
     );
