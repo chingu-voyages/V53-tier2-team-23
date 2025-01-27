@@ -1,27 +1,59 @@
-// getting all dishes excluding allergens based on ingredients
+const mongoose = require('mongoose');
+const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
+const Employee = require('./models/employee.model'); // Import employee model
+const Dish = require('./models/dish.model'); // Import dish model
 
-if (httpMethod === 'GET' && path.endsWith('/dishes')) {
-  try {
-    const { dishes, allergens, unsafeIngredients } = await getDishes();
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type',
+};
 
+async function handler(event, context) {
+  const { httpMethod, path, queryStringParameters, body } = event;
+
+  if (httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      body: JSON.stringify({
-        success: true,
-        data: {
-          dishes: dishes,
-          allergens: allergensSet,
-          unsafeIngredients: unsafeIngredients,
-        },
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers, // Return CORS headers for preflight
+      body: JSON.stringify({ success: true }),
     };
-  } catch (error) {
-    return handleError(error, 'fetching');
   }
+
+  // getting all dishes excluding allergens based on ingredients
+
+  if (httpMethod === 'GET' && path.endsWith('/dishes')) {
+    try {
+      const { dishes, allergens, unsafeIngredients } = await getDishes();
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          success: true,
+          data: {
+            dishes: dishes,
+            allergens: allergensSet,
+            unsafeIngredients: unsafeIngredients,
+          },
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      };
+    } catch (error) {
+      return handleError(error, 'fetching');
+    }
+  }
+
+  return {
+    statusCode: 405,
+    body: JSON.stringify({ error: 'Method not allowed.' }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+    },
+  };
 }
 
 async function getDishes() {
@@ -29,11 +61,17 @@ async function getDishes() {
     const db = await getDb(); // Get the database connection
     const limit = 10;
 
-    const allergies = await Allergen.find({}).exec();
-    const allergensArray = allergies.map((allergen) => allergen.allergenName);
+    const employees = await Employee.find({}).exec();
 
-    const databaseDishes = await Dish.find({}).exec();
-    //.limit(limit)
+    const allergensArray = employees.flatMap(
+      (employee) => employee.allergies || []
+    );
+
+    const databaseDishes = await Dish.find({})
+      // limit if needed
+      //.limit(limit)
+      .exec();
+
     const ingredientsArray = databaseDishes.flatMap(
       (dish) => dish.ingredients.map((ingredient) => ingredient.toLowerCase()) // return ingredients in lowercase
     );
@@ -63,13 +101,14 @@ async function getDishes() {
     });
 
     return {
-      dishes: dishes,
-      allergens: allergensSet,
-      unsafeIngredients: unsafeIngredients,
+      dishes,
+      allergens: [...allergensSet],
+      unsafeIngredients,
     };
   } catch (error) {
     console.error('Error fetching dishes:', error);
-    console.log(dishes);
     throw new Error('Error fetching dishes');
   }
 }
+
+module.exports.handler = handler;
