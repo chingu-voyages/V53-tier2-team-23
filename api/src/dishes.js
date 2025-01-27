@@ -108,7 +108,7 @@ async function getDishes() {
       };
     });
 
-    console.log(allergensArray);
+    console.log(employees);
     return {
       dishes,
       allergens: [...allergensSet],
