@@ -4,7 +4,7 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: '15px',
+      // padding: '15px',
     },
     screens: {
       sm: '640px',
@@ -13,8 +13,15 @@ export default {
       xl: '1280px',
     },
     extend: {
+      fontFamily: {
+        shantell: ['Shantell Sans', 'sans-serif'],
+        poppins: ['Poppins', 'san-serif'],
+      },
       colors: {
-        background: 'var(--background)',
+        background: '#f6f2f2',
+        primary: '#762F63',
+        secondary: '#FCBB1C',
+        complementary: '#FBF560',
       },
     },
   },
