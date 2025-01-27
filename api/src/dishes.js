@@ -132,7 +132,7 @@ async function getDishes() {
     // );
 
     const notsafeIngredients = [...ingredientsSet].filter(
-      (ingredient) => allergensSet.has(ingredient) // for each ingredient allergenSet has ingredient so its unsafe
+      (ingredient) => allergensSet.has(ingredient) // for each ingredient that allergenSet has ingredient its unsafe
     );
 
     const safeDishes = databaseDishes.filter(
@@ -160,6 +160,8 @@ async function getDishes() {
     throw new Error('Error fetching dishes');
   }
 }
+
+module.exports.handler = handler;
 
 // const mongoose = require('mongoose');
 // const getDb = require('./db_config/database.config.js'); // import getDatabase database from connection
