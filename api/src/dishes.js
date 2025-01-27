@@ -91,14 +91,18 @@ async function getDishes() {
     const safeDishes = databaseDishes.filter((dish) =>
       dish.ingredients.every((ingredient) =>
         allergensArray.every(
-          (allergen) => !ingredient.toLowerCase().includes(allergen) // Ensure allergen is not part of the ingredient
+          (allergen) =>
+            !ingredient.toLowerCase().includes(allergen) ||
+            ingredient.toLowerCase().includes('-free') // Ensure allergen is not part of the ingredient
         )
       )
     );
 
     const unsafeIngredients = [...ingredientsSet].filter((ingredient) =>
       [...allergensSet].some(
-        (allergen) => ingredient.includes(allergen) // Check if allergen is a substring of the ingredient
+        (allergen) =>
+          ingredient.includes(allergen) || // Check if allergen is a substring of the ingredient
+          !ingredient.toLowerCase().includes('-free')
       )
     );
 
