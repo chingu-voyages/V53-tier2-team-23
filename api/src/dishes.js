@@ -126,7 +126,7 @@ async function getDishes() {
     const safeDishes = databaseDishes.filter((dish) =>
       dish.ingredients.every((ingredient) =>
         allergensArray.every(
-          (allergen) => !ingredient.toLowerCase()includes(allergen) // Ensure allergen is not part of the ingredient
+          (allergen) => !ingredient.toLowerCase().includes(allergen) // Ensure allergen is not part of the ingredient
         )
       )
     );
