@@ -118,7 +118,9 @@ async function getDishes() {
       //.limit(limit)
       .exec();
 
-    const ingredientsArray = databaseDishes.flatMap((dish) => dish.ingredients);
+    const ingredientsArray = databaseDishes.flatMap(
+      (dish) => dish.ingredients.map((ingredient) => ingredient.toLowerCase()) // return ingredients in lowercase
+    );
 
     const allergensSet = new Set(allergensArray); // collection of unique values
     const ingredientsSet = new Set(ingredientsArray);
@@ -129,7 +131,7 @@ async function getDishes() {
     //     dish.ingredients.every((ingredient) => !allergensSet.has(ingredient)) // for every ingredient of dish AllergenSet must not have the ingredient
     // );
 
-    const notsafeIngredients = ingredients.filter(
+    const notsafeIngredients = [...ingredientsSet].filter(
       (ingredient) => allergensSet.has(ingredient) // for each ingredient allergenSet has ingredient so its unsafe
     );
 
