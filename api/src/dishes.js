@@ -141,7 +141,8 @@ async function getDishes() {
           (ingredient) =>
             unsafeIngredients.every(
               // check all unsafe ingredients
-              (unsafeIngredient) => !ingredient.includes(unsafeIngredient) // filter the ingredients that don't include an unsafe ingredient
+              (unsafeIngredient) =>
+                !ingredient.toLowerCase().includes(unsafeIngredient) // filter the ingredients that don't include an unsafe ingredient
             )
         ) // for every ingredient of dish unsafeIngredients must not include the ingredient
     );
@@ -152,7 +153,7 @@ async function getDishes() {
       };
     });
 
-    console.log('unsafeIngredients', unsafeIngredients);
+    console.log('safeDishes', safeDishes);
 
     return {
       dishes: dishes,
