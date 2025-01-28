@@ -86,8 +86,9 @@ async function getDishes() {
     const allergensSet = new Set(employeesAllergensArray); // collection of unique values from employees allergens
 
     // Fetch all dishes excluding allergens
-    const safeDishes = databaseDishes.filter((dish) =>
-      dish.allergens.every((dishAllergen) => !allergensSet.has(dishAllergen))
+    const safeDishes = databaseDishes.filter(
+      (dish) =>
+        !dish.allergens.some((dishAllergen) => allergensSet.has(dishAllergen))
     );
 
     const dishes = safeDishes.map((dish, index) => {
@@ -96,7 +97,7 @@ async function getDishes() {
       };
     });
 
-    console.log(databaseDishes);
+    console.log(employeesAllergensArray);
     return {
       dishes,
       allergens: [...allergensSet],
