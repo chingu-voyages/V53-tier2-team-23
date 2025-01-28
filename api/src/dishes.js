@@ -87,10 +87,8 @@ async function getDishes() {
 
     // Fetch all dishes excluding allergens
     const safeDishes = databaseDishes.filter((dish) =>
-      dish.allergens.every((dishAllergen) =>
-        employeesAllergensArray.every(
-          (employeeAllergen) => !dishAllergen.includes(employeeAllergen)
-        )
+      dish.allergens.every(
+        (dishAllergen) => ![...allergensSet].includes(dishAllergen)
       )
     );
 
