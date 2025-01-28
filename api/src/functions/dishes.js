@@ -43,7 +43,11 @@ exports.handler = async (event) => {
   }
 
   // getting filtered dishes excluding employees allergens
-  if (httpMethod === 'GET' && path.endsWith('/filtered-dishes')) {
+  if (
+    httpMethod === 'GET' &&
+    path.includes('/dishes/') &&
+    path.endsWith('/filtered')
+  ) {
     try {
       const { dishes, allergens } = await getFilteredDishes();
 
