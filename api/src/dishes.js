@@ -69,40 +69,28 @@ async function getDishes() {
     const db = await getDb(); // Get the database connection
     const limit = 10;
 
+    // get employees
     const employees = await Employee.find({}).exec();
 
-    const allergensArray = employees.flatMap(
+    // get employees allergies
+    const employeesAllergensArray = employees.flatMap(
       (employee) => employee.allergies || []
     );
 
+    // get dishes from the database
     const databaseDishes = await Dish.find({})
       // limit if needed
       //.limit(limit)
       .exec();
 
-    const ingredientsArray = databaseDishes.flatMap(
-      (dish) => dish.ingredients.map((ingredient) => ingredient.toLowerCase()) // return ingredients in lowercase
-    );
-
-    const allergensSet = new Set(allergensArray); // collection of unique values
-    const ingredientsSet = new Set(ingredientsArray);
+    const allergensSet = new Set(employeesAllergensArray); // collection of unique values from employees allergens
 
     // Fetch all dishes excluding allergens
     const safeDishes = databaseDishes.filter((dish) =>
-      dish.ingredients.every((ingredient) =>
-        allergensArray.every(
-          (allergen) =>
-            !ingredient.toLowerCase().includes(allergen) ||
-            ingredient.toLowerCase().includes('-free') // Ensure allergen is not part of the ingredient
+      dish.allergens.every((dishAllergen) =>
+        employeesAllergensArray.every(
+          (employeeAllergen) => !dishAllergen.includes(employeeAllergen)
         )
-      )
-    );
-
-    const unsafeIngredients = [...ingredientsSet].filter((ingredient) =>
-      [...allergensSet].some(
-        (allergen) =>
-          ingredient.includes(allergen) && // Check if allergen is a substring of the ingredient
-          !ingredient.toLowerCase().includes('-free')
       )
     );
 
@@ -116,7 +104,6 @@ async function getDishes() {
     return {
       dishes,
       allergens: [...allergensSet],
-      unsafeIngredients,
     };
   } catch (error) {
     console.error('Error fetching dishes:', error);
