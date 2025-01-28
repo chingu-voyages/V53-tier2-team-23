@@ -17,13 +17,13 @@ exports.handler = async (event) => {
   const dishesId = path.split('/').pop();
 
   // Check authentication
-  const authResult = authenticate(event);
-  if (authResult.statusCode !== 200) {
-    return authResult; // Return early if authentication fails
-  }
+  // const authResult = authenticate(event);
+  // if (authResult.statusCode !== 200) {
+  //   return authResult; // Return early if authentication fails
+  // }
 
-  // Proceed if authenticated
-  const user = authResult.user;
+  // // Proceed if authenticated
+  // const user = authResult.user;
 
   // getting all dishes
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
