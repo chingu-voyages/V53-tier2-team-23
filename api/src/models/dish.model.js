@@ -21,7 +21,7 @@ const dishSchema = new Schema({
       // type: Schema.Types.ObjectId, // Represents a MongoDB ObjectId, used for referencing other documents
       // ref: 'Allergen',
       type: [String],
-      default: [],
+      required: true,
     },
   ],
   calories: {
