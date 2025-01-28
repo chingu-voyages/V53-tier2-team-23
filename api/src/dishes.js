@@ -97,7 +97,7 @@ async function getDishes() {
       };
     });
 
-    console.log(employeesAllergensArray);
+    console.log(safeDishes);
     return {
       dishes,
       allergens: [...allergensSet],
