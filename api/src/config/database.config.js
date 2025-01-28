@@ -12,7 +12,7 @@ const connectDatabase = async () => {
   }
 
   try {
-    const connection = await mongoose.connect(process.env.MONGOOSE_URI, {
+    const connection = await mongoose.connect(process.env.MONGO_URI, {
       dbName: 'eato_database',
       autoIndex: false,
       bufferCommands: false, // Disable Mongoose buffering for serverless
