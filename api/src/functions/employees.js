@@ -5,23 +5,24 @@ const Employee = require('../models/employee.models');
 
 // Validations
 const validAllergies = [
-  'gluten',
-  'dairy',
-  'egg',
-  'seafood',
-  'soy',
-  'tree nuts',
   'peanuts',
+  'shellfish',
+  'fish',
+  'corn',
+  'soy',
+  'egg',
+  'dairy',
+  'tree nuts',
   'legumes',
   'sesame seeds',
-  'corn',
+  'milk',
+  'wheat',
   'mustard',
-  'allium',
+  'gluten',
   'coconut',
-  'fruits',
 ];
 
-const validDiet = [
+/* const validDiet = [
   'vegetarian',
   'vegan',
   'pescatarian',
@@ -31,7 +32,7 @@ const validDiet = [
   'standard',
   'lactose-free',
   'diabetes-friendly',
-];
+]; */
 
 // helper function to validate items against a valid list
 const validateItems = (items, validItems) => {
