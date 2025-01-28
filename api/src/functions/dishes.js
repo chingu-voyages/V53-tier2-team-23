@@ -119,7 +119,7 @@ async function getFilteredDishes() {
     );
 
     // get dishes from the database
-    const databaseDishes = await Dish.find({}).exec();
+    const databaseDishes = await Dishes.find({}).exec();
 
     const allergensSet = new Set(employeesAllergensArray); // collection of unique values from employees allergens
 
