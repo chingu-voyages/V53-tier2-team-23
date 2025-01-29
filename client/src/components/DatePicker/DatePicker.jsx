@@ -4,7 +4,8 @@ import { DayPicker, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
 export default function DatePicker() {
-  const [selected, setSelected] = useState('');
+  const [toggle, setToggle] = useState(false);
+  const [selectedDaysOff, setSelectedDaysOff] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [formattedNextWeekStart, setFormattedNextWeekStart] = useState('');
   const [formattedNextWeekEnd, setFormattedNextWeekEnd] = useState('');
@@ -34,6 +35,23 @@ export default function DatePicker() {
     console.log('Next Week End:', nextWeekEnd);
   }, []);
 
+  // single day off
+  // const handleSelectedDayOffClick = (day) => {
+  //   toggle ? setSelectedDayoff(day) : setSelectedDayoff('');
+  //   setToggle(!toggle);
+  // };
+
+  const handleSelectedDaysOffClick = (day) => {
+    if (toggle) {
+      setSelectedDaysOff((previousDays) =>
+        previousDays.filter((previousDay) => previousDay !== day)
+      );
+    } else {
+      setSelectedDaysOff((previousDays) => [...previousDays, day]);
+    }
+    setToggle(!toggle);
+  };
+
   const handleDayClick = (day) => {
     const newStart = startOfWeek(day, { weekStartsOn: 1 });
     const newEnd = endOfWeek(day, { weekStartsOn: 1 });
@@ -60,7 +78,7 @@ export default function DatePicker() {
         </span>
       </div>
       <DayPicker
-        broadcastCalendar
+        //broadcastCalendar
         captionLayout='dropdown'
         fromYear={2000}
         toYear={2030}
@@ -79,9 +97,13 @@ export default function DatePicker() {
         {weekdaysArray.map((day, index) => (
           <span
             key={index}
-            className={`bg-white p-[5px_10px] border-2 border-[#752f62] rounded-[25px] text-xs ${
-              selected ? 'selected' : ''
+            className={`select-none ${
+              // selectedDayoff === day //for one day
+              selectedDaysOff.includes(day)
+                ? 'days-off-text text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm selected'
+                : 'bg-white p-[5px_10px] border-2 border-[#752f62] rounded-[25px] text-xs leading-[1.6]'
             }`}
+            onClick={() => handleSelectedDaysOffClick(day)}
           >
             {day.slice(0, 2)}
           </span>
