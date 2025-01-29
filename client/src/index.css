@@ -7,3 +7,82 @@
     @apply font-shantell bg-background;
   }
 }
+
+.custom-day-picker {
+  background-color: white;
+  padding: 30px 10px 40px;
+}
+
+.datepicker-container {
+  background: #752f62;
+  border-radius: 15px;
+  height: auto;
+  width: fit-content;
+  display: flex;
+  padding: 30px 25px 26px;
+  margin: 25px auto;
+  box-sizing: border-box;
+  font-weight: 400;
+  font-family: 'Poppins';
+}
+
+.custom-bg {
+  @apply h-screen bg-cover bg-center;
+  background-image: url('https://res.cloudinary.com/dspxn4ees/image/upload/v1738147201/calendar-background-image.jpg');
+  padding-top: 25px;
+}
+
+.datepicker-container h1,
+.datepicker-container .buttons-container {
+  font-family: Shantell Sans, sans-serif;
+}
+
+.datepicker-container .rdp-range_start .rdp-day_button,
+.datepicker-container .rdp-range_end .rdp-day_button {
+  background-color: #752f62;
+  font-weight: 400;
+  font-family: 'Poppins';
+  border: none;
+}
+
+.datepicker-container .rdp-range_middle .rdp-day_button {
+  font-weight: 400;
+  font-family: 'Poppins';
+}
+
+.datepicker-container .custom-day-picker .rdp-chevron {
+  fill: #752f62;
+}
+
+.datepicker-container .custom-day-picker .rdp-weekday {
+  color: gray;
+}
+
+.datepicker-container .custom-day-picker .rdp-month_caption {
+  padding-left: 20px;
+}
+
+.datepicker-container .custom-day-picker table {
+  border-collapse: separate;
+  border-spacing: 15px;
+}
+
+.days-off-container button {
+  background-color: white;
+  color: #752f62;
+  font-weight: 400;
+  font-family: Shantell Sans, sans-serif;
+  border: none;
+  width: fit-content;
+}
+.days-off-text {
+  font-family: Shantell Sans, sans-serif;
+}
+.days-off-container span.selected {
+  background-color: white;
+  color: #752f62;
+  font-weight: 400;
+  font-family: Shantell Sans, sans-serif;
+  border: none;
+  width: fit-content;
+}
