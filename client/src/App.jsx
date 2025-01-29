@@ -1,15 +1,13 @@
 import NavBar from './components/NavBar/NavBar';
 import Footer from './components/Footer/Footer';
+import DayNavigator from './components/DayNavigator/DayNavigator';
 
 function App() {
   return (
     <>
       <NavBar />
-      <main className='flex-grow bg-gray-100'>
-        <div className='h-[872px] md:h-[990px] lg:h-[907px] bg-gray-200 rounded-md flex items-center justify-center'>
-          <p className='text-lg text-gray-600'>Placeholder Content</p>
-        </div>
-      </main>
+      {/* temporaily placed till it's implemented into the supposed page */}
+      <DayNavigator />
       <Footer />
     </>
   );
