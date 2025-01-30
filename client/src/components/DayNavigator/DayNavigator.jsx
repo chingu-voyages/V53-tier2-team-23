@@ -1,7 +1,8 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 
-const dateMockUp = {
+// dateMockUp for pixel perfect layout with design
+/* const dateMockUp = {
   startWeekDate: 'March 06',
   items: [
     {
@@ -34,9 +35,43 @@ const dateMockUp = {
     },
   ],
 };
-
+ */
 function DayNavigator() {
+  // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
+
+  // currently for employee view: current week dates and month
+  const [weekDates, setWeekDates] = useState([]);
+  const [month, setMonth] = useState('');
+
+  const getCurrentWeekDates = () => {
+    const today = new Date();
+
+    // get the day of the week (0-6, where 0 is Sunday)
+    const dayOfWeek = today.getDay();
+    // to create a new Date object for Monday of the current week
+    const monday = new Date(today);
+
+    // adjust the date of monday to correct day
+    monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+
+    // to extract the month for the current week starting date
+    const monthName = monday.toLocaleDateString('en-US', { month: 'long' });
+    setMonth(monthName);
+
+    return Array.from({ length: 7 }, (_, i) => {
+      const date = new Date(monday);
+      date.setDate(monday.getDate() + i);
+      return {
+        day: date.toLocaleDateString('en-US', { weekday: 'short' }),
+        date: date.getDate(),
+      };
+    });
+  };
+
+  useEffect(() => {
+    setWeekDates(getCurrentWeekDates());
+  }, []);
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -61,7 +96,7 @@ function DayNavigator() {
         <div className='text-center pt-1 md:pt-[0.4rem]'>
           <div className='text-[16px]'>Week of</div>
           <div className='text-[16px] font-bold'>
-            {dateMockUp.startWeekDate}
+            {`${month} ${weekDates[0]?.date}`}
           </div>
         </div>
         <button className='text-primary relative'>
@@ -72,7 +107,7 @@ function DayNavigator() {
         ref={scrollRef}
         className='overflow-x-auto snap-x scrollbar-hide md:overflow-visible md:snap-none flex w-full mt-1 gap-[19.5px] md:gap-5 ml-4 md:ml-0 md:justify-center md:mt-4'
       >
-        {dateMockUp.items.map((item, index) => (
+        {weekDates.map((item, index) => (
           <div
             key={index}
             className={`snap-start flex flex-col flex-[0_0_auto] items-center justify-center w-[70px] h-[72px] md:h-[70px] pt-[3px] ${
