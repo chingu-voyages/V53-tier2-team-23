@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { format, startOfWeek, endOfWeek, addWeeks } from 'date-fns';
+import {
+  format,
+  startOfWeek,
+  endOfWeek,
+  addDays,
+  addWeeks,
+  eachDayOfInterval,
+} from 'date-fns';
 import { DayPicker, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
@@ -9,6 +16,7 @@ export default function DatePicker() {
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [formattedNextWeekStart, setFormattedNextWeekStart] = useState('');
   const [formattedNextWeekEnd, setFormattedNextWeekEnd] = useState('');
+  const [highlightedDaysOff, setHighlightedDaysOff] = useState(null); // Store the highlighted day
   const weekdaysArray = [
     'Monday',
     'Tuesday',
@@ -18,54 +26,83 @@ export default function DatePicker() {
     'Saturday',
     'Sunday',
   ];
+  const today = new Date();
+
+  // Get next week's Monday start and Sunday end
+  const nextWeekStart = startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 });
+  const nextWeekEnd = endOfWeek(nextWeekStart, { weekStartsOn: 1 });
 
   useEffect(() => {
-    const today = new Date();
-
-    // Get next week's Monday start and Sunday end
-    const nextWeekStart = startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 });
-    const nextWeekEnd = endOfWeek(nextWeekStart, { weekStartsOn: 1 });
-
     setSelectedWeek({ from: nextWeekStart, to: nextWeekEnd });
 
     setFormattedNextWeekStart(format(nextWeekStart, 'MMMM d, yyyy'));
     setFormattedNextWeekEnd(format(nextWeekEnd, 'MMMM d, yyyy'));
 
-    console.log('Next Week Start:', nextWeekStart);
-    console.log('Next Week End:', nextWeekEnd);
+    // console.log('Next Week Start:', nextWeekStart);
+    // console.log('Next Week End:', nextWeekEnd);
   }, []);
 
+  // Get all the days in the selected week
+  const getWeekDates = (newStart, newEnd) => {
+    return eachDayOfInterval({
+      //https://date-fns.org/v4.1.0/docs/eachDayOfInterval
+      start: newStart,
+      end: newEnd,
+    });
+  };
   // single day off
   // const handleSelectedDayOffClick = (day) => {
   //   toggle ? setSelectedDayoff(day) : setSelectedDayoff('');
   //   setToggle(!toggle);
   // };
 
-  const handleSelectedDaysOffClick = (day) => {
-    if (toggle) {
-      setSelectedDaysOff((previousDays) =>
-        previousDays.filter((previousDay) => previousDay !== day)
-      );
-    } else {
-      setSelectedDaysOff((previousDays) => [...previousDays, day]);
+  const handleSelectedDaysOffClick = (event, day) => {
+    const clickedDay = event.currentTarget.getAttribute('data-day');
+
+    if (selectedWeek) {
+      const dayOfWeek = weekdaysArray.indexOf(day); // mumber of days
+      const targetDay = addDays(selectedWeek.from, dayOfWeek); // add one day from the selected week [ https://date-fns.org/v4.1.0/docs/addDays ]
+      const currentDay = format(targetDay, 'yyyy-MM-dd');
+
+      if (clickedDay === currentDay) {
+        setToggle(!toggle);
+        if (toggle) {
+          if (selectedDaysOff.includes(currentDay)) {
+            setSelectedDaysOff((previousDays) =>
+              previousDays.filter((previousDay) => previousDay !== currentDay)
+            );
+          }
+        } else {
+          if (
+            selectedDaysOff.length < 2 &&
+            !selectedDaysOff.includes(currentDay)
+          ) {
+            setSelectedDaysOff((previousDays) => [...previousDays, currentDay]);
+          }
+        }
+      }
     }
-    setToggle(!toggle);
   };
 
   const handleDayClick = (day) => {
     const newStart = startOfWeek(day, { weekStartsOn: 1 });
     const newEnd = endOfWeek(day, { weekStartsOn: 1 });
 
-    setSelectedWeek(
-      selectedWeek && selectedWeek.from.getTime() === newStart.getTime()
-        ? null
-        : { from: newStart, to: newEnd }
-    );
+    if (selectedWeek && selectedWeek.from.getTime() === newStart.getTime()) {
+      setSelectedWeek(null);
+      setSelectedDaysOff([]); // Clear selected days off
+    } else {
+      setSelectedWeek({ from: newStart, to: newEnd });
+      setSelectedDaysOff([]); // Reset days off when changing the week
+    }
+
+    const weekDates = getWeekDates(newStart, newEnd);
+
+    setHighlightedDaysOff(weekDates);
 
     setFormattedNextWeekStart(format(newStart, 'MMMM d, yyyy'));
     setFormattedNextWeekEnd(format(newEnd, 'MMMM d, yyyy'));
   };
-
   return (
     <div className='mt-6'>
       <div className='weekspointer-container w-full flex align-center justify-start rounded-tr-[25px] rounded-tl-[25px] bg-white p-[15px_50px_22px_0px] box-border border-b-2 border-b-[#e5e5e5]'>
@@ -78,6 +115,17 @@ export default function DatePicker() {
         </span>
       </div>
       <DayPicker
+        modifiers={{
+          dayoffbgHighlight: selectedWeek
+            ? selectedDaysOff.map((day) => new Date(day))
+            : [],
+        }}
+        modifiersClassNames={{
+          dayoffbgHighlight: selectedWeek
+            ? 'DayPicker-Day--dayoffbg-highlight'
+            : undefined, // Add a custom class for the highlighted days
+        }}
+        disabled={{ before: nextWeekStart }}
         //broadcastCalendar
         captionLayout='dropdown'
         fromYear={2000}
@@ -94,20 +142,29 @@ export default function DatePicker() {
         <span className='days-off-text text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm'>
           Days OFF
         </span>
-        {weekdaysArray.map((day, index) => (
-          <span
-            key={index}
-            className={`select-none ${
-              // selectedDayoff === day //for one day
-              selectedDaysOff.includes(day)
-                ? 'days-off-text text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm selected'
-                : 'bg-white p-[5px_10px] border-2 border-[#752f62] rounded-[25px] text-xs leading-[1.6]'
-            }`}
-            onClick={() => handleSelectedDaysOffClick(day)}
-          >
-            {day.slice(0, 2)}
-          </span>
-        ))}
+        {weekdaysArray.map((day, index) => {
+          const dayOfWeek = weekdaysArray.indexOf(day); // Get the index of the day
+          const targetDay = selectedWeek?.from
+            ? addDays(selectedWeek.from, dayOfWeek)
+            : null;
+
+          const currentDay = targetDay ? format(targetDay, 'yyyy-MM-dd') : null;
+          return (
+            <span
+              key={index}
+              className={`select-none ${
+                // selectedDayoff === day //for one day
+                selectedDaysOff.includes(currentDay)
+                  ? 'days-off-text text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm selected'
+                  : 'bg-white p-[5px_10px] border-2 border-[#752f62] rounded-[25px] text-xs leading-[1.6]'
+              }`}
+              onClick={(event) => handleSelectedDaysOffClick(event, day)}
+              data-day={currentDay}
+            >
+              {day.slice(0, 2)}
+            </span>
+          );
+        })}
       </div>
       <div className='buttons-container w-full flex align-center justify-between rounded-br-[25px] rounded-bl-[25px] bg-white p-[45px_50px_20px] box-border border-t-2 border-t-[#e5e5e5]'>
         <button className='flex justify-start p-[5px_15px] rounded-[25px] border-2 text-[#752f62] border-[#752f62] text-md'>
