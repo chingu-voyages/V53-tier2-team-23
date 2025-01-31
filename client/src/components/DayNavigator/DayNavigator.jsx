@@ -1,77 +1,9 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 
-// dateMockUp for pixel perfect layout with design
-/* const dateMockUp = {
-  startWeekDate: 'March 06',
-  items: [
-    {
-      day: 'Mon',
-      date: 6,
-    },
-    {
-      day: 'Tue',
-      date: 7,
-    },
-    {
-      day: 'Wed',
-      date: 8,
-    },
-    {
-      day: 'Thu',
-      date: 9,
-    },
-    {
-      day: 'Fri',
-      date: 10,
-    },
-    {
-      day: 'Sat',
-      date: 11,
-    },
-    {
-      day: 'Sun',
-      date: 12,
-    },
-  ],
-};
- */
-function DayNavigator() {
+function DayNavigator({ selectedDate, setSelectedDate, weekDates }) {
   // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
-
-  // currently for employee view: current week dates and month
-  const [weekDates, setWeekDates] = useState([]);
-  const [month, setMonth] = useState('');
-
-  const getCurrentWeekDates = () => {
-    const today = new Date();
-
-    // get the day of the week (0-6, where 0 is Sunday)
-    const dayOfWeek = today.getDay();
-    // to create a new Date object for Monday of the current week
-    const monday = new Date(today);
-
-    // adjust the date of monday to correct day
-    monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-
-    // to extract the month for the current week starting date
-    const monthName = monday.toLocaleDateString('en-US', { month: 'long' });
-    setMonth(monthName);
-
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + i);
-      return {
-        day: date.toLocaleDateString('en-US', { weekday: 'short' }),
-        date: date.getDate(),
-      };
-    });
-  };
-
-  useEffect(() => {
-    setWeekDates(getCurrentWeekDates());
-  }, []);
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -96,7 +28,11 @@ function DayNavigator() {
         <div className='text-center pt-1 md:pt-[0.4rem]'>
           <div className='text-[16px]'>Week of</div>
           <div className='text-[16px] font-bold'>
-            {`${month} ${weekDates[0]?.date}`}
+            {weekDates.length > 0 &&
+              new Date(weekDates[0].fullDate).toLocaleDateString('en-US', {
+                month: 'long',
+                day: 'numeric',
+              })}
           </div>
         </div>
         <button className='text-primary relative'>
@@ -107,29 +43,39 @@ function DayNavigator() {
         ref={scrollRef}
         className='overflow-x-auto snap-x scrollbar-hide md:overflow-visible md:snap-none flex w-full mt-1 gap-[19.5px] md:gap-5 ml-4 md:ml-0 md:justify-center md:mt-4'
       >
-        {weekDates.map((item, index) => (
-          <div
-            key={index}
-            className={`snap-start flex flex-col flex-[0_0_auto] items-center justify-center w-[70px] h-[72px] md:h-[70px] pt-[3px] ${
-              index === 0 ? 'text-white bg-primary' : 'bg-[#F0EBF6]'
-            } border border-black rounded-md `}
-          >
+        {weekDates.map((item) => {
+          const isDisabled = item.dish === null;
+          const isSelected = selectedDate === item.fullDate;
+
+          return (
             <div
-              className={`text-[11px] ${
-                index === 0 ? 'font-normal' : 'font-bold'
+              key={item.fullDate}
+              onClick={() => !isDisabled && setSelectedDate(item.fullDate)}
+              className={`cursor-pointer snap-start flex flex-col flex-[0_0_auto] items-center justify-center w-[70px] h-[72px] md:h-[70px] pt-[3px] border border-black rounded-md ${
+                isDisabled
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : isSelected
+                  ? 'text-white bg-primary'
+                  : 'bg-[#F0EBF6]'
               }`}
             >
-              {item.day}
+              <div
+                className={`text-[11px] ${
+                  isSelected ? 'font-normal' : 'font-bold'
+                }`}
+              >
+                {item.day}
+              </div>
+              <div
+                className={`text-[11px] ${
+                  isSelected ? 'font-normal' : 'font-bold'
+                }`}
+              >
+                {item.date}
+              </div>
             </div>
-            <div
-              className={`text-[11px] ${
-                index === 0 ? 'font-normal' : 'font-bold'
-              }`}
-            >
-              {item.date}
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
