@@ -7,7 +7,7 @@ function App() {
     <>
       <NavBar />
       <div className='custom-bg'>
-        <div className='datepicker-container flex flex-col flex-wrap items-center'>
+        <div className='datepicker-container lg:p-[20px_70px_26px] flex flex-col flex-wrap items-center'>
           <h1 className='text-white w-full text-4xl text-center h-14'>
             Calendar
           </h1>
