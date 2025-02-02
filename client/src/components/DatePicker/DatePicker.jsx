@@ -209,7 +209,7 @@ export default function DatePicker() {
                 : undefined, // Add a custom class for the highlighted days
             }}
             disabled={{ before: nextWeekStart }}
-            //broadcastCalendar
+            broadcastCalendar
             captionLayout='dropdown'
             fromYear={2000}
             toYear={2030}
