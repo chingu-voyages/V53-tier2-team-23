@@ -10,7 +10,11 @@ import {
 import { DayPicker, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 
-export default function DatePicker() {
+export default function DatePicker({
+  customDayPicker,
+  daysOffContainer,
+  daysOffText,
+}) {
   const [selectedDaysOff, setSelectedDaysOff] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [formattedNextWeekStart, setFormattedNextWeekStart] = useState('');
@@ -219,10 +223,14 @@ export default function DatePicker() {
             defaultMonth={selectedWeek?.from} // Start at the preselected week
             onDayClick={handleDayClick} // Ensure manual selection works
             //showWeekNumber
-            className='custom-day-picker' // Custom class for styling
+            className={`${customDayPicker}`} // Custom class for styling
           />
-          <div className='days-off-container flex align-center flex-wrap justify-center gap-3 max-sm:p-[0px_0px_25px] sm:p-[0px_0px_25px] md::p-[0px_28px_25px] lg:p-[0px_28px_25px] bg-white'>
-            <span className='days-off-text text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm'>
+          <div
+            className={`${daysOffContainer} flex align-center flex-wrap justify-center gap-3 max-sm:p-[0px_0px_25px] sm:p-[0px_0px_25px] md::p-[0px_28px_25px] lg:p-[0px_28px_25px] bg-white`}
+          >
+            <span
+              className={`${daysOffText} text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm`}
+            >
               Days OFF
             </span>
             {weekdaysArray.map((day, index) => {
