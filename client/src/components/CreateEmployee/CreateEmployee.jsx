@@ -2,6 +2,7 @@ import React from 'react';
 import Select from 'react-select';
 import { useState } from 'react';
 import styles from './CreateEmployee.module.css';
+import ViewEmployee from './../ViewEmployee/ViewEmployee';
 
 const allergiesList = [
   { value: 'gluten', label: 'Gluten' },
@@ -77,6 +78,11 @@ const selectStyles = {
 function CreateEmployee() {
   const [identity, setIdentity] = useState('');
   const [selectedAllergies, setSelectedAllergies] = useState([]);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [employeeData, setEmployeeData] = useState({
+    employeeName: '',
+    allergies: [],
+  });
 
   async function handleCreateEmployee(identity, selectedAllergies) {
     const response = await fetch(
@@ -86,13 +92,16 @@ function CreateEmployee() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ identity, selectedAllergies }),
+        body: JSON.stringify({
+          employeeName: identity,
+          allergies: selectedAllergies,
+        }),
         mode: 'cors',
       }
     );
 
-    const data = await response.json();
-    console.log(data);
+    const responseData = await response.json();
+    return responseData.data;
   }
 
   const handleSelectAllergies = (select) => {
@@ -123,50 +132,61 @@ function CreateEmployee() {
 
   async function submitForm(event) {
     event.preventDefault();
-    await handleCreateEmployee(identity, selectedAllergies);
+    const data = await handleCreateEmployee(identity, selectedAllergies);
+    setEmployeeData({
+      employeeName: data.employeeName,
+      allergies: data.allergies,
+    });
+    console.log(data);
+    console.log(employeeData);
+    setFormSubmitted(true);
   }
 
   return (
-    <div className={`flex flex-col ${formContainer}`}>
-      <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>
-        Add Collaborator Details
-      </h2>
-      <form
-        onSubmit={submitForm}
-        className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
-      >
-        <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-          Identity
-        </h4>
-        <input
-          onChange={handleIdentity}
-          type='text'
-          id='identity'
-          value={identity}
-          className={`${formContainerInput} border-[#513174] border-2 rounded-[4px]`}
-          placeholder='John Doe'
-          required
-        />
-        <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-          Allergies
-        </h4>
-        <Select
-          //defaultValue={allergiesList[0]}
-          isMulti
-          name='allergiesList'
-          options={allergiesList}
-          onChange={handleSelectAllergies}
-          className='basic-multi-select'
-          classNamePrefix='select'
-          styles={selectStyles}
-          getOptionLabel={(e) => getAllergyLabel(e.value)}
-        />
-        <div className='buttons-container flex flex-row m-0.5 flex-wrap'>
-          <button
-            type='submit'
-            id='loginButton'
-            type='submit'
-            className={`${formContainerButton}
+    <>
+      {formSubmitted ? (
+        <ViewEmployee employeeData={employeeData} />
+      ) : (
+        <div className={`flex flex-col ${formContainer}`}>
+          <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>
+            Add Collaborator Details
+          </h2>
+          <form
+            onSubmit={submitForm}
+            className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
+          >
+            <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+              Identity
+            </h4>
+            <input
+              onChange={handleIdentity}
+              type='text'
+              id='identity'
+              value={identity}
+              className={`${formContainerInput} border-[#513174] border-2 rounded-[4px]`}
+              placeholder='John Doe'
+              required
+            />
+            <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+              Allergies
+            </h4>
+            <Select
+              //defaultValue={allergiesList[0]}
+              isMulti
+              name='allergiesList'
+              options={allergiesList}
+              onChange={handleSelectAllergies}
+              className='basic-multi-select'
+              classNamePrefix='select'
+              styles={selectStyles}
+              getOptionLabel={(e) => getAllergyLabel(e.value)}
+            />
+            <div className='buttons-container flex flex-row m-0.5 flex-wrap'>
+              <button
+                type='submit'
+                id='loginButton'
+                type='submit'
+                className={`${formContainerButton}
             w-fit
             rounded-full
             border-none
@@ -182,12 +202,14 @@ function CreateEmployee() {
             font-bold
             shadow-md
             `}
-          >
-            Preview Collaborator
-          </button>
+              >
+                Preview Changes
+              </button>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 }
 

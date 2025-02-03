@@ -1,24 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import { useState } from 'react';
-import styles from './CreateEmployee.module.css';
-
-const allergiesList = [
-  { value: 'gluten', label: 'Gluten' },
-  { value: 'dairy', label: 'Dairy' },
-  { value: 'egg', label: 'Egg' },
-  { value: 'seafood', label: 'Seafood' },
-  { value: 'soy', label: 'Soy' },
-  { value: 'tree nuts', label: 'Tree Nuts' },
-  { value: 'peanuts', label: 'Peanuts' },
-  { value: 'legumes', label: 'Legumes' },
-  { value: 'sesame seeds', label: 'Sesame Seeds' },
-  { value: 'corn', label: 'Corn' },
-  { value: 'mustard', label: 'Mustard' },
-  { value: 'allium', label: 'Allium' },
-  { value: 'coconut', label: 'Coconut' },
-  { value: 'fruits', label: 'Fruits' },
-];
+import styles from './ViewEmployee.module.css';
 
 const customStyles = {
   form: styles.form,
@@ -51,153 +34,30 @@ const getAllergyLabel = (allergy) => {
   );
 };
 
-const selectStyles = {
-  control: (styles) => ({
-    ...styles,
-    borderColor: '#6b23a6',
-    borderWidth: '2px',
-    borderRadius: '5px',
-    '&:hover': {
-      borderColor: '#fdd053',
-    },
-    '&:focus': {
-      borderColor: '#ff9900',
-      boxShadow: '0 0 0 2px rgba(255, 153, 0, 0.3)',
-    },
-  }),
-  dropdownIndicator: (styles) => ({
-    ...styles,
-    color: '#6b23a6',
-    ':hover': {
-      color: '#fdd053',
-    },
-  }),
-};
-
-function ViewEmployee() {
-  const [identity, setIdentity] = useState('');
-  const [selectedAllergies, setSelectedAllergies] = useState([]);
-
-  async function loginUser(username, password) {
-    const loginResponse = await fetch(
-      'https://eato-meatplanner.netlify.app/.netlify/functions/login',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-        mode: 'cors',
-      }
-    );
-
-    const loginData = await loginResponse.json();
-    const data = loginData.userData;
-    const token = data?.token;
-
-    if (token) {
-      localStorage.setItem('token', token);
-      setResponseMessage('Successfully logged in');
-
-      return true;
-    } else {
-      setResponseMessage(`Login failed: ${loginData.message}`);
-      return false;
-    }
-  }
-
-  const handleSelectAllergies = (select) => {
-    // find selected allergies
-    const selectedAllergies = select.map((option) => option.value);
-
-    setSelectedAllergies((prev) => {
-      // find previous selected allergies
-      const allergiesSelected = prev.filter((allergy) =>
-        selectedAllergies.includes(allergy)
-      );
-      // find new selected allergies
-      const allergiesNotSelected = selectedAllergies.filter(
-        (allergy) => !prev.includes(allergy)
-      );
-
-      const allSelectedAllergies = [
-        ...allergiesSelected,
-        ...allergiesNotSelected,
-      ];
-      return allSelectedAllergies;
-    });
-  };
-
-  const handleIdentity = (event) => {
-    setIdentity(event.target.value);
-  };
-
-  async function submitForm(event) {
-    event.preventDefault();
-    await handleLogin(username, password);
-  }
-
+function ViewEmployee({ employeeData }) {
+  const { employeeName, allergies = [] } = employeeData;
   return (
     <div className={`flex flex-col ${formContainer}`}>
       <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>
-        Add Collaborator Details
+        Check Collaborator Details
       </h2>
-      <form
-        onSubmit={submitForm}
+      <div
         className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
       >
         <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-          Identity
+          {employeeName}
         </h4>
-        <input
-          onChange={handleIdentity}
-          type='text'
-          id='identity'
-          value={identity}
-          className={`${formContainerInput} border-[#513174] border-2 rounded-[4px]`}
-          placeholder='John Doe'
-          required
-        />
         <h4 className='text-[#513174] font-semibold uppercase mt-4'>
           Allergies
         </h4>
-        <Select
-          //defaultValue={allergiesList[0]}
-          isMulti
-          name='allergiesList'
-          options={allergiesList}
-          onChange={handleSelectAllergies}
-          className='basic-multi-select'
-          classNamePrefix='select'
-          styles={selectStyles}
-          getOptionLabel={(e) => getAllergyLabel(e.value)}
-        />
-        <div className='buttons-container flex flex-row m-0.5 flex-wrap'>
-          <button
-            type='submit'
-            id='loginButton'
-            type='submit'
-            className={`${formContainerButton}
-            w-fit
-            rounded-full
-            border-none
-            p-[10px_20px]
-            box-border
-            bg-yellow-400
-            hover:bg-white
-            text-purple-800
-            hover:border-2
-            hover:border-solid
-            hover:border-purple-800
-            uppercase
-            font-bold
-            shadow-md
-            `}
-          >
-            Preview Collaborator
-          </button>
-        </div>
-      </form>
+        {
+          <ul>
+            {allergies.map((allergy, index) => (
+              <li key={index}>{getAllergyLabel(allergy)}</li>
+            ))}
+          </ul>
+        }
+      </div>
     </div>
   );
 }
