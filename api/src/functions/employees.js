@@ -96,6 +96,17 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body } = event;
 
+  const employeeId = path.split('/').pop(); // get the employeeId from the URL path
+
+  // Check authentication
+  const authResult = authenticate(event);
+  if (authResult.statusCode !== 200) {
+    return authResult; // Return early if authentication fails
+  }
+
+  // // Proceed if authenticated
+  const user = authResult.user;
+
   // Handle OPTIONS preflight request
   if (httpMethod === 'OPTIONS') {
     return {
@@ -103,26 +114,15 @@ exports.handler = async (event) => {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Headers': 'Content-Type',
       },
     };
   }
 
-  const employeeId = path.split('/').pop(); // get the employeeId from the URL path
-
-  // Check authentication
-  // const authResult = authenticate(event);
-  // if (authResult.statusCode !== 200) {
-  //   return authResult; // Return early if authentication fails
-  // }
-
-  // // Proceed if authenticated
-  // const user = authResult.user;
-
   // create new employee. removed employeId since database didn't include it
   if (httpMethod === 'POST' && path.endsWith('/employees')) {
     try {
-      const { employeeName, allergies, dietaryRestrictions } = JSON.parse(body);
+      const { employeeName, allergies } = JSON.parse(body);
 
       if (!employeeName) {
         return {
@@ -136,7 +136,6 @@ exports.handler = async (event) => {
       const newEmployee = await Employee.create({
         employeeName,
         allergies,
-        dietaryRestrictions,
       });
 
       return {
