@@ -110,9 +110,9 @@ exports.handler = async (event) => {
   // Handle OPTIONS preflight request
   if (httpMethod === 'OPTIONS') {
     return {
-      statusCode: 204,
+      statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': 'http://localhost:5173',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       },
