@@ -111,13 +111,13 @@ exports.handler = async (event) => {
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
 
   // Check authentication
-  const authResult = authenticate(event);
-  if (authResult.statusCode !== 200) {
-    return authResult; // Return early if authentication fails
-  }
+  // const authResult = authenticate(event);
+  // if (authResult.statusCode !== 200) {
+  //   return authResult; // Return early if authentication fails
+  // }
 
-  // Proceed if authenticated
-  const user = authResult.user;
+  // // Proceed if authenticated
+  // const user = authResult.user;
 
   // create new employee. removed employeId since database didn't include it
   if (httpMethod === 'POST' && path.endsWith('/employees')) {
