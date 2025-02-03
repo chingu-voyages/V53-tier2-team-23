@@ -1,2 +1,7 @@
 /*
   Content-Security-Policy: default-src 'self'; connect-src *; img-src 'self' https://res.cloudinary.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, POST, OPTIONS
+  Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept
+  Access-Control-Allow-Credentials: true
+  Access-Control-Max-Age: 2592000
