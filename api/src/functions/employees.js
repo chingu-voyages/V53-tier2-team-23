@@ -95,6 +95,19 @@ const updateEmployeeAllergiesAndDiet = (
 exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body } = event;
+
+  // Handle OPTIONS preflight request
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 204,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+    };
+  }
+
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
 
   // Check authentication
