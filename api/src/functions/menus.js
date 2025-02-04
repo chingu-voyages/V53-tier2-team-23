@@ -106,7 +106,10 @@ exports.handler = async (event) => {
 
       dayToUpdate.dish = dish || null;
 
-      const updatedMenu = await menu.save();
+      await menu.save();
+      const updatedMenu = await Menus.findOne({
+        weekStartDate: new Date(weekStartDate),
+      }).populate('days.dish');
 
       return sendResponse(200, 'Menu updated successfully', updatedMenu);
     } catch (error) {

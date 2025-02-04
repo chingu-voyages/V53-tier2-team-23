@@ -5,23 +5,24 @@ const Employee = require('../models/employee.models');
 
 // Validations
 const validAllergies = [
-  'gluten',
-  'dairy',
-  'egg',
-  'seafood',
-  'soy',
-  'tree nuts',
   'peanuts',
+  'shellfish',
+  'fish',
+  'corn',
+  'soy',
+  'egg',
+  'dairy',
+  'tree nuts',
   'legumes',
   'sesame seeds',
-  'corn',
+  'milk',
+  'wheat',
   'mustard',
-  'allium',
+  'gluten',
   'coconut',
-  'fruits',
 ];
 
-const validDiet = [
+/* const validDiet = [
   'vegetarian',
   'vegan',
   'pescatarian',
@@ -31,7 +32,7 @@ const validDiet = [
   'standard',
   'lactose-free',
   'diabetes-friendly',
-];
+]; */
 
 // helper function to validate items against a valid list
 const validateItems = (items, validItems) => {
@@ -42,9 +43,24 @@ const handleError = (error, method) => {
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
     body: JSON.stringify({ error: error.message }),
   };
 };
+
+const sendResponse = (statusCode, message, data = null) => ({
+  statusCode,
+  headers: {
+    'Access-Control-Allow-Origin': '*', // Allows all origins
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  },
+  body: JSON.stringify(data ? { message, data } : { message }),
+});
 
 // helper function to update the employee's field if provided
 // const updateEmployeeField = (employee, field, value) => {
@@ -93,42 +109,49 @@ const updateEmployeeAllergiesAndDiet = (
 
 exports.handler = async (event) => {
   await connectDatabase();
-  const { httpMethod, path, body } = event;
-  const employeeId = path.split('/').pop(); // get the employeeId from the URL path
+  const { httpMethod, path, body, queryStringParameters } = event;
 
-  // Check authentication
-  const authResult = authenticate(event);
-  if (authResult.statusCode !== 200) {
-    return authResult; // Return early if authentication fails
+  // Handle CORS Preflight Requests
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+      body: '',
+    };
   }
 
-  // Proceed if authenticated
-  const user = authResult.user;
+  // Check authentication for all methods except GET
+  // if (httpMethod !== 'GET') {
+  //   const authResult = authenticate(event);
+  //   if (authResult.statusCode !== 200) {
+  //     return authResult; // Return early if authentication fails
+  //   }
+
+  //   // Proceed if authenticated
+  //   const user = authResult.user;
+  // }
+
+  const employeeId = path.split('/').pop(); // get the employeeId from the URL path
 
   // create new employee. removed employeId since database didn't include it
   if (httpMethod === 'POST' && path.endsWith('/employees')) {
     try {
-      const { employeeName, allergies, dietaryRestrictions } = JSON.parse(body);
+      const { employeeName, allergies } = JSON.parse(body);
 
       if (!employeeName) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({
-            error: 'Employeee Name is required.',
-          }),
-        };
+        return sendResponse(400, 'Employeee Name is required.');
       }
 
       const newEmployee = await Employee.create({
         employeeName,
         allergies,
-        dietaryRestrictions,
       });
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify(newEmployee),
-      };
+      return sendResponse(200, 'Employee created successfully', newEmployee);
     } catch (error) {
       return handleError(error, 'creating');
     }

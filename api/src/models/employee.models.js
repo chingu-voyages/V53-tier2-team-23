@@ -2,20 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const allergen = [
-  'gluten',
-  'dairy',
-  'egg',
-  'seafood',
-  'soy',
-  'tree nuts',
   'peanuts',
+  'shellfish',
+  'fish',
+  'corn',
+  'soy',
+  'egg',
+  'dairy',
+  'tree nuts',
   'legumes',
   'sesame seeds',
-  'corn',
+  'milk',
+  'wheat',
   'mustard',
-  'allium',
+  'gluten',
   'coconut',
-  'fruits',
 ];
 
 const diet = [
