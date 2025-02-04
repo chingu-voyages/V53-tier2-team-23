@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { FaArrowDown } from 'react-icons/fa6';
 import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 import ExportToPDF from '../ExportToPDF/ExportToPDF';
+import ExportToExcel from '../ExportToExcel/ExportToExcel';
 
 function WeeklyMenu() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -164,12 +165,11 @@ function WeeklyMenu() {
             </div>
           </div>
           <div className='mt-6 flex flex-col gap-7 items-center'>
-            <button
-              className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit'
-            >
+            <button className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit'>
               EXPORT WEEKLY PLAN <FaArrowDown />
             </button>
             <ExportToPDF weekDates={weekDates} />
+            <ExportToExcel weekDates={weekDates} />
             <button className='border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit'>
               EDIT MEAL
             </button>
