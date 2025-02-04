@@ -1,6 +1,6 @@
 [build]
-  functions = "/src"  
+  functions = "/src/functions"  
 
 [dev]
-  functions = "src/functions"
+  functions = "/src/functions"
   port = 8888

@@ -1,5 +1,6 @@
 const mongoosee = require('mongoose');
 const Dishes = require('../models/dishes.models');
+const Employee = require('../models/employee.models');
 const connectDatabase = require('../config/database.config');
 const authenticate = require('../functions/authMiddleware');
 
@@ -32,6 +33,34 @@ exports.handler = async (event) => {
       return {
         statusCode: 200,
         body: JSON.stringify(dishes),
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      };
+    } catch (error) {
+      return handleError(error, 'fetching');
+    }
+  }
+
+  // getting filtered dishes excluding employees allergens
+  if (
+    httpMethod === 'GET' &&
+    path.includes('/dishes/') &&
+    path.endsWith('/filtered')
+  ) {
+    try {
+      const { dishes, allergens } = await getFilteredDishes();
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          success: true,
+          data: {
+            dishes,
+            allergens,
+          },
+        }),
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -78,3 +107,46 @@ exports.handler = async (event) => {
     },
   };
 };
+
+async function getFilteredDishes() {
+  try {
+    // get employees
+    const employees = await Employee.find({}).exec();
+
+    // get employees allergies
+    const employeesAllergensArray = employees.flatMap(
+      (employee) => employee.allergies || []
+    );
+
+    // get dishes from the database
+    const databaseDishes = await Dishes.find({}).exec();
+
+    const allergensSet = new Set(employeesAllergensArray); // collection of unique values from employees allergens
+
+    // Fetch all dishes excluding allergens
+    const safeDishes = databaseDishes.filter(
+      (dish) =>
+        !dish.allergens.some((dishAllergen) =>
+          [...allergensSet].some(
+            (allergen) =>
+              dishAllergen.includes(allergen) || allergensSet.has(dishAllergen)
+          )
+        )
+    );
+
+    const dishes = safeDishes.map((dish, index) => {
+      return {
+        ...dish.toObject(),
+      };
+    });
+
+    console.log(databaseDishes);
+    return {
+      dishes,
+      allergens: [...allergensSet],
+    };
+  } catch (error) {
+    console.error('Error fetching dishes:', error);
+    throw new Error('Error fetching dishes');
+  }
+}
