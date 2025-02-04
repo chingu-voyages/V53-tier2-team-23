@@ -242,14 +242,14 @@ export default function DatePicker({
         }
       );
 
-      if (response.ok) {
-        const responseData = await response.json();
-        handleNotice('Menu created successfully');
-        return responseData;
-      } else {
-        const errorData = await response.json();
-        handleNotice(`Error Data: ${errorData.message}`);
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        // Handle error if the menu already exists or any other issue
+        handleNotice(`Error: ${responseData.message}`);
+        return null;
       }
+      return responseData;
     } catch (error) {
       handleNotice(`Error: ${error.message}`);
       return null;
@@ -391,7 +391,6 @@ export default function DatePicker({
             <button
               type='submit'
               className='flex justify-end p-[5px_15px] rounded-[25px] border-2 border-white text-white bg-[#752f62] text-md'
-              onClick={handleButtonClick}
             >
               {action}
             </button>
