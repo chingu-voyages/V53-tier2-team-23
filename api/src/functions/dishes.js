@@ -22,7 +22,7 @@ exports.handler = async (event) => {
   const { httpMethod, path } = event;
   const dishesId = path.split('/').pop();
 
-  // Handle CORS Preflight Requests
+  // Handle CORS Preflight Requests (added authorization)
   if (httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
