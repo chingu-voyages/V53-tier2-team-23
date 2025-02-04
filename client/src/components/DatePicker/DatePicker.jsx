@@ -197,13 +197,27 @@ export default function DatePicker({
         }
       );
 
+      // Debugging
+/*       console.log('Response Status:', filteredDishes.status);
+      if (!filteredDishes.ok) {
+        const errorData = await filteredDishes.json();
+        console.log('Error fetching dishes:', errorData);
+        handleNotice(`Error: ${errorData.message}`);
+        return;
+      } */
+
+      const filteredDishesRes = await filteredDishes.json();
+
+      // to extract only the _id of each dish
+      const dishIds = filteredDishesRes.data.dishes.map(dish => dish._id);
+
       // function to get a random dish
       const getRandomDish = () => {
-        if (filteredDishes.length === 0) {
+        if (dishIds.length === 0) {
           return handleNotice('No dishes available');
         }
-        const randomIndex = Math.floor(Math.random() * filteredDishes.length);
-        return filteredDishes[randomIndex];
+        const randomIndex = Math.floor(Math.random() * dishIds.length);
+        return dishIds[randomIndex];
       };
 
       // to assign random dishes but null on days off
@@ -261,7 +275,7 @@ export default function DatePicker({
     // console.log('Weekdays:', selectedWeekDays);
 
     const requestData = {
-      weekStartsDate: selectedWeekRange.from,
+      weekStartDate: selectedWeekRange.from,
       days: selectedWeekDays.map((day) => ({
         date: day.date,
         dish: null, // temporary placeholder

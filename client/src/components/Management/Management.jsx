@@ -1,4 +1,4 @@
-import { act, useState } from 'react';
+import { React, useState } from 'react';
 import DatePicker from '../DatePicker/DatePicker';
 
 function Managemenet({ username }) {
