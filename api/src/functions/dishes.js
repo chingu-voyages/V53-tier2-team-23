@@ -8,6 +8,11 @@ const handleError = (error, method) => {
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
     body: JSON.stringify({ error: error.message }),
   };
 };
@@ -16,6 +21,19 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path } = event;
   const dishesId = path.split('/').pop();
+
+  // Handle CORS Preflight Requests
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+      body: '',
+    };
+  }
 
   // Check authentication
   const authResult = authenticate(event);
