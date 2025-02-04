@@ -5,21 +5,20 @@ const Employee = require('../models/employee.models');
 
 // Validations
 const validAllergies = [
-  'peanuts',
-  'shellfish',
-  'fish',
-  'corn',
-  'soy',
-  'egg',
+  'gluten',
   'dairy',
+  'egg',
+  'seafood'
+  'soy',
   'tree nuts',
+  'peanuts',
   'legumes',
   'sesame seeds',
-  'milk',
-  'wheat',
-  'mustard',
-  'gluten',
+  'corn',
+  'mustard'
+  'allium',
   'coconut',
+  'fruits'
 ];
 
 /* const validDiet = [
