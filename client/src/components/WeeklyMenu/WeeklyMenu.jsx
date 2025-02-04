@@ -31,7 +31,7 @@ function WeeklyMenu() {
   const fetchWeeklyMenu = async (weekStart) => {
     try {
       const response = await fetch(
-        `http://localhost:8888/.netlify/functions/menus?weekStartDate=${weekStart}`
+        `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${weekStart}`
       );
       const data = await response.json();
       setMenu(data.data);
@@ -58,8 +58,13 @@ function WeeklyMenu() {
     const today = new Date();
     const dayOfWeek = today.getDay();
     const monday = new Date(today);
-    monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-    const weekStart = monday.toISOString().split('T')[0];
+    monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
+
+    // using local time instead of ISO as it sometime causes date shift depending on time of usage
+    const weekStart = monday.getFullYear() +
+      '-' + String(monday.getMonth() + 1).padStart(2, '0') +
+      '-' + String(monday.getDate()).padStart(2, '0');
+    console.log('weekStartDate: ',weekStart);
 
     fetchWeeklyMenu(weekStart);
   }, []);

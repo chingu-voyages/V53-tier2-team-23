@@ -9,8 +9,8 @@ function App() {
   return (
     <>
       <NavBar />
-      {/* <WeeklyMenu /> */}
-      <LoginPage />
+      <WeeklyMenu />
+      {/* <LoginPage /> */}
       {/* <div className='custom-bg flex justify-between'>
         <DatePickerContainer />
       </div> */}
