@@ -18,7 +18,7 @@ const validAllergies = [
   'mustard'
   'allium',
   'coconut',
-  'fruits'
+  'fruits',
 ];
 
 /* const validDiet = [
