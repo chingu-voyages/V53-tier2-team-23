@@ -14,6 +14,10 @@ export default function DatePicker({
   customDayPicker,
   daysOffContainer,
   daysOffText,
+  setIsModalOpen,
+  action,
+  handleNotice,
+  isViewMode,
 }) {
   const [selectedDaysOff, setSelectedDaysOff] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
@@ -33,15 +37,27 @@ export default function DatePicker({
   ];
 
   const today = new Date();
+
+  // Get current week's Monday start and Sunday end
+  const currentWeekStart = startOfWeek(today, { weekStartsOn: 1 });
+  const currentWeekEnd = endOfWeek(today, { weekStartsOn: 1 });
+
   // Get next week's Monday start and Sunday end
   const nextWeekStart = startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 });
   const nextWeekEnd = endOfWeek(nextWeekStart, { weekStartsOn: 1 });
 
+  // select current week in view mode else select next week
   useEffect(() => {
-    setSelectedWeek({ from: nextWeekStart, to: nextWeekEnd });
-    setFormattedNextWeekStart(format(nextWeekStart, 'MMMM d, yyyy'));
-    setFormattedNextWeekEnd(format(nextWeekEnd, 'MMMM d, yyyy'));
-  }, []);
+    if (isViewMode) {
+      setSelectedWeek({ from: currentWeekStart, to: currentWeekEnd });
+      setFormattedNextWeekStart(format(currentWeekStart, 'MMMM d, yyyy'));
+      setFormattedNextWeekEnd(format(currentWeekEnd, 'MMMM d, yyyy'));
+    } else {
+      setSelectedWeek({ from: nextWeekStart, to: nextWeekEnd });
+      setFormattedNextWeekStart(format(nextWeekStart, 'MMMM d, yyyy'));
+      setFormattedNextWeekEnd(format(nextWeekEnd, 'MMMM d, yyyy'));
+    }
+  }, [isViewMode]);
 
   // single day off
   // const handleSelectedDayOffClick = (day) => {
@@ -93,6 +109,10 @@ export default function DatePicker({
 
     setFormattedNextWeekStart(format(newStart, 'MMMM d, yyyy'));
     setFormattedNextWeekEnd(format(newEnd, 'MMMM d, yyyy'));
+  };
+
+  const handleButtonClick = () => {
+    handleNotice(`Menu has been ${action.toLowerCase()}d`);
   };
 
   // Get all the days in the selected week
@@ -212,7 +232,11 @@ export default function DatePicker({
                 ? 'DayPicker-Day--dayoffbg-highlight'
                 : undefined, // Add a custom class for the highlighted days
             }}
-            disabled={{ before: nextWeekStart }}
+            disabled={
+              isViewMode
+                ? { before: currentWeekStart }
+                : { before: nextWeekStart }
+            } // allow current week to be selected in view mode
             broadcastCalendar
             captionLayout='dropdown'
             fromYear={2000}
@@ -226,6 +250,7 @@ export default function DatePicker({
             className={`${customDayPicker}`} // Custom class for styling
           />
           <div
+            style={{ display: isViewMode ? 'none' : 'flex' }}
             className={`${daysOffContainer} flex align-center flex-wrap justify-center gap-3 max-sm:p-[0px_0px_25px] sm:p-[0px_0px_25px] md::p-[0px_28px_25px] lg:p-[0px_28px_25px] bg-white`}
           >
             <span
@@ -269,8 +294,9 @@ export default function DatePicker({
             <button
               type='submit'
               className='flex justify-end p-[5px_15px] rounded-[25px] border-2 border-white text-white bg-[#752f62] text-md'
+              onClick={handleButtonClick}
             >
-              Save
+              {action}
             </button>
           </div>
         </div>
