@@ -4,10 +4,11 @@ import { useState } from 'react';
 import styles from './ViewEmployee.module.css';
 
 const customStyles = {
+  profileIcon: styles['profile-icon'],
+  allergyIcon: styles['allergy-icon'],
   form: styles.form,
   formContainer: styles['form-container'],
   formContainerTitle: styles['form-container__title'],
-  formContainerForm: styles['form-container__form'],
   formContainerInput: styles['form-container__input'],
   formContainerButton: styles['form-container__button'],
   formContainerResponse: styles['form-container__response'],
@@ -21,42 +22,102 @@ const {
   formContainerInput,
   formContainerButton,
   formContainerResponse,
+  profileIcon,
+  allergyIcon,
 } = customStyles;
-
-const getAllergyLabel = (allergy) => {
-  const part1 = allergy.substring(0, 3);
-  const part2 = allergy.substring(3);
-  return (
-    <>
-      <span className='allergypart1 text-[#513174]'>{part1}</span>
-      <span className='allergypart2 text-gray-500'>{part2}</span>
-    </>
-  );
-};
 
 function ViewEmployee({ employeeData }) {
   const { employeeName, allergies = [] } = employeeData;
+  const allergenIconURL =
+    'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
+
   return (
     <div className={`flex flex-col ${formContainer}`}>
-      <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>
-        Check Collaborator Details
-      </h2>
+      <h1 className={`text-[#513174] font-bold`}>Check Collaborator Details</h1>
       <div
-        className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
+        className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
       >
-        <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-          {employeeName}
-        </h4>
-        <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-          Allergies
-        </h4>
+        <h2
+          className={`${formContainerTitle} text-[#513174] font-bold uppercase`}
+        >
+          Collaborator Allergies Overview
+        </h2>
+        <div className='flex flex-wrap items-center gap-8'>
+          <span className='pl-10 py-10'>
+            <img
+              className={profileIcon}
+              src='https://res.cloudinary.com/dspxn4ees/image/upload/v1738656644/profil-icon.svg'
+              alt='profile-icon'
+            />
+          </span>
+          <h4 className='text-[#513174] font-semibold capitalize mt-4'>
+            {employeeName}
+          </h4>
+        </div>
         {
-          <ul>
+          <ul className='flex mt-5 mb-24 gap-5 px-10'>
             {allergies.map((allergy, index) => (
-              <li key={index}>{getAllergyLabel(allergy)}</li>
+              <li className='flex flex-wrap gap-2' key={index}>
+                <span>
+                  <img
+                    className={allergyIcon}
+                    src={`${allergenIconURL}${allergy}.svg`}
+                    alt={allergy}
+                  />
+                </span>
+                <span>{allergy}</span>
+              </li>
             ))}
           </ul>
         }
+        <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+          <button
+            type='submit'
+            id='loginButton'
+            type='submit'
+            className={`${formContainerButton}
+            w-fit
+            rounded-full
+            border-none
+            p-[10px_20px]
+            box-border
+            bg-yellow-400
+            hover:bg-white
+            text-purple-800
+            hover:border-2
+            hover:border-solid
+            hover:border-purple-800
+            uppercase
+            font-bold
+            shadow-md
+            `}
+          >
+            Save Changes
+          </button>
+          <button
+            type='submit'
+            id='loginButton'
+            type='submit'
+            className={`${formContainerButton}
+            w-fit
+            rounded-full
+            hover:border-none
+            p-[10px_20px]
+            box-border
+            hover:bg-yellow-400
+            bg-white
+            text-purple-800
+            border-2
+            border-solid
+            border-purple-800
+            uppercase
+            font-bold
+            shadow-md
+            `}
+          >
+            Edit Allergies
+          </button>
+        </div>
       </div>
     </div>
   );

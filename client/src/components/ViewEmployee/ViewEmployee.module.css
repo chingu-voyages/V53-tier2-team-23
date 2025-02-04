@@ -1,14 +1,30 @@
-h2 {
-  color: #fff;
+h1 {
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-h4 {
+h2 {
+  color: #fff;
   font-family: Poppins, san-serif;
 }
 
+.allergy-icon {
+  width: 24px;
+  height: auto;
+}
+
+.profile-icon {
+  width: 48px;
+  height: auto;
+}
+
 .form-container {
-  max-width: 300px;
+  width: 100%;
   margin: 25px auto;
+  height: auto;
+  flex-wrap: wrap;
+  max-width: 500px;
 }
 
 .form-container__title {
@@ -27,6 +43,8 @@ h4 {
 .form-container__button {
   cursor: pointer;
   margin: 15px auto;
+  font-family: Poppins, san-serif;
+  font-size: 1.5em;
 }
 
 .form-container__response {
