@@ -178,7 +178,71 @@ export default function DatePicker({
     }
   }
 
-  const handleSubmit = (event) => {
+  // generate menu for the selected week
+  const createMenu = async (
+    requestData,
+    token,
+    handleNotice,
+    selectedDaysOff
+  ) => {
+    try {
+      // fetch filtered dishes
+      const filteredDishes = await fetch(
+        'https://eato-meatplanner.netlify.app/.netlify/functions/dishes/filtered',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      // function to get a random dish
+      const getRandomDish = () => {
+        if (filteredDishes.length === 0) {
+          return handleNotice('No dishes available');
+        }
+        const randomIndex = Math.floor(Math.random() * filteredDishes.length);
+        return filteredDishes[randomIndex];
+      };
+
+      // to assign random dishes but null on days off
+      const newRequestData = {
+        ...requestData,
+        days: requestData.days.map((day) => ({
+          ...day,
+          dish: selectedDaysOff.includes(day.date) ? null : getRandomDish(),
+        })),
+      };
+
+      // create new menu
+      const response = await fetch(
+        'https://eato-meatplanner.netlify.app/.netlify/functions/menus',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newRequestData),
+        }
+      );
+
+      if (response.ok) {
+        const responseData = await response.json();
+        handleNotice('Menu created successfully');
+        return responseData;
+      } else {
+        const errorData = await response.json();
+        handleNotice(`Error Data: ${errorData.message}`);
+      }
+    } catch (error) {
+      handleNotice(`Error: ${error.message}`);
+      return null;
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Create a new Selected Week object
@@ -196,8 +260,27 @@ export default function DatePicker({
     // console.log('Week:', selectedWeekRange);
     // console.log('Weekdays:', selectedWeekDays);
 
-    setResult(true);
-    setSelectedWeekData(selectedWeekData);
+    const requestData = {
+      weekStartsDate: selectedWeekRange.from,
+      days: selectedWeekDays.map((day) => ({
+        date: day.date,
+        dish: null, // temporary placeholder
+      })),
+    };
+
+    const token = localStorage.getItem('token');
+
+    const responseData = await createMenu(
+      requestData,
+      token,
+      handleNotice,
+      selectedDaysOff
+    );
+
+    if (responseData) {
+      setResult(true);
+      setSelectedWeekData(selectedWeekData);
+    }
   };
 
   const handleReset = (event) => {

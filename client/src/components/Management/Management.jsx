@@ -13,7 +13,7 @@ function Managemenet({ username }) {
 
   const handleNotice = (message) => {
     alert(message);
-    setIsModalOpen(false);
+    // setIsModalOpen(false);
   };
 
   return (
