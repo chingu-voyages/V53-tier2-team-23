@@ -61,7 +61,7 @@ function ViewEmployee({ employeeData }) {
                 <span>
                   <img
                     className={allergyIcon}
-                    src={`${allergenIconURL}${allergy}.svg`}
+                    src={`${allergenIconURL}${allergy.replace(' ', '_')}.svg`}
                     alt={allergy}
                   />
                 </span>
