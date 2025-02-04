@@ -70,7 +70,7 @@ exports.handler = async (event) => {
 
       // to check if a menu already exists
       const existingMenu = await Menus.findOne({
-        weekStartDate: new Date(weekStartDate);
+        weekStartDate: new Date(weekStartDate),
       });
 
       if (existingMenu) {
