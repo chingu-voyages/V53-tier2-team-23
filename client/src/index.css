@@ -4,7 +4,10 @@
 
 @layer base {
   body {
-    @apply font-shantell bg-background;
+    @apply font-poppins bg-background;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
 

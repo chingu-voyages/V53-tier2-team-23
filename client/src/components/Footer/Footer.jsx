@@ -17,7 +17,7 @@ function Footer() {
         <a
           href='https://github.com/chingu-voyages/V53-tier2-team-23/tree/main'
           target='_blank'
-          className='text-primary text-[20px] font-poppins font-medium relative pt-2 md:pt-[0.85rem] md:pl-[0.85rem] lg:pl-[2.8rem]'
+          className='text-primary text-[20px] font-medium relative pt-2 md:pt-[0.85rem] md:pl-[0.85rem] lg:pl-[2.8rem]'
         >
           View Our GitHub
         </a>
