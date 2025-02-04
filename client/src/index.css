@@ -6,6 +6,9 @@
   body {
     @apply font-poppins bg-background;
   }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .custom-bg {

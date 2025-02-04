@@ -8,18 +8,41 @@ const handleError = (error, method) => {
   console.error(`Error ${method} menu: `, error);
   return {
     statusCode: 500,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+    },
     body: JSON.stringify({ error: error.message }),
   };
 };
 
 const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
+  headers: {
+    'Access-Control-Allow-Origin': '*', // Allows all origins
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  },
   body: JSON.stringify(data ? { message, data } : { message }),
 });
 
 exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body, queryStringParameters } = event;
+
+  // Handle CORS Preflight Requests
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      },
+      body: '',
+    };
+  }
 
   // Check authentication for all methods except GET
   if (httpMethod !== 'GET') {
@@ -163,12 +186,5 @@ exports.handler = async (event) => {
     }
   }
 
-  return {
-    statusCode: 405,
-    body: JSON.stringify({ error: 'Method not allowed.' }),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  };
+  return sendResponse(405, 'Method not allowed.');
 };
