@@ -5,6 +5,7 @@ h2 {
 .form-container {
   max-width: 300px;
   margin: 25px auto;
+  font-family: 'Poppins';
 }
 
 .form-container__title {
@@ -16,7 +17,7 @@ h2 {
   width: 100%;
   padding: 10px;
   margin: 5px 0;
-  border: 1px solid #ccc;
+  border: 1px solid #0d0d0d;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -31,4 +32,8 @@ h2 {
   padding: 10px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
+}
+
+.welcome {
+  font-family: Shantell Sans, sans-serif;
 }
