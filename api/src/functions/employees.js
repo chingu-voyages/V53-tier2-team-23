@@ -8,7 +8,7 @@ const validAllergies = [
   'gluten',
   'dairy',
   'egg',
-  'seafood'
+  'seafood',
   'soy',
   'tree nuts',
   'peanuts',
