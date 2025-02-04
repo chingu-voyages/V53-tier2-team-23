@@ -15,7 +15,7 @@ const validAllergies = [
   'legumes',
   'sesame seeds',
   'corn',
-  'mustard'
+  'mustard',
   'allium',
   'coconut',
   'fruits',
