@@ -68,6 +68,15 @@ exports.handler = async (event) => {
         );
       }
 
+      // to check if a menu already exists
+      const existingMenu = await Menus.findOne({
+        weekStartDate: new Date(weekStartDate);
+      });
+
+      if (existingMenu) {
+        return sendResponse(409, `A menu already exists for the week starting on ${weekStartDate}.`)
+      }
+
       for (const day of days) {
         if (!day.date) {
           return sendResponse(400, 'Each day must have a date');
