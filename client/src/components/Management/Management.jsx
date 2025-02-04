@@ -14,6 +14,8 @@ function Managemenet({ username }) {
           </div>
         </div>
       </div>
+
+      {/* Allergy section */}
       <div>
         <p className='font-shantell'>Need to edit allergies of an employee?</p>
         <div className='group relative flex flex-col'>
