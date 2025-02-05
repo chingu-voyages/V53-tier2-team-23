@@ -8,6 +8,7 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 import { DayPicker, useDayPicker } from 'react-day-picker';
+import { useNavigate } from 'react-router-dom';
 import 'react-day-picker/dist/style.css';
 import WeeklyMenu from '../WeeklyMenu/WeeklyMenu';
 
@@ -35,6 +36,8 @@ export default function DatePicker({
     'Saturday',
     'Sunday',
   ];
+
+  const navigate = useNavigate();
 
   const handleNotice = (message) => {
     alert(message);
@@ -113,10 +116,6 @@ export default function DatePicker({
 
     setFormattedNextWeekStart(format(newStart, 'MMMM d, yyyy'));
     setFormattedNextWeekEnd(format(newEnd, 'MMMM d, yyyy'));
-  };
-
-  const handleButtonClick = () => {
-    handleNotice(`Menu has been ${action.toLowerCase()}d`);
   };
 
   // Get all the days in the selected week
@@ -276,6 +275,7 @@ export default function DatePicker({
     if (isViewMode) {
       setResult(true);
       setSelectedWeekStart(selectedWeekRange.from);
+      navigate('/menu', { state: { weekStartDate: selectedWeekRange.from } });
       return;
     }
 
@@ -295,12 +295,9 @@ export default function DatePicker({
       setResult(true);
       // setSelectedWeekData(selectedWeekData);
       setSelectedWeekStart(selectedWeekRange.from);
+      navigate('/menu', { state: { weekStartDate: selectedWeekRange.from } });
     }
   };
-
-  if (result) {
-    return <WeeklyMenu weekStartDate={selectedWeekStart} />;
-  }
 
   const handleReset = (event) => {
     event.preventDefault();
@@ -397,7 +394,7 @@ export default function DatePicker({
               type='submit'
               className='flex justify-end p-[5px_15px] rounded-[25px] border-2 border-white text-white bg-[#752f62] text-md'
             >
-              {action}
+              Save and {action} menu
             </button>
           </div>
         </div>
