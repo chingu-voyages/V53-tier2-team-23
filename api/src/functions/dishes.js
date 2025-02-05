@@ -1,7 +1,7 @@
 const mongoosee = require('mongoose');
 const Dishes = require('../models/dishes.models');
 const Employee = require('../models/employee.models');
-const Image = require('./models/image.model');
+const Image = require('../models/image.model');
 const connectDatabase = require('../config/database.config');
 const authenticate = require('../functions/authMiddleware');
 
