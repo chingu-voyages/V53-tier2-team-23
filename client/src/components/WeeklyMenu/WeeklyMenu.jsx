@@ -4,7 +4,7 @@ import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 import ExportToPDF from '../ExportToPDF/ExportToPDF';
 import ExportToExcel from '../ExportToExcel/ExportToExcel';
 
-function WeeklyMenu() {
+function WeeklyMenu({ weekStartDate }) {
   const [selectedDate, setSelectedDate] = useState(null);
   const [menu, setMenu] = useState(null);
   const [dish, setDish] = useState(null);
@@ -55,14 +55,20 @@ function WeeklyMenu() {
 
   // Fetch weekly menu on mount
   useEffect(() => {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-    const weekStart = monday.toISOString().split('T')[0];
+    // if there is weekStartDate prop, fetch menu for that week
+    if (weekStartDate) {
+      fetchWeeklyMenu(weekStartDate);
+    } else {
+      // If no weekStartDate prop, calculate the current week's start date
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      const weekStart = monday.toISOString().split('T')[0];
 
-    fetchWeeklyMenu(weekStart);
-  }, []);
+      fetchWeeklyMenu(weekStart);
+    }
+  }, [weekStartDate]);
 
   // Update dish when selectedDate changes
   useEffect(() => {
