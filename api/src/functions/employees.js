@@ -160,10 +160,7 @@ exports.handler = async (event) => {
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
       const employees = await Employee.find();
-      return {
-        statusCode: 200,
-        body: JSON.stringify(employees),
-      };
+      return sendResponse(200, 'Employees retrieved successfully', employees);
     } catch (error) {
       return handleError(error, 'fetching');
     }
@@ -174,15 +171,9 @@ exports.handler = async (event) => {
     try {
       const employee = await Employee.findById(employeeId);
       if (!employee) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ error: 'Employee not found' }),
-        };
+        return sendResponse(404, 'Employee not found.');
       }
-      return {
-        statusCode: 200,
-        body: JSON.stringify(employee),
-      };
+      return sendResponse(200, 'Employee retrieved successfully', employee);
     } catch (error) {
       return handleError(error, 'fetching');
     }
@@ -222,16 +213,17 @@ exports.handler = async (event) => {
         dietToRemove
       );
       if (error) {
-        return { statusCode: 400, body: JSON.stringify({ error: error }) };
+        return sendResponse(400, 'Invalid input', error);
       }
 
       // Save the updated employee
       const updatedEmployee = await employee.save();
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify(updatedEmployee),
-      };
+      return sendResponse(
+        200,
+        'Employee updated successfully',
+        updatedEmployee
+      );
     } catch (error) {
       return handleError(error, 'editing');
     }
@@ -242,22 +234,13 @@ exports.handler = async (event) => {
     try {
       const employee = await Employee.findOneAndDelete(employeeId);
       if (!employee) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ error: 'Employee not found' }),
-        };
+        return sendResponse(404, 'Employee not found.');
       }
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'Employee deleted successfully' }),
-      };
+      return sendResponse(200, 'Employee deleted successfully');
     } catch (error) {
       return handleError(error, 'deleting');
     }
   }
 
-  return {
-    statusCode: 405,
-    body: JSON.stringify({ error: 'Method not allowed.' }),
-  };
+  return sendResponse(405, 'Method not allowed.');
 };
