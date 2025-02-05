@@ -52,102 +52,118 @@ function Management() {
   );
 
   return (
-    <div className='custom-bg h-screen flex flex-col items-center gap-10'>
-      <h1 className='font-shantell text-[24px]'>Welcome {username}!</h1>
-      {/* Menu Section */}
-      <div className=''>
-        <p className='font-shantell text-primary text-[24px] font-bold text-center'>
-          Plan your weekly menu
-        </p>
-        <div className='group relative flex flex-col w-[340px]'>
-          <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl'>
-            MENUS
-          </p>
-          <div className='hidden group-hover:flex flex-col gap-3 mt-2 w-fit'>
-            <button onClick={() => handleMenuButtonClick('Generate')}>
-              Generate Menus
-            </button>
-            <button onClick={() => handleMenuButtonClick('View')}>
-              View Menus
-            </button>
+    <div className='custom-bg'>
+      <div className='relative z-10 flex flex-col items-center gap-10'>
+        <h1 className='font-shantell text-[24px]'>Welcome {username}!</h1>
+        <div className='flex flex-col gap-24 justify-center items-center mt-5'>
+          {/* Menu Section */}
+          <div className='flex flex-col gap-3'>
+            <p className='font-shantell text-primary text-[24px] font-bold text-center'>
+              Plan your weekly menu
+            </p>
+            <div className='group relative w-[340px]'>
+              <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
+                MENUS
+              </p>
+              <div className='flex flex-col justify-center items-center'>
+                <div className='hidden group-hover:flex flex-col w-[320px]'>
+                  <button
+                    onClick={() => handleMenuButtonClick('Generate')}
+                    className='border-[1px] border-primary text-2xl h-[56px] bg-white'
+                  >
+                    Generate Menus
+                  </button>
+                  <button
+                    onClick={() => handleMenuButtonClick('View')}
+                    className='border-[1px] border-primary text-2xl h-[56px] bg-white'
+                  >
+                    View Menus
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      {/* Allergy Section */}
-      <div>
-        <p className='font-shantell text-primary text-[24px] font-bold max-w-72 text-center'>
-          Need to edit allergies of an employee?
-        </p>
-        <div className='group relative flex flex-col'>
-          <p className='border-secondary border-2 rounded-full w-fit px-16'>
-            Allergies
-          </p>
-          <div className='hidden group-hover:flex flex-col gap-3 mt-2 w-fit'>
-            <div className='relative w-64'>
-              <button
-                onClick={() => setShowDropdown((prev) => !prev)}
-                className='text-primary px-4 py-2 w-full border rounded-md text-left flex justify-between items-center bg-white shadow'
-              >
-                <span className='text-primary font-bold'>
-                  Select an Employee
-                </span>
-                <svg
-                  className='w-4 h-4 text-primary'
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    strokeWidth={2}
-                    d='M19 9l-7 7-7-7'
-                  />
-                </svg>
-              </button>
-              {/* dropdown list of employees */}
-              {showDropdown && (
-                <div className='absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10 py-2'>
-                  {/* Search Input Field */}
-                  <input
-                    type='text'
-                    placeholder='Type name here...'
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className='py-2'
-                  />
+          {/* Allergy Section */}
+          <div className='flex flex-col gap-3 items-center justify-center h-full'>
+            <p className='font-shantell text-primary max-w-[283px] text-[24px] font-bold text-center'>
+              Need to edit allergies of an employee?
+            </p>
+            <div className='group relative w-[340px]'>
+              <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
+                ALLERGIES
+              </p>
+              <div className='flex flex-col justify-center items-center'>
+                <div className='hidden group-hover:flex flex-col w-[320px]'>
+                  <div className='relative w-64'>
+                    <button
+                      onClick={() => setShowDropdown((prev) => !prev)}
+                      className='border-[1px] border-primary text-2xl h-[56px] bg-white flex items-center justify-center gap-6 w-[320px] '
+                    >
+                      <span >
+                        Select an Employee
+                      </span>
+                      <svg
+                        className='w-4 h-4 text-primary'
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        stroke='currentColor'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          strokeWidth={2}
+                          d='M19 9l-7 7-7-7'
+                        />
+                      </svg>
+                    </button>
+                    {/* dropdown list of employees */}
+                    {showDropdown && (
+                      <div className='absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10 py-2'>
+                        {/* Search Input Field */}
+                        <input
+                          type='text'
+                          placeholder='Type name here...'
+                          value={searchTerm}
+                          onChange={(e) => setSearchTerm(e.target.value)}
+                          className='py-2'
+                        />
 
-                  {/* Employee List */}
-                  <div className='max-h-60 overflow-y-auto'>
-                    {filteredEmployees.length > 0 ? (
-                      filteredEmployees.map((employee) => (
-                        <button
-                          key={employee._id}
-                          className='block w-full text-left px-4 py-2 hover:bg-gray-100'
-                          onClick={() => {
-                            navigate('/edit-employee', {
-                              state: { employeeId: employee._id },
-                            });
-                            setShowDropdown(false);
-                          }}
-                        >
-                          <span className=''>{employee.employeeName}</span>
-                        </button>
-                      ))
-                    ) : (
-                      <p className='px-4 py-2 text-gray-500'>
-                        No employees found
-                      </p>
+                        {/* Employee List */}
+                        <div className='max-h-60 overflow-y-auto'>
+                          {filteredEmployees.length > 0 ? (
+                            filteredEmployees.map((employee) => (
+                              <button
+                                key={employee._id}
+                                className='block w-full text-left px-4 py-2 hover:bg-gray-100'
+                                onClick={() => {
+                                  navigate('/edit-employee', {
+                                    state: { employeeId: employee._id },
+                                  });
+                                  setShowDropdown(false);
+                                }}
+                              >
+                                <span className=''>
+                                  {employee.employeeName}
+                                </span>
+                              </button>
+                            ))
+                          ) : (
+                            <p className='px-4 py-2 text-gray-500'>
+                              No employees found
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     )}
                   </div>
+                  <button onClick={() => navigate('/create-employee')} className='border-[1px] border-primary text-2xl h-[56px] bg-white'>
+                    Add an Employee
+                  </button>
                 </div>
-              )}
+              </div>
             </div>
-            <button onClick={() => navigate('/create-employee')}>
-              Add an Employee
-            </button>
           </div>
         </div>
       </div>
