@@ -31,7 +31,7 @@ function WeeklyMenu() {
   const fetchWeeklyMenu = async (weekStart) => {
     try {
       const response = await fetch(
-        `http://localhost:8888/.netlify/functions/menus?weekStartDate=${weekStart}`
+        `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${weekStart}`
       );
       const data = await response.json();
       setMenu(data.data);
