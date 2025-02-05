@@ -11,11 +11,6 @@ function Managemenet({ username }) {
     setIsModalOpen(true);
   };
 
-  const handleNotice = (message) => {
-    alert(message);
-    // setIsModalOpen(false);
-  };
-
   return (
     <div>
       <h1 className='font-shantell'>Welcome {username}!</h1>
@@ -58,7 +53,6 @@ function Managemenet({ username }) {
             className='flex justify-between'
             setIsModalOpen={setIsModalOpen}
             action={buttonText}
-            handleNotice={handleNotice}
             isViewMode={buttonText === 'View'}
           />
         </div>

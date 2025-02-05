@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styles from './LoginPage.module.css';
-//import Management from './../Management/Management';
+import Management from '../Management/Management';
 
 const customStyles = {
   form: styles.form,

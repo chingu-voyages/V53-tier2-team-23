@@ -15,9 +15,7 @@ export default function DatePicker({
   customDayPicker,
   daysOffContainer,
   daysOffText,
-  setIsModalOpen,
   action,
-  handleNotice,
   isViewMode,
 }) {
   const [selectedDaysOff, setSelectedDaysOff] = useState([]);
@@ -25,7 +23,8 @@ export default function DatePicker({
   const [formattedNextWeekStart, setFormattedNextWeekStart] = useState('');
   const [formattedNextWeekEnd, setFormattedNextWeekEnd] = useState('');
   const [highlightedDaysOff, setHighlightedDaysOff] = useState(null); // Store the highlighted day
-  const [selectedWeekData, setSelectedWeekData] = useState(null);
+  // const [selectedWeekData, setSelectedWeekData] = useState(null);
+  const [selectedWeekStart, setSelectedWeekStart] = useState(null); // to store the startWeekDate
   const [result, setResult] = useState(false);
   const weekdaysArray = [
     'Monday',
@@ -36,6 +35,10 @@ export default function DatePicker({
     'Saturday',
     'Sunday',
   ];
+
+  const handleNotice = (message) => {
+    alert(message);
+  };
 
   const today = new Date();
 
@@ -180,12 +183,7 @@ export default function DatePicker({
   }
 
   // generate menu for the selected week
-  const createMenu = async (
-    requestData,
-    token,
-    handleNotice,
-    selectedDaysOff
-  ) => {
+  const createMenu = async (requestData, token, selectedDaysOff) => {
     try {
       // fetch filtered dishes
       const filteredDishes = await fetch(
@@ -275,6 +273,12 @@ export default function DatePicker({
     // console.log('Week:', selectedWeekRange);
     // console.log('Weekdays:', selectedWeekDays);
 
+    if (isViewMode) {
+      setResult(true);
+      setSelectedWeekStart(selectedWeekRange.from);
+      return;
+    }
+
     const requestData = {
       weekStartDate: selectedWeekRange.from,
       days: selectedWeekDays.map((day) => ({
@@ -285,21 +289,17 @@ export default function DatePicker({
 
     const token = localStorage.getItem('token');
 
-    const responseData = await createMenu(
-      requestData,
-      token,
-      handleNotice,
-      selectedDaysOff
-    );
+    const responseData = await createMenu(requestData, token, selectedDaysOff);
 
     if (responseData) {
       setResult(true);
-      setSelectedWeekData(selectedWeekData);
+      // setSelectedWeekData(selectedWeekData);
+      setSelectedWeekStart(selectedWeekRange.from);
     }
   };
 
   if (result) {
-    return <WeeklyMenu />;
+    return <WeeklyMenu weekStartDate={selectedWeekStart} />;
   }
 
   const handleReset = (event) => {
