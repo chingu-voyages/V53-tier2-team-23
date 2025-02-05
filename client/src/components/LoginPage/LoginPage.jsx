@@ -123,7 +123,7 @@ function LoginPage() {
   async function submitForm(event) {
     event.preventDefault();
     await handleLogin(username, password);
-    navigate('/management');
+    navigate('/management', { state: { username } });
   }
 
   return (

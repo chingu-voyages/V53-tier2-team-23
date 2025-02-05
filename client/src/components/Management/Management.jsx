@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import DatePicker from '../DatePicker/DatePicker';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-function Managemenet({ username }) {
+function Management() {
   const [buttonText, setButtonText] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const { username } = location.state?.username || {};
 
   // to navigate to the calendar for user to select week
-  const handleButtonClick = (action) => {
+  const handleMenuButtonClick = (action) => {
     setButtonText(action);
     navigate('/calendar', { state: { action, isViewMode: action === 'View' } });
   };
@@ -24,10 +25,10 @@ function Managemenet({ username }) {
             Menus
           </p>
           <div className='hidden group-hover:flex flex-col gap-3 mt-2 w-fit'>
-            <button onClick={() => handleButtonClick('Generate')}>
+            <button onClick={() => handleMenuButtonClick('Generate')}>
               Generate Menus
             </button>
-            <button onClick={() => handleButtonClick('View')}>
+            <button onClick={() => handleMenuButtonClick('View')}>
               View Menus
             </button>
           </div>
@@ -43,7 +44,9 @@ function Managemenet({ username }) {
           </p>
           <div className='hidden group-hover:flex flex-col gap-3 mt-2 w-fit'>
             <button>Select an Employee</button>
-            <button>Add an Employee</button>
+            <button onClick={() => navigate('/create-employee')}>
+              Add an Employee
+            </button>
           </div>
         </div>
       </div>
@@ -51,4 +54,4 @@ function Managemenet({ username }) {
   );
 }
 
-export default Managemenet;
+export default Management;
