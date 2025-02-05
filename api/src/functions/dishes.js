@@ -102,7 +102,7 @@ exports.handler = async (event) => {
           headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
           },
         };
       }
@@ -126,7 +126,7 @@ exports.handler = async (event) => {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   };
 };
@@ -158,8 +158,12 @@ async function getFilteredDishes() {
     );
 
     const dishes = safeDishes.map((dish, index) => {
+      const imageUrl = images[index]?.url
+        ? `https://res.cloudinary.com/dspxn4ees/image/upload/${images[index].url}.jpg`
+        : '';
       return {
         ...dish.toObject(),
+        imageUrl,
       };
     });
 
