@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import { useState } from 'react';
-import styles from './ViewEmployee.module.css';
+import styles from './EditEmployee.module.css';
 
 const customStyles = {
   profileIcon: styles['profile-icon'],
@@ -27,7 +27,7 @@ const {
   allergyIcon,
 } = customStyles;
 
-function ViewEmployee({ employeeData }) {
+function EditEmployee({ employeeData }) {
   const { identity, selectedAllergies } = employeeData;
   const [employeeName, setEmployeeName] = useState(identity);
   const [allergies, setAllergies] = useState(selectedAllergies || []);
@@ -175,4 +175,4 @@ function ViewEmployee({ employeeData }) {
   );
 }
 
-export default ViewEmployee;
+export default EditEmployee;

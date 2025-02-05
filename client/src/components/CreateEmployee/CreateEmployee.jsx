@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './CreateEmployee.module.css';
 import ViewEmployee from './../ViewEmployee/ViewEmployee';
 
@@ -78,31 +78,14 @@ const selectStyles = {
 function CreateEmployee() {
   const [identity, setIdentity] = useState('');
   const [selectedAllergies, setSelectedAllergies] = useState([]);
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [employeeData, setEmployeeData] = useState({
-    employeeName: '',
-    allergies: [],
-  });
+  const [previewChanges, setPreviewChanges] = useState(false);
+  const [employeeData, setEmployeeData] = useState(null);
 
-  async function handleCreateEmployee(identity, selectedAllergies) {
-    const response = await fetch(
-      'https://eato-meatplanner.netlify.app/.netlify/functions/employees',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          employeeName: identity,
-          allergies: selectedAllergies,
-        }),
-        mode: 'cors',
-      }
-    );
-
-    const responseData = await response.json();
-    return responseData.data;
-  }
+  useEffect(() => {
+    if (employeeData) {
+      setPreviewChanges(true);
+    }
+  }, [employeeData]);
 
   const handleSelectAllergies = (select) => {
     // find selected allergies
@@ -126,25 +109,22 @@ function CreateEmployee() {
     });
   };
 
-  const handleIdentity = (event) => {
+  const handleSaveIdentity = (event) => {
     setIdentity(event.target.value);
   };
 
-  async function submitForm(event) {
+  async function handleSaveNewEmployee(event) {
     event.preventDefault();
-    const data = await handleCreateEmployee(identity, selectedAllergies);
-    setEmployeeData({
-      employeeName: data.employeeName,
-      allergies: data.allergies,
-    });
-    console.log(data);
-    console.log(employeeData);
-    setFormSubmitted(true);
+    const newEmployee = {
+      identity,
+      selectedAllergies,
+    };
+    setEmployeeData(newEmployee);
   }
 
   return (
     <>
-      {formSubmitted ? (
+      {previewChanges ? (
         <ViewEmployee employeeData={employeeData} />
       ) : (
         <div className={`flex flex-col ${formContainer}`}>
@@ -152,14 +132,14 @@ function CreateEmployee() {
             Add Collaborator Details
           </h2>
           <form
-            onSubmit={submitForm}
+            onSubmit={handleSaveNewEmployee}
             className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
           >
             <h4 className='text-[#513174] font-semibold uppercase mt-4'>
               Identity
             </h4>
             <input
-              onChange={handleIdentity}
+              onChange={handleSaveIdentity}
               type='text'
               id='identity'
               value={identity}
@@ -185,7 +165,6 @@ function CreateEmployee() {
               <button
                 type='submit'
                 id='loginButton'
-                type='submit'
                 className={`${formContainerButton}
             w-fit
             rounded-full
