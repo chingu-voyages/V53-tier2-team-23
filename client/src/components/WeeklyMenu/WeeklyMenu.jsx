@@ -35,7 +35,7 @@ function WeeklyMenu() {
       );
       const data = await response.json();
       setMenu(data.data);
-
+      console.log(data.data);
       // Format weekDates with dish info
       const formattedDates = data.data.days.map((day) => ({
         day: new Date(day.date).toLocaleDateString('en-US', {
@@ -61,10 +61,13 @@ function WeeklyMenu() {
     monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
 
     // using local time instead of ISO as it sometime causes date shift depending on time of usage
-    const weekStart = monday.getFullYear() +
-      '-' + String(monday.getMonth() + 1).padStart(2, '0') +
-      '-' + String(monday.getDate()).padStart(2, '0');
-    console.log('weekStartDate: ',weekStart);
+    const weekStart =
+      monday.getFullYear() +
+      '-' +
+      String(monday.getMonth() + 1).padStart(2, '0') +
+      '-' +
+      String(monday.getDate()).padStart(2, '0');
+    console.log('weekStartDate: ', weekStart);
 
     fetchWeeklyMenu(weekStart);
   }, []);
@@ -78,6 +81,16 @@ function WeeklyMenu() {
       setDish(selectedDay?.dish || null);
     }
   }, [selectedDate, menu]);
+
+  const getImageURL = (imageUrl) => {
+    const imageBasePath = 'https://res.cloudinary.com/dspxn4ees/image/upload/';
+    const imageName = dish.imageUrl
+      .replace('imagesPath/', '')
+      .replace('.jpg', '');
+    const imageExt = '.jpg';
+    const imageURL = `${imageBasePath}${imageName}${imageExt}`;
+    return imageURL;
+  };
 
   return (
     <div>
@@ -149,7 +162,7 @@ function WeeklyMenu() {
           </div>
           <div className='mt-2 h-[217px] mx-1'>
             <img
-              src={dish.imageUrl}
+              src={getImageURL(dish.imageUrl)}
               alt={dish.dishName}
               className='rounded-xl border-[3px] border-primary object-cover h-full w-full'
             />
