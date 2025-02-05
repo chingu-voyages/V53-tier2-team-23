@@ -3,8 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 function Management() {
   const [buttonText, setButtonText] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false); // for employees dropdown
   const [employees, setEmployees] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(''); // for search funtion
   const navigate = useNavigate();
   const location = useLocation();
   const { username } = location.state?.username || {};
@@ -32,7 +33,7 @@ function Management() {
           }
         );
         const responseData = await response.json();
-        console.log('employee data: ', responseData);
+        // console.log('employee data: ', responseData);
 
         if (responseData.data) {
           setEmployees(responseData.data);
@@ -46,8 +47,12 @@ function Management() {
     fetchEmployees();
   }, []);
 
+  const filteredEmployees = employees.filter((employee) =>
+    employee.employeeName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div>
+    <div className='custom-bg'>
       <h1 className='font-shantell'>Welcome {username}!</h1>
 
       {/* Menu Section */}
@@ -76,33 +81,64 @@ function Management() {
             Allergies
           </p>
           <div className='hidden group-hover:flex flex-col gap-3 mt-2 w-fit'>
-            <div className='relative'>
+            <div className='relative w-64'>
               <button
                 onClick={() => setShowDropdown((prev) => !prev)}
-                className='text-primary px-4 py-2'
+                className='text-primary px-4 py-2 w-full border rounded-md text-left flex justify-between items-center bg-white shadow'
               >
-                Select an Employee
+                <span className='text-primary font-bold'>
+                  Select an Employee
+                </span>
+                <svg
+                  className='w-4 h-4 text-primary'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth={2}
+                    d='M19 9l-7 7-7-7'
+                  />
+                </svg>
               </button>
               {/* dropdown list of employees */}
               {showDropdown && (
-                <div>
-                  {employees.length > 0 ? (
-                    employees.map((employee) => (
-                      <button
-                        key={employee._id}
-                        className='block w-full text-left px-4 py-2 hover:bg-gray-100'
-                        onClick={() =>
-                          navigate('/edit-employee', {
-                            state: { employeeId: employee._id },
-                          })
-                        }
-                      >
-                        {employee.employeeName}
-                      </button>
-                    ))
-                  ) : (
-                    <p>No employees available</p>
-                  )}
+                <div className='absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10 py-2'>
+                  {/* Search Input Field */}
+                  <input
+                    type='text'
+                    placeholder='Type name here...'
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className='py-2'
+                  />
+
+                  {/* Employee List */}
+                  <div className='max-h-60 overflow-y-auto'>
+                    {filteredEmployees.length > 0 ? (
+                      filteredEmployees.map((employee) => (
+                        <button
+                          key={employee._id}
+                          className='block w-full text-left px-4 py-2 hover:bg-gray-100'
+                          onClick={() => {
+                            navigate('/edit-employee', {
+                              state: { employeeId: employee._id },
+                            });
+                            setShowDropdown(false);
+                          }}
+                        >
+                          <span className=''>{employee.employeeName}</span>
+                        </button>
+                      ))
+                    ) : (
+                      <p className='px-4 py-2 text-gray-500'>
+                        No employees found
+                      </p>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
