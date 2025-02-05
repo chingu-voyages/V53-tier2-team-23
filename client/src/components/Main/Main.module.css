@@ -1,7 +1,6 @@
 .custom-bg {
   @apply h-screen max-h-[75vh] bg-cover bg-center;
   background-image: url('https://res.cloudinary.com/dspxn4ees/image/upload/v1738147201/calendar-background-image.jpg');
-  padding-top: 25px;
 }
 
 .main-button {
@@ -11,6 +10,6 @@
 
 @media not all and (min-width: 640px) {
   .custom-bg {
-    padding-top: 5px;
+    padding-top: 15%;
   }
 }
