@@ -9,6 +9,7 @@ import {
 } from 'date-fns';
 import { DayPicker, useDayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import WeeklyMenu from '../WeeklyMenu/WeeklyMenu';
 
 export default function DatePicker({
   customDayPicker,
@@ -198,7 +199,7 @@ export default function DatePicker({
       );
 
       // Debugging
-/*       console.log('Response Status:', filteredDishes.status);
+      /*       console.log('Response Status:', filteredDishes.status);
       if (!filteredDishes.ok) {
         const errorData = await filteredDishes.json();
         console.log('Error fetching dishes:', errorData);
@@ -209,7 +210,7 @@ export default function DatePicker({
       const filteredDishesRes = await filteredDishes.json();
 
       // to extract only the _id of each dish
-      const dishIds = filteredDishesRes.data.dishes.map(dish => dish._id);
+      const dishIds = filteredDishesRes.data.dishes.map((dish) => dish._id);
 
       // function to get a random dish
       const getRandomDish = () => {
@@ -296,6 +297,10 @@ export default function DatePicker({
       setSelectedWeekData(selectedWeekData);
     }
   };
+
+  if (result) {
+    return <WeeklyMenu />;
+  }
 
   const handleReset = (event) => {
     event.preventDefault();
@@ -397,33 +402,35 @@ export default function DatePicker({
           </div>
         </div>
       </form>
-      {result && selectedWeekData && (
-        <>
-          <div className='result-container grow'>
-            <div className='p-4 bg-gray-100 border rounded-md'>
-              <h2 className='text-lg font-bold'>Selected Week</h2>
-
-              <p>From: {selectedWeekData.selectedWeekRange.from}</p>
-              <p>To: {selectedWeekData.selectedWeekRange.to}</p>
-              <h2 className='text-lg font-bold mt-2'>Weekdays</h2>
-              <ul>
-                {selectedWeekData.selectedWeekDays &&
-                selectedWeekData.selectedWeekDays.length > 0 ? (
-                  selectedWeekData.selectedWeekDays.map((item, index) => (
-                    <ul key={index} className='day-item'>
-                      <li>{item.date}</li>
-                      <li>{item.day}</li>
-                      <li>{item.dayoff}</li>
-                    </ul>
-                  ))
-                ) : (
-                  <li>No weekdays selected</li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </>
-      )}
     </>
   );
 }
+
+//not needed to show the selected week data
+/* {result && selectedWeekData && (
+  <>
+    <div className='result-container grow'>
+      <div className='p-4 bg-gray-100 border rounded-md'>
+        <h2 className='text-lg font-bold'>Selected Week</h2>
+
+        <p>From: {selectedWeekData.selectedWeekRange.from}</p>
+        <p>To: {selectedWeekData.selectedWeekRange.to}</p>
+        <h2 className='text-lg font-bold mt-2'>Weekdays</h2>
+        <ul>
+          {selectedWeekData.selectedWeekDays &&
+          selectedWeekData.selectedWeekDays.length > 0 ? (
+              selectedWeekData.selectedWeekDays.map((item, index) => (
+                <ul key={index} className='day-item'>
+                  <li>{item.date}</li>
+                  <li>{item.day}</li>
+                  <li>{item.dayoff}</li>
+                </ul>
+              ))
+            ) : (
+              <li>No weekdays selected</li>
+            )}
+        </ul>
+      </div>
+    </div>
+  </>
+)} */
