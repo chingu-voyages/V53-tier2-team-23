@@ -1,11 +1,9 @@
-import { useState } from 'react';
-import LoginPage from './../LoginPage/LoginPage';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './../LoginPage/LoginPage.module.css';
 import '../../index.css';
 
 function Main() {
-  const [enterManagerDashboard, setEnterManagerDashboard] = useState(false);
-
   const customStyles = {
     form: styles.form,
     formContainer: styles['form-container'],
@@ -28,21 +26,20 @@ function Main() {
     welcome,
   } = customStyles;
 
+  const navigate = useNavigate();
+
   const handleEnterManagerDashboard = (event) => {
     event.preventDefault();
-    setEnterManagerDashboard(true);
+    navigate('/login');
   };
 
-  return enterManagerDashboard ? (
-    <LoginPage />
-  ) : (
-    <>
-      <main className='flex flex-grow flex-col bg-gray-100'>
-        <button
-          onClick={handleEnterManagerDashboard}
-          id='loginButton'
-          type='button'
-          className={`${formContainerButton}
+  return (
+    <main className='flex flex-grow flex-col bg-gray-100'>
+      <button
+        onClick={handleEnterManagerDashboard}
+        id='loginButton'
+        type='button'
+        className={`${formContainerButton}
           rounded-md
           hover:border-yellow-300
           p-[10px_20px]
@@ -54,14 +51,13 @@ function Main() {
           border-solid
           uppercase
           `}
-        >
-          Go to Manager Dashboard
-        </button>
-        <div className='h-[872px] md:h-[990px] lg:h-[907px] bg-gray-200 rounded-md flex items-center justify-center'>
-          <p className='text-lg text-gray-600'>Placeholder Content</p>
-        </div>
-      </main>
-    </>
+      >
+        Go to Manager Dashboard
+      </button>
+      <div className='h-[872px] md:h-[990px] lg:h-[907px] bg-gray-200 rounded-md flex items-center justify-center'>
+        <p className='text-lg text-gray-600'>Placeholder Content</p>
+      </div>
+    </main>
   );
 }
 

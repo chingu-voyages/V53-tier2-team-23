@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
-//import Management from './../Management/Management';
+import { useNavigate } from 'react-router-dom';
 
 const customStyles = {
   form: styles.form,
@@ -25,10 +25,11 @@ const {
 } = customStyles;
 
 function LoginPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   async function getTokenFromLocalStorage() {
     return localStorage.getItem('token');
@@ -127,11 +128,10 @@ function LoginPage() {
   async function submitForm(event) {
     event.preventDefault();
     await handleLogin(username, password);
+    navigate('/management');
   }
 
-  return isAuthenticated ? (
-    <Management username={username} />
-  ) : (
+  return (
     <div className={`flex flex-col ${formContainer}`}>
       <span className={`${welcome} text-center text-lg`}>Welcome back! 👋</span>
       <h2 className={`${formContainerTitle} text-black text-xl font-semibold`}>
@@ -166,7 +166,6 @@ function LoginPage() {
           <button
             type='submit'
             id='loginButton'
-            type='submit'
             className={`${formContainerButton}
           w-full
           rounded-md
