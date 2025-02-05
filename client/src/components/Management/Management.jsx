@@ -52,17 +52,17 @@ function Management() {
   );
 
   return (
-    <div className='custom-bg md:h-[995px]'>
-      <div className='relative z-10 flex flex-col items-center gap-10 md:mt-3 md:mb-40]'>
+    <div className='custom-bg md:h-[995px] lg:h-[907px]'>
+      <div className='relative z-10 flex flex-col items-center gap-10 md:mt-3 lg:mt-0 '>
         <h1 className='font-shantell text-[24px] sm:hidden'>
           Welcome {username}!
         </h1>
-        <h1 className='font-shantell text-[36px] font-bold text-primary text-center hidden sm:block'>
-          Welcome {username}, <br className='hidden md:block' />
+        <h1 className='font-shantell text-[36px] font-bold text-primary text-center hidden sm:block lg:text-[48px]'>
+          Welcome {username}, <br className='hidden md:block lg:hidden' />
           <span className='hidden md:inline'>Plan your weekly menu!</span>
         </h1>
 
-        <div className='flex flex-col gap-24 justify-center items-center mt-5 md:mt-[0.9rem] md:gap-14 md:py-[98px] md:bg-white md:w-[465px] md:h-[570px] md:rounded-3xl'>
+        <div className='flex flex-col gap-24 justify-center items-center mt-5 md:mt-[0.9rem] md:gap-14 md:py-[98px] md:bg-white md:w-[465px] md:h-[570px] md:rounded-3xl lg:py-[115px] lg:gap-24'>
           {/* Menu Section */}
           <div className='flex flex-col gap-3'>
             <p className='font-shantell text-primary text-[24px] font-bold text-center'>
