@@ -18,7 +18,7 @@
 }
 
 .custom-bg::before {
-  @apply absolute inset-0 bg-white opacity-50 content-[""];
+  @apply absolute inset-0 bg-white opacity-80 content-[""];
   z-index: ;
 }
 

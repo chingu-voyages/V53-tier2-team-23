@@ -52,16 +52,23 @@ function Management() {
   );
 
   return (
-    <div className='custom-bg'>
-      <div className='relative z-10 flex flex-col items-center gap-10'>
-        <h1 className='font-shantell text-[24px]'>Welcome {username}!</h1>
-        <div className='flex flex-col gap-24 justify-center items-center mt-5'>
+    <div className='custom-bg md:h-[995px]'>
+      <div className='relative z-10 flex flex-col items-center gap-10 md:mt-3 md:mb-40]'>
+        <h1 className='font-shantell text-[24px] sm:hidden'>
+          Welcome {username}!
+        </h1>
+        <h1 className='font-shantell text-[36px] font-bold text-primary text-center hidden sm:block'>
+          Welcome {username}, <br className='hidden md:block' />
+          <span className='hidden md:inline'>Plan your weekly menu!</span>
+        </h1>
+
+        <div className='flex flex-col gap-24 justify-center items-center mt-5 md:mt-[0.9rem] md:gap-14 md:py-[98px] md:bg-white md:w-[465px] md:h-[570px] md:rounded-3xl'>
           {/* Menu Section */}
           <div className='flex flex-col gap-3'>
             <p className='font-shantell text-primary text-[24px] font-bold text-center'>
               Plan your weekly menu
             </p>
-            <div className='group relative w-[340px]'>
+            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full'>
               <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
                 MENUS
               </p>
@@ -89,7 +96,7 @@ function Management() {
             <p className='font-shantell text-primary max-w-[283px] text-[24px] font-bold text-center'>
               Need to edit allergies of an employee?
             </p>
-            <div className='group relative w-[340px]'>
+            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full'>
               <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
                 ALLERGIES
               </p>
@@ -100,9 +107,7 @@ function Management() {
                       onClick={() => setShowDropdown((prev) => !prev)}
                       className='border-[1px] border-primary text-2xl h-[56px] bg-white flex items-center justify-center gap-6 w-[320px] '
                     >
-                      <span >
-                        Select an Employee
-                      </span>
+                      <span>Select an Employee</span>
                       <svg
                         className='w-4 h-4 text-primary'
                         xmlns='http://www.w3.org/2000/svg'
@@ -158,7 +163,10 @@ function Management() {
                       </div>
                     )}
                   </div>
-                  <button onClick={() => navigate('/create-employee')} className='border-[1px] border-primary text-2xl h-[56px] bg-white'>
+                  <button
+                    onClick={() => navigate('/create-employee')}
+                    className='border-[1px] border-primary text-2xl h-[56px] bg-white'
+                  >
                     Add an Employee
                   </button>
                 </div>
