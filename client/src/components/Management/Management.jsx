@@ -8,7 +8,7 @@ function Management() {
   const [searchTerm, setSearchTerm] = useState(''); // for search funtion
   const navigate = useNavigate();
   const location = useLocation();
-  const { username } = location.state?.username || {};
+  const { username } = location.state || {};
 
   // to navigate to the calendar for user to select week
   const handleMenuButtonClick = (action) => {
@@ -52,15 +52,16 @@ function Management() {
   );
 
   return (
-    <div className='custom-bg'>
-      <h1 className='font-shantell'>Welcome {username}!</h1>
-
+    <div className='custom-bg h-screen flex flex-col items-center gap-10'>
+      <h1 className='font-shantell text-[24px]'>Welcome {username}!</h1>
       {/* Menu Section */}
-      <div>
-        <p className='font-shantell'>Plan your weekly menu</p>
-        <div className='group relative flex flex-col'>
-          <p className='border-secondary border-2 rounded-full w-fit px-16'>
-            Menus
+      <div className=''>
+        <p className='font-shantell text-primary text-[24px] font-bold text-center'>
+          Plan your weekly menu
+        </p>
+        <div className='group relative flex flex-col w-[340px]'>
+          <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl'>
+            MENUS
           </p>
           <div className='hidden group-hover:flex flex-col gap-3 mt-2 w-fit'>
             <button onClick={() => handleMenuButtonClick('Generate')}>
@@ -75,7 +76,9 @@ function Management() {
 
       {/* Allergy Section */}
       <div>
-        <p className='font-shantell'>Need to edit allergies of an employee?</p>
+        <p className='font-shantell text-primary text-[24px] font-bold max-w-72 text-center'>
+          Need to edit allergies of an employee?
+        </p>
         <div className='group relative flex flex-col'>
           <p className='border-secondary border-2 rounded-full w-fit px-16'>
             Allergies

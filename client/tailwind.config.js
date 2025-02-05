@@ -20,7 +20,7 @@ export default {
       colors: {
         background: '#f6f2f2',
         primary: '#492470',
-        secondary: '#FBF560',
+        secondary: '#FFD23F',
         complementary: '#FCBB1C',
       },
     },
