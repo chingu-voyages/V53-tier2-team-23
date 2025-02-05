@@ -1,14 +1,15 @@
-import { React, useState } from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import DatePicker from '../DatePicker/DatePicker';
 
 function Managemenet({ username }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [buttonText, setButtonText] = useState('');
+  const navigate = useNavigate();
 
-  // to reveal the calendar for user to select week
+  // to navigate to the calendar for user to select week
   const handleButtonClick = (action) => {
     setButtonText(action);
-    setIsModalOpen(true);
+    navigate('/calendar', { state: { action, isViewMode: action === 'View' } });
   };
 
   return (
@@ -46,17 +47,6 @@ function Managemenet({ username }) {
           </div>
         </div>
       </div>
-
-      {isModalOpen && (
-        <div>
-          <DatePicker
-            className='flex justify-between'
-            setIsModalOpen={setIsModalOpen}
-            action={buttonText}
-            isViewMode={buttonText === 'View'}
-          />
-        </div>
-      )}
     </div>
   );
 }

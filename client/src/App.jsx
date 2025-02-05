@@ -3,7 +3,7 @@ import NavBar from './components/NavBar/NavBar';
 import Main from './components/Main/Main';
 import LoginPage from './components/LoginPage/LoginPage';
 import Managemenet from './components/Management/Management';
-import DatePicker from './components/DatePicker/DatePicker';
+import DatePickerContainer from './components/DatePicker/DatePickerContainer';
 import WeeklyMenu from './components/WeeklyMenu/WeeklyMenu';
 import CreateEmployee from './components/CreateEmployee/CreateEmployee';
 import Footer from './components/Footer/Footer';
@@ -18,7 +18,7 @@ function App() {
         <Route path='/' element={<Main />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/management' element={<Managemenet />} />
-        <Route path='/calendar' element={<DatePicker />} />
+        <Route path='/calendar' element={<DatePickerContainer />} />
         <Route path='/menu' element={<WeeklyMenu />} />
         <Route path='/create-employee' element={<CreateEmployee />} />
       </Routes>
