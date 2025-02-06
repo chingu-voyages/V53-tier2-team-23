@@ -68,7 +68,7 @@ function Management() {
             <p className='font-shantell text-primary text-[24px] font-bold text-center'>
               Plan your weekly menu
             </p>
-            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full'>
+            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full hover:shadow-none'>
               <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
                 MENUS
               </p>
@@ -96,7 +96,7 @@ function Management() {
             <p className='font-shantell text-primary max-w-[283px] text-[24px] font-bold text-center'>
               Need to edit allergies of an employee?
             </p>
-            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full'>
+            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full hover:shadow-none'>
               <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
                 ALLERGIES
               </p>
@@ -125,18 +125,18 @@ function Management() {
                     </button>
                     {/* dropdown list of employees */}
                     {showDropdown && (
-                      <div className='absolute w-full mt-1 bg-white border rounded-md shadow-lg z-10 py-2'>
+                      <div className='absolute mt-1 bg-white border rounded-md shadow-lg z-10 py-2 w-[320px]'>
                         {/* Search Input Field */}
                         <input
                           type='text'
                           placeholder='Type name here...'
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
-                          className='py-2'
+                          className='py-2 w-[320px]'
                         />
 
                         {/* Employee List */}
-                        <div className='max-h-60 overflow-y-auto'>
+                        <div className='max-h-60 overflow-y-auto '>
                           {filteredEmployees.length > 0 ? (
                             filteredEmployees.map((employee) => (
                               <button
