@@ -40,8 +40,10 @@ function ViewEmployee() {
 
   useEffect(() => {
     if (formSubmitted) {
-      setTimeout(() => setFormSubmitted(false), 1000);
-      navigate('/management');
+      setTimeout(() => {
+        setFormSubmitted(false);
+        navigate('/management');
+      }, 3000);
     }
   }, [formSubmitted]);
 
