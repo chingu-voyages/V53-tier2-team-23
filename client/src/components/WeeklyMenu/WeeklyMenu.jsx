@@ -202,11 +202,6 @@ function WeeklyMenu() {
   const location = useLocation();
   const { weekStartDate } = location.state || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [filterDishes, setFilterDishes] = useState([]); // filtered dishes for manager to choose
-  const [searchTerms, setSearchTerm] = useState(''); // for search function
-  const [selectedDishes, setSelectedDishes] = useState({}); // to store selected dishes for each day
-  const [isDropdownOpen, setIsDropdownOpen] = useState({});
-  const dropdownRefs = useRef({}); // to store refs for each dropdown
 
   // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
@@ -284,6 +279,12 @@ function WeeklyMenu() {
       setDish(selectedDay?.dish || null);
     }
   }, [selectedDate, menu]);
+
+  const refreshMenu = () => {
+    if (weekStartDate) {
+      fetchWeeklyMenu(weekStartDate);
+    }
+  };
 
   const getImageURL = (imageUrl) => {
     const imageBasePath = 'https://res.cloudinary.com/dspxn4ees/image/upload/';
@@ -428,15 +429,15 @@ function WeeklyMenu() {
         </div>
       )}
 
-      
-{/* The modal is rendered conditionally */}
-{isModalOpen && (
-  <EditMealModal 
-    isModalOpen={isModalOpen} 
-    setIsModalOpen={setIsModalOpen} 
-    weekDates={weekDates} 
-  />
-)}
+      {/* The modal is rendered conditionally */}
+      {isModalOpen && (
+        <EditMealModal
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          weekDates={weekDates}
+          refreshMenu={refreshMenu}
+        />
+      )}
     </div>
   );
 }

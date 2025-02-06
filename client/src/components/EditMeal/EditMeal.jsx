@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 
-const EditMealModal = ({ isModalOpen, setIsModalOpen, weekDates }) => {
+const EditMealModal = ({
+  isModalOpen,
+  setIsModalOpen,
+  weekDates,
+  refreshMenu,
+}) => {
   const [filterDishes, setFilterDishes] = useState([]);
   const [selectedDishes, setSelectedDishes] = useState({});
   const [searchTerms, setSearchTerms] = useState({});
@@ -109,10 +114,72 @@ const EditMealModal = ({ isModalOpen, setIsModalOpen, weekDates }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // save function
-  const handleSave = () => {
+  // update menu and close modal
+  const handleSave = async () => {
     console.log('Saved Meal Plan', selectedDishes);
-    setIsModalOpen(false);
+    if (!weekDates || weekDates.length === 0) return;
+
+    const weekStartDate = weekDates[0].fullDate;
+
+    const dishNames = Object.values(selectedDishes).filter(
+      (dishName) =>
+        dishName !== undefined && dishName !== '' && dishName !== null
+    );
+    const uniqueDishNames = new Set(dishNames);
+    const nullCount = Object.values(selectedDishes).filter(
+      (dishName) => dishName === null
+    ).length;
+
+    if (dishNames.length !== uniqueDishNames.size || nullCount > 2) {
+      alert(
+        'Duplicate dishes are not allowed, and only up to 2 "Day Off" are allowed. Please choose unique dishes for each day.'
+      );
+      return;
+    }
+
+    // to prepare the data
+    const updates = Object.entries(selectedDishes)
+      .filter(([date, dishName]) => dishName !== undefined && dishName !== '')
+      .map(([date, dishName]) => {
+        const dish = filterDishes.find((d) => d.dishName === dishName);
+        return {
+          weekStartDate,
+          date,
+          dish: dish ? dish._id : null,
+        };
+      });
+
+    if (updates.length === 0) {
+      setIsModalOpen(false);
+      return;
+    }
+
+    try {
+      for (const update of updates) {
+        const response = await fetch(
+          'https://eato-meatplanner.netlify.app/.netlify/functions/menus',
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(update),
+          }
+        );
+        const responseData = await response.json();
+
+        if (!response.ok) {
+          alert(`Failed to update menu: ${responseData.message}`);
+        }
+      }
+
+      alert('Menu updated successfully!');
+      setIsModalOpen(false);
+      refreshMenu();
+    } catch (error) {
+      console.error('Error updating menu:', error);
+    }
   };
 
   if (!isModalOpen) return null;
