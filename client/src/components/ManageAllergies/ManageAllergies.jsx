@@ -40,11 +40,9 @@ function ManageAllergies({ employeeData }) {
 
   //navigate('/create-employee')
 
-
   async function handleGetEmployee(identity) {
-    identity === 
     const response = await fetch(
-      `https://eato-meatplanner.netlify.app/.netlify/functions/employees/${employeeId}`,
+      `https://eato-meatplanner.netlify.app/.netlify/functions/employees/${identity}`,
       {
         method: 'POST',
         headers: {
