@@ -135,6 +135,7 @@ exports.handler = async (event) => {
   // }
 
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
+  const employeeName = path.split('/').pop(); // get the employeeName from the URL path
 
   // create new employee. removed employeId since database didn't include it
   if (httpMethod === 'POST' && path.endsWith('/employees')) {
