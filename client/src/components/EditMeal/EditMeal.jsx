@@ -116,46 +116,88 @@ const EditMealModal = ({
 
   // update menu and close modal
   const handleSave = async () => {
-    console.log('Saved Meal Plan', selectedDishes);
     if (!weekDates || weekDates.length === 0) return;
 
     const weekStartDate = weekDates[0].fullDate;
 
-    const dishNames = Object.values(selectedDishes).filter(
-      (dishName) =>
-        dishName !== undefined && dishName !== '' && dishName !== null
-    );
-    const uniqueDishNames = new Set(dishNames);
-    const nullCount = Object.values(selectedDishes).filter(
-      (dishName) => dishName === null
-    ).length;
-
-    if (dishNames.length !== uniqueDishNames.size || nullCount > 2) {
-      alert(
-        'Duplicate dishes are not allowed, and only up to 2 "Day Off" are allowed. Please choose unique dishes for each day.'
+    try {
+      // Fetch current menu to check existing null values
+      const menuResponse = await fetch(
+        `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${weekStartDate}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      return;
-    }
 
-    // to prepare the data
-    const updates = Object.entries(selectedDishes)
-      .filter(([date, dishName]) => dishName !== undefined && dishName !== '')
-      .map(([date, dishName]) => {
+      const menuData = await menuResponse.json();
+      if (!menuResponse.ok || !menuData?.data?.days) {
+        alert('Error fetching current menu. Please try again.');
+        return;
+      }
+
+      // Count existing null dishes
+      let currentNullCount = menuData.data.days.filter(
+        (day) => day.dish === null
+      ).length;
+
+      // Track dish occurrences
+      const dishCount = {};
+      let newNullCount = currentNullCount;
+
+      // Prepare updates
+      const updates = Object.entries(selectedDishes).map(([date, dishName]) => {
         const dish = filterDishes.find((d) => d.dishName === dishName);
+        const dishId = dish ? dish._id : dishName === null ? null : undefined;
+
+        // Count dishes (ignore undefined values)
+        if (dishId !== undefined) {
+          if (dishId === null) {
+            newNullCount++;
+          } else {
+            dishCount[dishId] = (dishCount[dishId] || 0) + 1;
+          }
+        }
+
         return {
           weekStartDate,
           date,
-          dish: dish ? dish._id : null,
+          dish: dishId,
         };
       });
 
-    if (updates.length === 0) {
-      setIsModalOpen(false);
-      return;
-    }
+      // Filter out unchanged values
+      const finalUpdates = updates.filter(
+        (update) => update.dish !== undefined
+      );
 
-    try {
-      for (const update of updates) {
+      // Check for duplicate dishes (excluding null)
+      for (const [dishId, count] of Object.entries(dishCount)) {
+        if (count > 1) {
+          alert(
+            `Duplicate dish found. Each dish can only be used once per week.`
+          );
+          return;
+        }
+      }
+
+      // Ensure only 2 "Day Off" (null) values exist
+      if (newNullCount > 2) {
+        alert(
+          `Only up to 2 "Day Off" are allowed. Please adjust your selections.`
+        );
+        return;
+      }
+
+      if (finalUpdates.length === 0) {
+        setIsModalOpen(false);
+        return;
+      }
+
+      // Send updates
+      for (const update of finalUpdates) {
         const response = await fetch(
           'https://eato-meatplanner.netlify.app/.netlify/functions/menus',
           {
@@ -167,8 +209,8 @@ const EditMealModal = ({
             body: JSON.stringify(update),
           }
         );
-        const responseData = await response.json();
 
+        const responseData = await response.json();
         if (!response.ok) {
           alert(`Failed to update menu: ${responseData.message}`);
         }
