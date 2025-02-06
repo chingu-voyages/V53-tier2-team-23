@@ -96,28 +96,6 @@ const selectStyles = {
   }),
 };
 
-const handleSelectAllergies = (select) => {
-  // find selected allergies
-  const selectedAllergies = select.map((option) => option.value);
-
-  setSelectedAllergies((prev) => {
-    // find previous selected allergies
-    const allergiesSelected = prev.filter((allergy) =>
-      selectedAllergies.includes(allergy)
-    );
-    // find new selected allergies
-    const allergiesNotSelected = selectedAllergies.filter(
-      (allergy) => !prev.includes(allergy)
-    );
-
-    const allSelectedAllergies = [
-      ...allergiesSelected,
-      ...allergiesNotSelected,
-    ];
-    return allSelectedAllergies;
-  });
-};
-
 async function handleSaveEmployeeAllergies(event) {
   event.preventDefault();
   const newEmployee = {
@@ -217,6 +195,28 @@ function ManageAllergies() {
     setFormSubmitted(true);
   }
 
+  const handleSelectAllergies = (select) => {
+    // find selected allergies
+    const selectedAllergies = select.map((option) => option.value);
+
+    setSelectedAllergies((prev) => {
+      // find previous selected allergies
+      const allergiesSelected = prev.filter((allergy) =>
+        selectedAllergies.includes(allergy)
+      );
+      // find new selected allergies
+      const allergiesNotSelected = selectedAllergies.filter(
+        (allergy) => !prev.includes(allergy)
+      );
+
+      const allSelectedAllergies = [
+        ...allergiesSelected,
+        ...allergiesNotSelected,
+      ];
+      return allSelectedAllergies;
+    });
+  };
+
   const allergenIconURL =
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
 
@@ -282,7 +282,7 @@ function ManageAllergies() {
                 Allergies
               </h4>
               <Select
-                value={defaultAllergiesList}
+                //value={defaultAllergiesList}
                 isMulti
                 name='allergiesList'
                 options={allergiesList}
