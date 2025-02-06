@@ -200,9 +200,17 @@ function WeeklyMenu() {
   const [weekDates, setWeekDates] = useState([]);
   const location = useLocation();
   const { weekStartDate } = location.state || {};
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filterDishes, setFilterDishes] = useState([]); // filtered dishes for manager to choose
+  const [searchTerms, setSearchTerm] = useState(''); // for search function
+  const [selectedDishes, setSelectedDishes] = useState({}); // to store selected dishes for each day
+  const [isDropdownOpen, setIsDropdownOpen] = useState({});
+  const dropdownRefs = useRef({}); // to store refs for each dropdown
 
   // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
+
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const scrollContainer = scrollRef.current;
@@ -294,6 +302,76 @@ function WeeklyMenu() {
         return ingredientEmojis[category] || '😊';
       }
     return '🤭';
+  };
+
+  const editWeeklyMenu = async (weekStart) => {};
+
+  // to fetch list of filtered dishes free of employee allergen
+  useEffect(() => {
+    const fetchFilteredDishes = async () => {
+      try {
+        const response = await fetch(
+          'https://eato-meatplanner.netlify.app/.netlify/functions/dishes/filtered',
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const responseData = await response.json();
+        // data.dishes._id (or) dishName
+
+        if (responseData?.data?.dishes) {
+          setFilterDishes(responseData.data.dishes);
+        } else {
+          console.error('Unexpected API error:', responseData);
+        }
+      } catch (error) {
+        console.error('Error fetching filtered dishes: ', error);
+      }
+    };
+    fetchFilteredDishes();
+  }, [token]);
+
+  // to handle dish selection from dropdown click
+  const handleDishSelect = (date, dishName) => {
+    setSelectedDishes((prev) => ({ ...prev, [date]: dishName }));
+    setSearchTerm((prev) => ({ ...prev, [date]: dishName })); // Update input field
+    setIsDropdownOpen((prev) => ({ ...prev, [date]: false })); // Close dropdown
+  };
+
+  // to handle typing in input
+  const handleSearchChange = (date, value) => {
+    setSearchTerm((prev) => ({ ...prev, [date]: value }));
+    setIsDropdownOpen((prev) => ({ ...prev, [date]: true })); // Open dropdown when typing
+
+    if (!value.trim()) {
+      setIsDropdownOpen((prev) => ({ ...prev, [date]: false })); // Close dropdown when input is empty
+    }
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      Object.keys(dropdownRefs.current).forEach((date) => {
+        if (
+          dropdownRefs.current[date] &&
+          !dropdownRefs.current[date].contains(event.target)
+        ) {
+          setIsDropdownOpen((prev) => ({ ...prev, [date]: false }));
+        }
+      });
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // save function
+  const handleSave = () => {
+    console.log('Saved Meal Plan: ', selectedDishes);
+    setIsModalOpen(false);
   };
 
   return (
@@ -412,9 +490,92 @@ function WeeklyMenu() {
             </div>
           </div>
           {/* Edit */}
-          <button className='border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit'>
+          <button
+            className='border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit'
+            onClick={() => setIsModalOpen(true)}
+          >
             EDIT MEAL
           </button>
+        </div>
+      )}
+
+      {/* Edit Modal */}
+      {isModalOpen && (
+        <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+          <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+            <h2 className='text-xl font-bold mb-4 text-black'>Edit Meal</h2>
+            <div>
+              {weekDates.map((item) => {
+                const filteredList = filterDishes.filter((dish) =>
+                  dish.dishName
+                    .toLowerCase()
+                    .includes((searchTerms[item.fullDate] || '').toLowerCase())
+                );
+
+                return (
+                  <div className='flex flex-col mb-3' key={item.fullDate}>
+                    {/* Date Box */}
+                    <div className='flex items-center justify-between gap-3'>
+                      <div className='cursor-pointer flex flex-col items-center justify-center w-[70px] h-[72px] border border-black rounded-md p-2'>
+                        <div className='text-[11px]'>{item.day}</div>
+                        <div className='text-[11px]'>{item.date}</div>
+                      </div>
+
+                      {/* Input Field for Typing & Selecting */}
+                      <div
+                        className='relative w-full'
+                        ref={(el) => (dropdownRefs.current[item.fullDate] = el)}
+                      >
+                        <input
+                          type='text'
+                          placeholder='Type or select a dish...'
+                          className='border px-2 py-1 w-full rounded-md'
+                          value={searchTerms[item.fullDate] || ''}
+                          onChange={(e) =>
+                            handleSearchChange(item.fullDate, e.target.value)
+                          }
+                          onFocus={() =>
+                            setIsDropdownOpen((prev) => ({
+                              ...prev,
+                              [item.fullDate]: true,
+                            }))
+                          }
+                        />
+
+                        {/* Dish Dropdown List */}
+                        {isDropdownOpen[item.fullDate] &&
+                          filteredList.length > 0 && (
+                            <div className='absolute bg-white border mt-1 max-h-40 overflow-y-auto w-full rounded-md shadow-lg z-50'>
+                              {filteredList.map((dish) => (
+                                <div
+                                  key={dish._id}
+                                  className='p-2 hover:bg-gray-200 cursor-pointer'
+                                  onClick={() =>
+                                    handleDishSelect(
+                                      item.fullDate,
+                                      dish.dishName
+                                    )
+                                  }
+                                >
+                                  {dish.dishName}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <button
+              className='mt-4 bg-primary text-white py-2 px-4 rounded-full'
+              onClick={handleSave}
+            >
+              Save
+            </button>
+          </div>
         </div>
       )}
     </div>
