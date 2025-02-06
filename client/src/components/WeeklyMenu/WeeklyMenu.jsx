@@ -202,6 +202,9 @@ function WeeklyMenu() {
   const location = useLocation();
   const { weekStartDate } = location.state || {};
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentWeekStartDate, setCurrentWeekStartDate] =
+    useState(weekStartDate);
+  const [isNextWeekDisabled, setIsNextWeekDisabled] = useState(false);
 
   // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
@@ -227,7 +230,7 @@ function WeeklyMenu() {
       );
       const data = await response.json();
       setMenu(data.data);
-      console.log(data.data);
+      // console.log(data.data);
       // Format weekDates with dish info
       const formattedDates = data.data.days.map((day) => ({
         day: new Date(day.date).toLocaleDateString('en-US', {
@@ -246,29 +249,36 @@ function WeeklyMenu() {
     }
   };
 
-  // Fetch weekly menu on mount
-  useEffect(() => {
-    // if there is weekStartDate prop, fetch menu for that week
+  // to get the start of the current week
+  const getWeekStartDate = (date = new Date()) => {
+    const dayOfWeek = date.getDay();
+    const monday = new Date(date);
+    monday.setDate(date.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+    return `${monday.getFullYear()}-${String(monday.getMonth() + 1).padStart(
+      2,
+      '0'
+    )}-${String(monday.getDate()).padStart(2, '0')}`;
+  };
+
+  // fetch the weekly menu
+  const fetchMenuForDate = (weekStartDate) => {
     if (weekStartDate) {
       fetchWeeklyMenu(weekStartDate);
-    } else {
-      // If no weekStartDate prop, calculate the current week's start date
-      const today = new Date();
-      const dayOfWeek = today.getDay();
-      const monday = new Date(today);
-      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-      // using local time instead of ISO as it sometime causes date shift depending on time of usage
-      const weekStart =
-        monday.getFullYear() +
-        '-' +
-        String(monday.getMonth() + 1).padStart(2, '0') +
-        '-' +
-        String(monday.getDate()).padStart(2, '0');
-      console.log('weekStartDate: ', weekStart);
-
-      fetchWeeklyMenu(weekStart);
     }
+  };
+
+  // Fetch weekly menu on mount
+  useEffect(() => {
+    const weekStart = weekStartDate || getWeekStartDate();
+    fetchMenuForDate(weekStart);
   }, [weekStartDate]);
+
+  // Fetch menu on mount and when currentWeekStartDate changes
+  useEffect(() => {
+    if (currentWeekStartDate) {
+      fetchMenuForDate(currentWeekStartDate);
+    }
+  }, [currentWeekStartDate]);
 
   // Update dish when selectedDate changes
   useEffect(() => {
@@ -280,11 +290,11 @@ function WeeklyMenu() {
     }
   }, [selectedDate, menu]);
 
-  const refreshMenu = () => {
-    if (weekStartDate) {
-      fetchWeeklyMenu(weekStartDate);
-    }
-  };
+  // to pass as props to EditMealModal to refresh the menu after updating
+  const refreshMenu = () => fetchMenuForDate(weekStartDate);
+
+  // for previous and next week button
+  const currentWeekStart = getWeekStartDate(new Date());
 
   const getImageURL = (imageUrl) => {
     const imageBasePath = 'https://res.cloudinary.com/dspxn4ees/image/upload/';
@@ -304,13 +314,66 @@ function WeeklyMenu() {
     return '🤭';
   };
 
+  const handleNextWeekClick = async () => {
+    const nextWeekStart = new Date(currentWeekStartDate);
+    nextWeekStart.setDate(nextWeekStart.getDate() + 7);
+    const nextWeekStartDate = nextWeekStart.toISOString().split('T')[0];
+
+    try {
+      const response = await fetch(
+        `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${nextWeekStartDate}`
+      );
+      const data = await response.json();
+
+      if (data.data && data.data.days.length > 0) {
+        setCurrentWeekStartDate(nextWeekStartDate);
+        setMenu(data.data);
+        const formattedDates = data.data.days.map((day) => ({
+          day: new Date(day.date).toLocaleDateString('en-US', {
+            weekday: 'short',
+          }),
+          date: new Date(day.date).getDate(),
+          fullDate: day.date.split('T')[0],
+          dish: day.dish,
+        }));
+        setWeekDates(formattedDates);
+        setSelectedDate(formattedDates[0]?.fullDate);
+        setIsNextWeekDisabled(false);
+      } else {
+        alert('There is no menu for the next week.');
+        setIsNextWeekDisabled(true);
+      }
+    } catch (error) {
+      console.error('Error fetching the menu:', error);
+      alert('An error occurred while fetching the menu.');
+    }
+  };
+
+  const handlePreviousWeekClick = () => {
+    const previousWeekStart = new Date(currentWeekStartDate);
+    previousWeekStart.setDate(previousWeekStart.getDate() - 7);
+    const previousWeekStartDate = previousWeekStart.toISOString().split('T')[0];
+
+    setCurrentWeekStartDate(previousWeekStartDate);
+    setIsNextWeekDisabled(false); // Re-enable the "Next Week" button
+    fetchWeeklyMenu(previousWeekStartDate); // Fetch the menu for the previous week
+  };
+
   return (
     <div>
       {/* Date selector */}
       <div className='flex flex-col items-center border-t-2 border-b-2 lg:border-2 border-primary rounded-lg shadow-md pb-2 md:pb-[0.15rem] lg:mt-[19px] lg:w-[845px] mx-auto '>
         <div className='flex items-center justify-center w-full px-[1.35rem] md:px-[4rem] lg:px-[4.2rem]  '>
           {weekStartDate && (
-            <button className='text-gray-400 relative'>
+            <button
+              className={`text-primary relative ${
+                currentWeekStartDate === currentWeekStart
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              } `}
+              onClick={handlePreviousWeekClick}
+              disabled={currentWeekStartDate === currentWeekStart}
+            >
               <LuCircleArrowLeft className='w-11 h-10 md:w-13 md:h-12' />
             </button>
           )}
@@ -325,7 +388,13 @@ function WeeklyMenu() {
             </div>
           </div>
           {weekStartDate && (
-            <button className='text-primary relative'>
+            <button
+              className={`text-primary relative ${
+                isNextWeekDisabled ? 'opacity-50 cursor-not-allowed' : ''
+              } `}
+              onClick={handleNextWeekClick}
+              disabled={isNextWeekDisabled}
+            >
               <LuCircleArrowRight className='w-11 h-10 md:w-13 md:h-12' />
             </button>
           )}
@@ -421,8 +490,13 @@ function WeeklyMenu() {
           </div>
           {/* Edit */}
           <button
-            className='border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit'
+            className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit ${
+              currentWeekStartDate === currentWeekStart
+                ? 'opacity-50 cursor-not-allowed'
+                : ''
+            }`}
             onClick={() => setIsModalOpen(true)}
+            disabled={currentWeekStartDate === currentWeekStart}
           >
             EDIT MEAL
           </button>
