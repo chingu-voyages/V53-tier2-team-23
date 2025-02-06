@@ -3,12 +3,15 @@ import { FaArrowDown } from 'react-icons/fa6';
 import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 import ExportToPDF from '../ExportToPDF/ExportToPDF';
 import ExportToExcel from '../ExportToExcel/ExportToExcel';
+import { useLocation } from 'react-router-dom';
 
 function WeeklyMenu() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [menu, setMenu] = useState(null);
   const [dish, setDish] = useState(null);
   const [weekDates, setWeekDates] = useState([]);
+  const location = useLocation();
+  const { weekStartDate } = location.state || {};
 
   // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
@@ -69,8 +72,9 @@ function WeeklyMenu() {
       String(monday.getDate()).padStart(2, '0');
     console.log('weekStartDate: ', weekStart);
 
-    fetchWeeklyMenu(weekStart);
-  }, []);
+      fetchWeeklyMenu(weekStart);
+    }
+  }, [weekStartDate]);
 
   // Update dish when selectedDate changes
   useEffect(() => {

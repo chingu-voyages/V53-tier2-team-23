@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styles from './LoginPage.module.css';
-import Management from './../Management/Management';
+import { useNavigate } from 'react-router-dom';
 
 const customStyles = {
   form: styles.form,
@@ -10,6 +10,7 @@ const customStyles = {
   formContainerInput: styles['form-container__input'],
   formContainerButton: styles['form-container__button'],
   formContainerResponse: styles['form-container__response'],
+  welcome: styles['welcome'],
 };
 
 const {
@@ -20,13 +21,15 @@ const {
   formContainerInput,
   formContainerButton,
   formContainerResponse,
+  welcome,
 } = customStyles;
 
 function LoginPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [responseMessage, setResponseMessage] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate();
 
   async function getTokenFromLocalStorage() {
     return localStorage.getItem('token');
@@ -48,13 +51,11 @@ function LoginPage() {
     if (data && dataUsername) {
       setResponseMessage(`User ${dataUsername} authentication passed`);
       console.log(`User ${dataUsername} authentication passed`);
-      setIsAuthenticated(true);
       return true;
     } else {
       setResponseMessage('Invalid credentials. LocalStorage token deleted.');
       console.log('Invalid credentials. LocalStorage token deleted.');
       localStorage.removeItem('token');
-      setIsAuthenticated(false);
       return false;
     }
   }
@@ -79,11 +80,9 @@ function LoginPage() {
     if (token) {
       localStorage.setItem('token', token);
       setResponseMessage('Successfully logged in');
-      setIsAuthenticated(true);
       return true;
     } else {
       setResponseMessage(`Login failed: ${loginData.message}`);
-      setIsAuthenticated(false);
       return false;
     }
   }
@@ -94,7 +93,6 @@ function LoginPage() {
       setResponseMessage('Logging out...');
       localStorage.removeItem('token');
       setResponseMessage('User logged out successfully...');
-      setIsAuthenticated(false);
     } else {
       setResponseMessage('You cannot log out if you are not logged in');
     }
@@ -125,77 +123,62 @@ function LoginPage() {
   async function submitForm(event) {
     event.preventDefault();
     await handleLogin(username, password);
+    navigate('/management', { state: { username } });
   }
 
-  return isAuthenticated ? (
-    <Management username={username} />
-  ) : (
+  return (
     <div className={`flex flex-col ${formContainer}`}>
-      <h2 className={formContainerTitle}>Manager Login</h2>
+      <span className={`${welcome} text-center text-lg`}>Welcome back! 👋</span>
+      <h2 className={`${formContainerTitle} text-black text-xl font-semibold`}>
+        Login to your account
+      </h2>
       <form onSubmit={submitForm} className={formContainerForm}>
+        <label className='text-black my-3' htmlFor='username'>
+          Proffesional Email
+        </label>
         <input
           onChange={(e) => setUsername(e.target.value)}
           type='text'
           id='username'
           value={username}
           className={formContainerInput}
-          placeholder='Username'
+          placeholder='john.doe@menuhelp.com'
           required
         />
+        <label className='text-black my-3' htmlFor='password'>
+          Password
+        </label>
         <input
           onChange={(e) => setPassword(e.target.value)}
           type='password'
           id='password'
           value={password}
           className={formContainerInput}
-          placeholder='Password'
+          placeholder='Enter Password'
           required
         />
-        <div className='buttons-container flex flex-row m-5 flex-wrap'>
+        <div className='buttons-container flex flex-row my-5 flex-wrap'>
           <button
             type='submit'
             id='loginButton'
-            type='submit'
             className={`${formContainerButton}
-          w-fit
-          rounded-full
-          border-none
+          w-full
+          rounded-md
+          hover:border-yellow-300
           p-[10px_20px]
           box-border
-          bg-yellow-400
-          hover:bg-white
-          text-purple-800
-          hover:border-2
-          hover:border-solid
-          hover:border-purple-800
+          border-yellow-400
+          bg-white
+          text-black
+          border-4
+          border-solid
           uppercase
           `}
           >
             Login
           </button>
-          <button
-            onClick={logoutUser}
-            id='logoutButton'
-            type='button'
-            className={`
-            bg-[#e2484d]
-            text-yellow-400
-            w-fit
-            rounded-full
-            border-none
-            hover:border-2
-            hover:border-solid
-            p-[10px_20px]
-            hover:bg-white 
-            hover:text-[#e2484d]
-            hover:border-yellow-400
-            ${formContainerButton}`}
-          >
-            Logout
-          </button>
         </div>
       </form>
-
       <div className={customStyles.formContainerResponse}>
         The response will be shown here ✅
       </div>
