@@ -106,6 +106,27 @@ const updateEmployeeAllergiesAndDiet = (
   return null; // No errors
 };
 
+// https://www.geeksforgeeks.org/mongoose-queries-model-findbyidandupdate-function/
+// https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
+async function updateEmployeeAllergies(employeeId, changedAllergies) {
+  try {
+    const updatedEmployeeAllergies = await Employee.findByIdAndUpdate(
+      employeeId,
+      { allergies: changedAllergies }, // update allergies
+      { new: true } // new: This is a boolean-type option. If true, return the modified document rather than the original.
+    );
+
+    if (!updatedEmployeeAllergies) {
+      return { error: 'Employee not found.' };
+    }
+
+    return updatedEmployeeAllergies;
+  } catch (error) {
+    console.error('Error updating allergies:', error);
+    return { error: 'Error updating allergies.' };
+  }
+}
+
 exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body, queryStringParameters } = event;
@@ -181,6 +202,44 @@ exports.handler = async (event) => {
       });
     } catch (error) {
       return handleError(error, 'fetching');
+    }
+  }
+
+  // edit employee allergies
+  if (
+    httpMethod === 'PUT' &&
+    path.endsWith(`/employees/${employeeId}/allergies`)
+  ) {
+    try {
+      const { allergies } = req.body;
+
+      if (!allergies) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Allergies not found.' }),
+        };
+      }
+
+      const updatedEmployee = await updateEmployeeAllergies(
+        employeeId,
+        allergies
+      );
+
+      if (updatedEmployee.error) {
+        return {
+          statusCode: 404, // Employee not found
+          body: JSON.stringify({ error: updatedEmployee.error }),
+        };
+      }
+
+      // Successfully updated the employee's allergies
+      return sendResponse(
+        200,
+        'Employee allergies updated successfully',
+        updatedEmployee
+      );
+    } catch (error) {
+      return handleError(error, 'editing');
     }
   }
 
