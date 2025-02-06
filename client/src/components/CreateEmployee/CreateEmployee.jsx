@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './CreateEmployee.module.css';
 import ViewEmployee from './../ViewEmployee/ViewEmployee';
 
@@ -80,12 +81,18 @@ function CreateEmployee() {
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [previewChanges, setPreviewChanges] = useState(false);
   const [employeeData, setEmployeeData] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (employeeData) {
       setPreviewChanges(true);
     }
-  }, [employeeData]);
+    if (previewChanges) {
+      navigate('/view-employee', {
+        state: { employeeData }, // Pass employeeData here
+      });
+    }
+  }, [employeeData, previewChanges]);
 
   const handleSelectAllergies = (select) => {
     // find selected allergies
@@ -125,7 +132,7 @@ function CreateEmployee() {
   return (
     <>
       {previewChanges ? (
-        <ViewEmployee employeeData={employeeData} />
+        <ViewEmployee />
       ) : (
         <div className={`flex flex-col ${formContainer}`}>
           <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>

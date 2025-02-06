@@ -1,19 +1,20 @@
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
-import Footer from './components/Footer/Footer';
 import CreateEmployee from './components/CreateEmployee/CreateEmployee';
+import ViewEmployee from './components/ViewEmployee/ViewEmployee';
+import Footer from './components/Footer/Footer';
+import './index.css';
 
 function App() {
   return (
-    <>
+    <Router>
       <NavBar />
-      <CreateEmployee />
-      <main className='flex-grow bg-gray-100'>
-        <div className='h-[872px] md:h-[990px] lg:h-[907px] bg-gray-200 rounded-md flex items-center justify-center'>
-          <p className='text-lg text-gray-600'>Placeholder Content</p>
-        </div>
-      </main>
+      <Routes>
+        <Route path='/create-employee' element={<CreateEmployee />} />
+        <Route path='/view-employee' element={<ViewEmployee />} />
+      </Routes>
       <Footer />
-    </>
+    </Router>
   );
 }
 
