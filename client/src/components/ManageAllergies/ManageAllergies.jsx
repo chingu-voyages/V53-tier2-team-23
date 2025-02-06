@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './ManageAllergies.module.css';
 
@@ -28,11 +28,11 @@ const {
   allergyIcon,
 } = customStyles;
 
-function ManageAllergies({ employeeData }) {
-  const { identity, selectedAllergies } = employeeData;
-  const [employeeName, setEmployeeName] = useState(identity);
-  const [allergies, setAllergies] = useState(selectedAllergies || []);
-  const [viewEditAllergies, setViewEditAllergies] = useState(false);
+function ManageAllergies() {
+  //const { identity, selectedAllergies } = employeeData;
+  const [employeeName, setEmployeeName] = useState('Oliver Moore');
+  // const [allergies, setAllergies] = useState(selectedAllergies || []);
+  // const [viewEditAllergies, setViewEditAllergies] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -40,98 +40,86 @@ function ManageAllergies({ employeeData }) {
 
   //navigate('/create-employee')
 
-  async function handleGetEmployee(identity) {
+  async function getEmployeeByName(identity) {
     const response = await fetch(
       `https://eato-meatplanner.netlify.app/.netlify/functions/employees/${identity}`,
       {
-        method: 'POST',
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          employeeName: identity,
-          allergies: selectedAllergies,
-        }),
         mode: 'cors',
       }
     );
 
     const responseData = await response.json();
+    console.log(responseData.data._id);
     return responseData.data;
   }
 
-  async function handleSubmitEmployeeData(event) {
+  async function handleGetEmployeeByName(event) {
     event.preventDefault();
-    await handleCreateEmployee(employeeName, allergies);
-    setFormSubmitted(true);
+    await getEmployeeByName(employeeName);
   }
 
-  async function handleEditAllergiesPage(event) {
-    event.preventDefault();
-    await handleCreateEmployee(employeeName, allergies);
-    setFormSubmitted(true);
-  }
+  // async function handleEditAllergiesPage(event) {
+  //   event.preventDefault();
+  //   await handleCreateEmployee(employeeName, allergies);
+  //   setFormSubmitted(true);
+  // }
 
   const allergenIconURL =
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
 
   return (
-    <>
-      {viewEditAllergies ? (
-        <EditEmployee employeeData={employeeData} />
-      ) : (
-        <div className={`flex flex-col ${formContainer}`}>
-          <h1 className={`text-[#513174] font-bold`}>
-            Check Collaborator Details
-          </h1>
-          <div
-            className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
-          >
-            <h2
-              className={`${formContainerTitle} text-[#513174] font-bold uppercase`}
-            >
-              Collaborator Allergies Overview
-            </h2>
-            <div className='flex flex-wrap items-center gap-8'>
-              <span className='pl-10 py-10'>
-                <img
-                  className={profileIcon}
-                  src='https://res.cloudinary.com/dspxn4ees/image/upload/v1738656644/profil-icon.svg'
-                  alt='profile-icon'
-                />
-              </span>
-              <h4 className='text-[#513174] font-semibold capitalize mt-4'>
-                {employeeName}
-              </h4>
-            </div>
-            {
-              <ul className='flex mt-5 mb-24 gap-5 px-10'>
-                {allergies.map((allergy, index) => (
-                  <li className='flex flex-wrap gap-2' key={index}>
-                    <span>
-                      <img
-                        className={allergyIcon}
-                        src={`${allergenIconURL}${allergy.replace(
-                          ' ',
-                          '_'
-                        )}.svg`}
-                        alt={allergy}
-                      />
-                    </span>
-                    <span>{allergy}</span>
-                  </li>
-                ))}
-              </ul>
-            }
-            <form
-              onSubmit={handleSubmitEmployeeData}
-              className={`${formContainerForm} px-4 py-4 rounded-[10px]`}
-            >
-              <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
-                <button
-                  type='submit'
-                  id='submitButton'
-                  className={`${formContainerButton}
+    <div className={`flex flex-col ${formContainer}`}>
+      <h1 className={`text-[#513174] font-bold`}>Check Collaborator Details</h1>
+      <div
+        className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
+      >
+        <h2
+          className={`${formContainerTitle} text-[#513174] font-bold uppercase`}
+        >
+          Collaborator Allergies Overview
+        </h2>
+        <div className='flex flex-wrap items-center gap-8'>
+          <span className='pl-10 py-10'>
+            <img
+              className={profileIcon}
+              src='https://res.cloudinary.com/dspxn4ees/image/upload/v1738656644/profil-icon.svg'
+              alt='profile-icon'
+            />
+          </span>
+          <h4 className='text-[#513174] font-semibold capitalize mt-4'>
+            {employeeName}
+          </h4>
+        </div>
+        {
+          // <ul className='flex mt-5 mb-24 gap-5 px-10'>
+          //   {allergies.map((allergy, index) => (
+          //     <li className='flex flex-wrap gap-2' key={index}>
+          //       <span>
+          //         <img
+          //           className={allergyIcon}
+          //           src={`${allergenIconURL}${allergy.replace(' ', '_')}.svg`}
+          //           alt={allergy}
+          //         />
+          //       </span>
+          //       <span>{allergy}</span>
+          //     </li>
+          //   ))}
+          // </ul>
+        }
+        <form
+          // onSubmit={handleSubmitEmployeeData}
+          className={`${formContainerForm} px-4 py-4 rounded-[10px]`}
+        >
+          <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+            <button
+              type='submit'
+              id='submitButton'
+              onClick={handleGetEmployeeByName}
+              className={`${formContainerButton}
             w-fit
             rounded-full
             border-none
@@ -147,13 +135,13 @@ function ManageAllergies({ employeeData }) {
             font-bold
             shadow-md
             `}
-                >
-                  Save Changes
-                </button>
-                <button
-                  id='editAllergiesButton'
-                  onClick={handleEditAllergiesPage}
-                  className={`${formContainerButton}
+            >
+              Save Changes
+            </button>
+            <button
+              id='editAllergiesButton'
+              // onClick={handleGetEmployeeByName}
+              className={`${formContainerButton}
             w-fit
             rounded-full
             hover:border-none
@@ -169,15 +157,13 @@ function ManageAllergies({ employeeData }) {
             font-bold
             shadow-md
             `}
-                >
-                  Edit Allergies
-                </button>
-              </div>
-            </form>
+            >
+              Edit Allergies
+            </button>
           </div>
-        </div>
-      )}
-    </>
+        </form>
+      </div>
+    </div>
   );
 }
 
