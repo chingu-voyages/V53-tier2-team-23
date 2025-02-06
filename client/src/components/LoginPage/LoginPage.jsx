@@ -51,13 +51,11 @@ function LoginPage() {
     if (data && dataUsername) {
       setResponseMessage(`User ${dataUsername} authentication passed`);
       console.log(`User ${dataUsername} authentication passed`);
-      setIsAuthenticated(true);
       return true;
     } else {
       setResponseMessage('Invalid credentials. LocalStorage token deleted.');
       console.log('Invalid credentials. LocalStorage token deleted.');
       localStorage.removeItem('token');
-      setIsAuthenticated(false);
       return false;
     }
   }
@@ -82,11 +80,9 @@ function LoginPage() {
     if (token) {
       localStorage.setItem('token', token);
       setResponseMessage('Successfully logged in');
-      setIsAuthenticated(true);
       return true;
     } else {
       setResponseMessage(`Login failed: ${loginData.message}`);
-      setIsAuthenticated(false);
       return false;
     }
   }
@@ -97,7 +93,6 @@ function LoginPage() {
       setResponseMessage('Logging out...');
       localStorage.removeItem('token');
       setResponseMessage('User logged out successfully...');
-      setIsAuthenticated(false);
     } else {
       setResponseMessage('You cannot log out if you are not logged in');
     }
@@ -128,7 +123,7 @@ function LoginPage() {
   async function submitForm(event) {
     event.preventDefault();
     await handleLogin(username, password);
-    navigate('/management');
+    navigate('/management', { state: { username } });
   }
 
   return (

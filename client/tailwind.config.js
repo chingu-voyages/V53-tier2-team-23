@@ -19,9 +19,9 @@ export default {
       },
       colors: {
         background: '#f6f2f2',
-        primary: '#762F63',
-        secondary: '#FCBB1C',
-        complementary: '#FBF560',
+        primary: '#492470',
+        secondary: '#FFD23F',
+        complementary: '#FCBB1C',
       },
     },
   },

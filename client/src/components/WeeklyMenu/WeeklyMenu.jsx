@@ -3,12 +3,15 @@ import { FaArrowDown } from 'react-icons/fa6';
 import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 import ExportToPDF from '../ExportToPDF/ExportToPDF';
 import ExportToExcel from '../ExportToExcel/ExportToExcel';
+import { useLocation } from 'react-router-dom';
 
 function WeeklyMenu() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [menu, setMenu] = useState(null);
   const [dish, setDish] = useState(null);
   const [weekDates, setWeekDates] = useState([]);
+  const location = useLocation();
+  const { weekStartDate } = location.state || {};
 
   // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
   const scrollRef = useRef(null);
@@ -31,7 +34,7 @@ function WeeklyMenu() {
   const fetchWeeklyMenu = async (weekStart) => {
     try {
       const response = await fetch(
-        `http://localhost:8888/.netlify/functions/menus?weekStartDate=${weekStart}`
+        `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${weekStart}`
       );
       const data = await response.json();
       setMenu(data.data);
@@ -55,14 +58,20 @@ function WeeklyMenu() {
 
   // Fetch weekly menu on mount
   useEffect(() => {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
-    const weekStart = monday.toISOString().split('T')[0];
+    // if there is weekStartDate prop, fetch menu for that week
+    if (weekStartDate) {
+      fetchWeeklyMenu(weekStartDate);
+    } else {
+      // If no weekStartDate prop, calculate the current week's start date
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      const weekStart = monday.toISOString().split('T')[0];
 
-    fetchWeeklyMenu(weekStart);
-  }, []);
+      fetchWeeklyMenu(weekStart);
+    }
+  }, [weekStartDate]);
 
   // Update dish when selectedDate changes
   useEffect(() => {

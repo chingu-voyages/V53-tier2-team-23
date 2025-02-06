@@ -1,4 +1,6 @@
+import React from 'react';
 import DatePicker from './DatePicker';
+import { useLocation } from 'react-router-dom';
 import styles from './DatePicker.module.css';
 
 const customStyles = {
@@ -12,6 +14,8 @@ const { datepickerContainer, customDayPicker, daysOffContainer, daysOffText } =
   customStyles;
 
 function DatePickerContainer() {
+  const location = useLocation();
+  const { action, isViewMode } = location.state || {};
   return (
     <div
       className={`${datepickerContainer} lg:p-[20px_70px_26px] flex flex-col flex-wrap items-center`}
@@ -22,6 +26,8 @@ function DatePickerContainer() {
           customDayPicker={customDayPicker}
           daysOffContainer={daysOffContainer}
           daysOffText={daysOffText}
+          action={action}
+          isViewMode={isViewMode}
         />
       </div>
     </div>
