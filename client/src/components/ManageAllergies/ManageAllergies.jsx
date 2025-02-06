@@ -26,7 +26,7 @@ const getAllergyLabel = (allergy) => {
   const part2 = allergy.substring(3);
   return (
     <>
-      <span className='allergypart1 text-[#513174]'>{part1}</span>
+      <span className='allergypart1 text-[#513174] font-semibold'>{part1}</span>
       <span className='allergypart2 text-gray-500'>{part2}</span>
     </>
   );
@@ -72,9 +72,26 @@ const selectStyles = {
   }),
   dropdownIndicator: (styles) => ({
     ...styles,
+    // color: '#6b23a6',
+    // ':hover': {
+    //   color: '#fdd053',
+    // },
+    display: 'block',
+    backgroundImage:
+      'url("https://res.cloudinary.com/dspxn4ees/image/upload/v1738866259/chevrondown.svg")',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    padding: '8px',
+    svg: {
+      display: 'none',
+    },
+    width: '20px',
+    height: '20px',
+    margin: '0 10px',
     color: '#6b23a6',
     ':hover': {
-      color: '#fdd053',
+      backgroundImage:
+        'url("https://res.cloudinary.com/dspxn4ees/image/upload/v1738866259/chevrondown.svg")',
     },
   }),
 };
@@ -115,6 +132,9 @@ function ManageAllergies() {
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [employeeName, setEmployeeName] = useState('Grace Robinson');
   const [allergies, setAllergies] = useState([]);
+  const [chosenEmployeeAllergiesList, setChosenEmployeeAllergiesList] =
+    useState([]);
+  const [defaultAllergiesList, setDefaultAllergiesList] = useState([]);
   // const [viewEditAllergies, setViewEditAllergies] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const navigate = useNavigate();
@@ -125,10 +145,8 @@ function ManageAllergies() {
     const fetchEmployeeData = async () => {
       try {
         const chosenEmployee = await getEmployeeByName(employeeName);
-        const chosenEmployeeAllergiesList = chosenEmployee.employee.allergies;
-        if (chosenEmployee) {
-          setAllergies(chosenEmployeeAllergiesList);
-          console.log(chosenEmployeeAllergiesList);
+        if (chosenEmployee && chosenEmployee.employee) {
+          setChosenEmployeeAllergiesList(chosenEmployee.employee.allergies);
         }
       } catch (error) {
         console.error('Error fetching employee data:', error);
@@ -139,6 +157,15 @@ function ManageAllergies() {
       fetchEmployeeData();
     }
   }, [employeeName]);
+
+  useEffect(() => {
+    setAllergies(chosenEmployeeAllergiesList);
+    const updatedDefaultAllergies = getDefaultEmployeeAllergies(
+      allergiesList,
+      chosenEmployeeAllergiesList
+    );
+    setDefaultAllergiesList(updatedDefaultAllergies);
+  }, [chosenEmployeeAllergiesList]);
 
   //navigate('/create-employee')
 
@@ -158,15 +185,37 @@ function ManageAllergies() {
     return responseData.data;
   }
 
-  async function handleGetEmployeeByName(event) {
-    event.preventDefault();
-  }
+  const updateEmployeeAllergies = async (employeeId, changedAllergies) => {
+    try {
+      const response = await fetch(`/api/employees/${employeeId}/allergies`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ allergies: changedAllergies }),
+      });
 
-  // async function handleEditAllergiesPage(event) {
-  //   event.preventDefault();
-  //   await handleCreateEmployee(employeeName, allergies);
-  //   setFormSubmitted(true);
-  // }
+      const responseData = await response.json();
+      console.log('Updated Employee allergies:', responseData);
+    } catch (error) {
+      console.error('Error updating allergies:', error);
+    }
+  };
+
+  const getDefaultEmployeeAllergies = (
+    allergiesList,
+    chosenEmployeeAllergiesList
+  ) => {
+    return allergiesList.filter((allergy) =>
+      chosenEmployeeAllergiesList.includes(allergy.value)
+    );
+  };
+
+  async function handleEditAllergiesPage(event) {
+    event.preventDefault();
+    await updateEmployeeAllergies(employeeId, selectedAllergies);
+    setFormSubmitted(true);
+  }
 
   const allergenIconURL =
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
@@ -223,11 +272,30 @@ function ManageAllergies() {
             // onSubmit={handleSubmitEmployeeData}
             className={`${formContainerForm} px-4 py-4 rounded-[10px]`}
           >
+            <h2
+              className={`${formContainerTitle} text-[#513174] font-bold text-xl uppercase font-shantell`}
+            >
+              Manage Allergies
+            </h2>
             <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+              <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+                Allergies
+              </h4>
+              <Select
+                value={defaultAllergiesList}
+                isMulti
+                name='allergiesList'
+                options={allergiesList}
+                onChange={handleSelectAllergies}
+                className='basic-multi-select'
+                classNamePrefix='select'
+                styles={selectStyles}
+                getOptionLabel={(e) => getAllergyLabel(e.value)}
+              />
               <button
                 type='submit'
                 id='submitButton'
-                onClick={handleGetEmployeeByName}
+                // onClick={handleGetEmployeeByName}
                 className={`${formContainerButton}
             w-fit
             rounded-full
@@ -245,29 +313,7 @@ function ManageAllergies() {
             shadow-md
             `}
               >
-                Save Changes
-              </button>
-              <button
-                id='editAllergiesButton'
-                // onClick={handleGetEmployeeByName}
-                className={`${formContainerButton}
-            w-fit
-            rounded-full
-            hover:border-none
-            p-[10px_20px]
-            box-border
-            hover:bg-yellow-400
-            bg-white
-            text-purple-800
-            border-2
-            border-solid
-            border-purple-800
-            uppercase
-            font-bold
-            shadow-md
-            `}
-              >
-                Edit Allergies
+                Preview Changes
               </button>
             </div>
           </form>
