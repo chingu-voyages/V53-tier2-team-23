@@ -5,6 +5,194 @@ import ExportToPDF from '../ExportToPDF/ExportToPDF';
 import ExportToExcel from '../ExportToExcel/ExportToExcel';
 import { useLocation } from 'react-router-dom';
 
+const ingredientCategories = {
+  Mushrooms: ['Portobello Mushroom', 'Mushrooms'],
+  Herbs: [
+    'Chives',
+    'Cilantro',
+    'Basil',
+    'Thyme',
+    'Coriander',
+    'Rosemary',
+    'Basil Pesto',
+    'Parsley',
+    'Wasabi',
+  ],
+  Green: [
+    'Spinach',
+    'Celery',
+    'Zucchini',
+    'Lettuce',
+    'Asparagus',
+    'Cabbage',
+    'Peas',
+    'Romaine Lettuce',
+  ],
+  Cheese: [
+    'Mozzarella',
+    'Ricotta Cheese',
+    'Mozzarella Cheese',
+    'Vegan Cheese',
+    'Parmesan Cheese',
+    'Parmesan',
+    'Cheese',
+    'Cheddar Cheese',
+    'Vegan Cheese Sauce',
+    'Blue Cheese',
+  ],
+  Garlic: ['Garlic', 'Garlic Powder'],
+  Olives: ['Olive Oil', 'Olives'],
+  Rice: ['Quinoa', 'Arborio Rice', 'Rice'],
+  Avocados: ['Avocado', 'Guacamole'],
+  Nori: ['Nori'],
+  Flour: ['Flour', 'Almond Flour', 'Gluten-Free Oats', 'Gluten-Free Flour'],
+  Chocolate: ['Cocoa Powder', 'Chocolate Chips'],
+  Milk: ['Almond Milk', 'Cream', 'Butter', 'Heavy Cream', 'Milk'],
+  Others: [
+    'Sugar',
+    'Baking Powder',
+    'Soy Sauce',
+    'Salt',
+    'Curry Powder',
+    'Taco Seasoning',
+    'Cinnamon',
+    'Nutritional Yeast',
+    'Turmeric',
+    'Cumin',
+  ],
+  Dressing: [
+    'Hummus',
+    'Caesar Dressing',
+    'Mayo',
+    'Gluten-Free Soy Sauce',
+    'Balsamic Vinegar',
+    'Maple Syrup',
+    'Tamari Sauce',
+    'Vegan Caesar Dressing',
+  ],
+  Seafood: [
+    'Clams',
+    'Tuna',
+    'Shrimp',
+    'Salmon',
+    'White Fish',
+    'Cod',
+    'Lobster',
+    'Mussels',
+  ],
+  Potatoes: ['Potatoes', 'Mashed Potatoes'],
+  Onions: ['Onion', 'Shallots'],
+  Meat: [
+    'Chicken Breast',
+    'Beef',
+    'Ground Chicken',
+    'Pepperoni',
+    'Ground Beef',
+    'Ground Turkey',
+    'Turkey',
+    'Chicken',
+    'Chicken Thighs',
+    'Bacon',
+    'Beef Strips',
+  ],
+  Tomatoes: [
+    'Tomato',
+    'Tomato Sauce',
+    'Tomato Sauce',
+    'Tomatoes',
+    'Salsa',
+    'Cherry Tomatoes',
+  ],
+  Cucumber: ['Cucumber', 'Pickles'],
+  Broth: ['Broth', 'Vegetable Broth'],
+  Peppers: ['Bell Pepper', 'Bell Peppers'],
+  Chilli: ['Chili Powder', 'Paprika'],
+  Bread: [
+    'Whole Wheat Bun',
+    'Breadcrumbs',
+    'Gluten-Free Pizza Dough',
+    'Croutons',
+    'Whole Wheat Wrap',
+    'Gluten-Free Pizza Crust',
+    'Pizza Dough',
+    'Burger Bun',
+    'Vegan Bun',
+    'Brioche Bun',
+    'Bread',
+    'Pastry',
+    'Gluten-Free Breadcrumbs',
+  ],
+  Carrots: ['Carrots'],
+  Noodles: [
+    'Gluten-Free Pasta',
+    'Fettuccine',
+    'Linguine',
+    'Lasagna Noodles',
+    'Spaghetti',
+    'Lasagna Sheets',
+    'Spaghetti Squash',
+    'Pasta',
+    'Rice Noodles',
+  ],
+  Citrus: ['Lemon Juice', 'Lime Juice', 'Lemon', 'Lemon Dressing', 'Lime'],
+  Tacos: ['Corn Tortillas', 'Taco Shells', 'Flour Tortilla'],
+  Oil: ['Oil'],
+  wine: ['White Wine'],
+  apples: ['Apples'],
+  Nuts: ['Tahini', 'Sesame Seeds', 'Pine Nuts', 'Cashews'],
+  Bean: ['Tofu', 'Chickpeas', 'Black Beans', 'Falafel', 'Lentils'],
+  Peanuts: ['Peanuts'],
+  Egg: ['Egg', 'Eggs'],
+  Coconut: ['Coconut Oil', 'Coconut Milk', 'Coconut Aminos', 'Coconut Flakes'],
+  Eggplants: ['Eggplant'],
+  'Sweet Potato': ['Sweet Potatoes'],
+  Ginger: ['Ginger'],
+  Cauliflower: ['Cauliflower Rice', 'Broccoli', 'Cauliflower'],
+};
+
+const ingredientEmojis = {
+  Mushrooms: '🍄',
+  Green: '🥬',
+  Herbs: '🌿',
+  Cheese: '🧀',
+  Garlic: '🧄',
+  Olives: '🫒',
+  Rice: '🍚',
+  Avocados: '🥑',
+  Nori: '🍣',
+  Flour: '🌾',
+  Chocolate: '🍫',
+  Milk: '🥛',
+  Others: '🧂',
+  Dressing: '🫙',
+  Seafood: '🐟',
+  Potatoes: '🥔',
+  Onions: '🧅',
+  Meat: '🥩',
+  Tomatoes: '🍅',
+  Cucumber: '🥒',
+  Broth: '🍲',
+  Peppers: '🫑',
+  Chilli: '🌶️',
+  Bread: '🍞',
+  Carrots: '🥕',
+  Noodles: '🍝',
+  Citrus: '🍋',
+  Tacos: '🌮',
+  Oil: '🛢️',
+  wine: '🍷',
+  apples: '🍎',
+  Nuts: '🌰',
+  Bean: '🫘',
+  Peanuts: '🥜',
+  Egg: '🥚',
+  Coconut: '🥥',
+  Eggplants: '🍆',
+  'Sweet Potato': '🍠',
+  Ginger: '🫚',
+  Cauliflower: '🥦',
+};
+
 function WeeklyMenu() {
   const [selectedDate, setSelectedDate] = useState(null);
   const [menu, setMenu] = useState(null);
@@ -58,19 +246,23 @@ function WeeklyMenu() {
 
   // Fetch weekly menu on mount
   useEffect(() => {
-    const today = new Date();
-    const dayOfWeek = today.getDay();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - ((dayOfWeek + 6) % 7));
-
-    // using local time instead of ISO as it sometime causes date shift depending on time of usage
-    const weekStart =
-      monday.getFullYear() +
-      '-' +
-      String(monday.getMonth() + 1).padStart(2, '0') +
-      '-' +
-      String(monday.getDate()).padStart(2, '0');
-    console.log('weekStartDate: ', weekStart);
+    // if there is weekStartDate prop, fetch menu for that week
+    if (weekStartDate) {
+      fetchWeeklyMenu(weekStartDate);
+    } else {
+      // If no weekStartDate prop, calculate the current week's start date
+      const today = new Date();
+      const dayOfWeek = today.getDay();
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - (dayOfWeek === 0 ? 6 : dayOfWeek - 1));
+      // using local time instead of ISO as it sometime causes date shift depending on time of usage
+      const weekStart =
+        monday.getFullYear() +
+        '-' +
+        String(monday.getMonth() + 1).padStart(2, '0') +
+        '-' +
+        String(monday.getDate()).padStart(2, '0');
+      console.log('weekStartDate: ', weekStart);
 
       fetchWeeklyMenu(weekStart);
     }
@@ -96,13 +288,24 @@ function WeeklyMenu() {
     return imageURL;
   };
 
+  const getIngredientEmoji = (ingredient) => {
+    for (const [category, ingredients] of Object.entries(ingredientCategories))
+      if (ingredients.includes(ingredient)) {
+        return ingredientEmojis[category] || '😊';
+      }
+    return '🤭';
+  };
+
   return (
     <div>
+      {/* Date selector */}
       <div className='flex flex-col items-center border-t-2 border-b-2 lg:border-2 border-primary rounded-lg shadow-md pb-2 md:pb-[0.15rem] lg:mt-[19px] lg:w-[845px] mx-auto '>
-        <div className='flex items-center justify-between w-full px-[1.35rem] md:px-[4rem] lg:px-[4.2rem]  '>
-          <button className='text-gray-400 relative'>
-            <LuCircleArrowLeft className='w-11 h-10 md:w-13 md:h-12' />
-          </button>
+        <div className='flex items-center justify-center w-full px-[1.35rem] md:px-[4rem] lg:px-[4.2rem]  '>
+          {weekStartDate && (
+            <button className='text-gray-400 relative'>
+              <LuCircleArrowLeft className='w-11 h-10 md:w-13 md:h-12' />
+            </button>
+          )}
           <div className='text-center pt-1 md:pt-[0.4rem]'>
             <div className='text-[16px]'>Week of</div>
             <div className='text-[16px] font-bold'>
@@ -113,9 +316,11 @@ function WeeklyMenu() {
                 })}
             </div>
           </div>
-          <button className='text-primary relative'>
-            <LuCircleArrowRight className='w-11 h-10 md:w-13 md:h-12' />
-          </button>
+          {weekStartDate && (
+            <button className='text-primary relative'>
+              <LuCircleArrowRight className='w-11 h-10 md:w-13 md:h-12' />
+            </button>
+          )}
         </div>
         <div
           ref={scrollRef}
@@ -156,6 +361,8 @@ function WeeklyMenu() {
           })}
         </div>
       </div>
+
+      {/* Dish details */}
       <h1 className='text-center text-primary font-bold text-[24px] mt-[1.35rem] font-shantell'>
         Check this Week&apos;s Meals
       </h1>
@@ -172,12 +379,12 @@ function WeeklyMenu() {
             />
           </div>
           <div className='mt-4 text-left mx-5'>
-            <h2 className='font-bold text-[20px]'>Ingredients</h2>
+            <h2 className='font-bold text-[20px] text-black'>Ingredients</h2>
             <div className='grid grid-cols-2 gap-5 mt-6'>
               {dish.ingredients.map((item) => (
-                <div key={item} className='flex items-center gap-2'>
-                  <span className='text-[20px]'>{item}</span>
-                </div>
+                <li key={item} className='flex items-center gap-2'>
+                  {getIngredientEmoji(item)} {item}
+                </li>
               ))}
             </div>
           </div>
@@ -190,21 +397,26 @@ function WeeklyMenu() {
       ) : (
         <p className='text-center mt-5'>No meal planned for this date.</p>
       )}
-      <div className='mt-6 flex flex-col gap-7 items-center'>
-        <div className='group relative flex flex-col items-center'>
-          <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer'>
-            EXPORT WEEKLY PLAN <FaArrowDown />
-          </p>
-          <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
-            <ExportToPDF weekDates={weekDates} />
-            <ExportToExcel weekDates={weekDates} />
-          </div>
-        </div>
 
-        <button className='border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit'>
-          EDIT MEAL
-        </button>
-      </div>
+      {/* Edit & Export  */}
+      {weekStartDate && (
+        <div className='mt-6 flex flex-col gap-7 items-center'>
+          {/* Export buttons */}
+          <div className='group relative flex flex-col items-center'>
+            <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer'>
+              EXPORT WEEKLY PLAN <FaArrowDown />
+            </p>
+            <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
+              <ExportToPDF weekDates={weekDates} />
+              <ExportToExcel weekDates={weekDates} />
+            </div>
+          </div>
+          {/* Edit */}
+          <button className='border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit'>
+            EDIT MEAL
+          </button>
+        </div>
+      )}
     </div>
   );
 }
