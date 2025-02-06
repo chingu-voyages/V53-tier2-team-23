@@ -169,11 +169,15 @@ exports.handler = async (event) => {
   // getting employee info with the name, e.g. /.netlify/functions/employees/Leon
   if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeName}`)) {
     try {
-      const employee = await Employee.findOne(employeeName);
+      const employee = await Employee.findOne({ employeeName });
+      const employeeId = employee._id;
       if (!employee) {
         return sendResponse(404, 'Employee not found.');
       }
-      return sendResponse(200, 'Employee retrieved successfully', employee);
+      return sendResponse(200, 'Employee retrieved successfully', {
+        employee,
+        employeeId,
+      });
     } catch (error) {
       return handleError(error, 'fetching');
     }
