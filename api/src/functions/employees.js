@@ -166,6 +166,19 @@ exports.handler = async (event) => {
     }
   }
 
+  // getting employee info with the name, e.g. /.netlify/functions/employees/Leon
+  if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeName}`)) {
+    try {
+      const employee = await Employee.findOne(employeeName);
+      if (!employee) {
+        return sendResponse(404, 'Employee not found.');
+      }
+      return sendResponse(200, 'Employee retrieved successfully', employee);
+    } catch (error) {
+      return handleError(error, 'fetching');
+    }
+  }
+
   // getting employee info with the id, e.g. /.netlify/functions/employees/678d1c696b29fd6dada99317
   if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeId}`)) {
     try {
