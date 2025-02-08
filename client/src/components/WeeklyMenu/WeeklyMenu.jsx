@@ -276,18 +276,21 @@ function WeeklyMenu() {
             <Swiper
               modules={[Navigation]}
               navigation={true}
-              slidesPerView={'2.5'} // Automatically calculate the number of cards based on their width
-              spaceBetween={40} // Gap between cards
+              slidesPerView={'2.5'}
+              spaceBetween={40}
               loop={false}
               breakpoints={{
                 640: {
-                  slidesPerView: 1, // On small screens, show only 1 slide
+                  slidesPerView: 1,
                 },
                 768: {
-                  slidesPerView: 1.5, // On medium screens, show 2 slides
+                  slidesPerView: 1.5,
                 },
                 1024: {
-                  slidesPerView: 2.5, // On large screens, show 3 slides
+                  slidesPerView: 2.5,
+                },
+                1280: {
+                  slidesPerView: 3,
                 },
               }}
             >
