@@ -101,7 +101,7 @@ async function handleSaveEmployeeAllergies(event) {
   setEmployeeData(newEmployee);
 }
 
-function ManageAllergies() {
+function CheckEmployeeDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const employeeData = location.state?.employeeData || {};
@@ -355,7 +355,30 @@ function ManageAllergies() {
             shadow-[0px_4px_4px_0px_#00000040]
             `}
                 >
-                  Preview Changes
+                  Save Changes
+                </button>
+                <button
+                  type='submit'
+                  id='submitButton'
+                  // onClick={handleGetEmployeeByName}
+                  className={`${formContainerButton}
+            w-fit
+            rounded-full
+            border-none
+            p-[10px_20px]
+            box-border
+            bg-yellow-400
+            hover:bg-white
+            text-purple-800
+            hover:outline-2
+            hover:outline-solid
+            hover:outline-purple-800
+            uppercase
+            font-bold
+            shadow-[0px_4px_4px_0px_#00000040]
+            `}
+                >
+                  Edit Allergies
                 </button>
               </div>
             </form>
@@ -366,4 +389,4 @@ function ManageAllergies() {
   }
 }
 
-export default ManageAllergies;
+export default CheckEmployeeDetails;

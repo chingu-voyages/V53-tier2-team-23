@@ -137,8 +137,6 @@ function CreateEmployee() {
       employeeName: data.employeeName,
       allergies: data.allergies,
     });
-    console.log(data);
-    console.log(employeeData);
     setFormSubmitted(true);
   }
 
