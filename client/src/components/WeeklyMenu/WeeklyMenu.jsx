@@ -4,195 +4,11 @@ import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 import ExportToPDF from '../ExportToPDF/ExportToPDF';
 import ExportToExcel from '../ExportToExcel/ExportToExcel';
 import EditMealModal from '../EditMeal/EditMeal';
+import DishCard from './DishCard';
 import { useLocation } from 'react-router-dom';
-
-const ingredientCategories = {
-  Mushrooms: ['Portobello Mushroom', 'Mushrooms'],
-  Herbs: [
-    'Chives',
-    'Cilantro',
-    'Basil',
-    'Thyme',
-    'Coriander',
-    'Rosemary',
-    'Basil Pesto',
-    'Parsley',
-    'Wasabi',
-  ],
-  Green: [
-    'Spinach',
-    'Celery',
-    'Zucchini',
-    'Lettuce',
-    'Asparagus',
-    'Cabbage',
-    'Peas',
-    'Romaine Lettuce',
-  ],
-  Cheese: [
-    'Mozzarella',
-    'Ricotta Cheese',
-    'Mozzarella Cheese',
-    'Vegan Cheese',
-    'Parmesan Cheese',
-    'Parmesan',
-    'Cheese',
-    'Cheddar Cheese',
-    'Vegan Cheese Sauce',
-    'Blue Cheese',
-  ],
-  Garlic: ['Garlic', 'Garlic Powder'],
-  Olives: ['Olive Oil', 'Olives'],
-  Rice: ['Quinoa', 'Arborio Rice', 'Rice'],
-  Avocados: ['Avocado', 'Guacamole'],
-  Nori: ['Nori'],
-  Flour: ['Flour', 'Almond Flour', 'Gluten-Free Oats', 'Gluten-Free Flour'],
-  Chocolate: ['Cocoa Powder', 'Chocolate Chips'],
-  Milk: ['Almond Milk', 'Cream', 'Butter', 'Heavy Cream', 'Milk'],
-  Others: [
-    'Sugar',
-    'Baking Powder',
-    'Soy Sauce',
-    'Salt',
-    'Curry Powder',
-    'Taco Seasoning',
-    'Cinnamon',
-    'Nutritional Yeast',
-    'Turmeric',
-    'Cumin',
-  ],
-  Dressing: [
-    'Hummus',
-    'Caesar Dressing',
-    'Mayo',
-    'Gluten-Free Soy Sauce',
-    'Balsamic Vinegar',
-    'Maple Syrup',
-    'Tamari Sauce',
-    'Vegan Caesar Dressing',
-  ],
-  Seafood: [
-    'Clams',
-    'Tuna',
-    'Shrimp',
-    'Salmon',
-    'White Fish',
-    'Cod',
-    'Lobster',
-    'Mussels',
-  ],
-  Potatoes: ['Potatoes', 'Mashed Potatoes'],
-  Onions: ['Onion', 'Shallots'],
-  Meat: [
-    'Chicken Breast',
-    'Beef',
-    'Ground Chicken',
-    'Pepperoni',
-    'Ground Beef',
-    'Ground Turkey',
-    'Turkey',
-    'Chicken',
-    'Chicken Thighs',
-    'Bacon',
-    'Beef Strips',
-  ],
-  Tomatoes: [
-    'Tomato',
-    'Tomato Sauce',
-    'Tomato Sauce',
-    'Tomatoes',
-    'Salsa',
-    'Cherry Tomatoes',
-  ],
-  Cucumber: ['Cucumber', 'Pickles'],
-  Broth: ['Broth', 'Vegetable Broth'],
-  Peppers: ['Bell Pepper', 'Bell Peppers'],
-  Chilli: ['Chili Powder', 'Paprika'],
-  Bread: [
-    'Whole Wheat Bun',
-    'Breadcrumbs',
-    'Gluten-Free Pizza Dough',
-    'Croutons',
-    'Whole Wheat Wrap',
-    'Gluten-Free Pizza Crust',
-    'Pizza Dough',
-    'Burger Bun',
-    'Vegan Bun',
-    'Brioche Bun',
-    'Bread',
-    'Pastry',
-    'Gluten-Free Breadcrumbs',
-  ],
-  Carrots: ['Carrots'],
-  Noodles: [
-    'Gluten-Free Pasta',
-    'Fettuccine',
-    'Linguine',
-    'Lasagna Noodles',
-    'Spaghetti',
-    'Lasagna Sheets',
-    'Spaghetti Squash',
-    'Pasta',
-    'Rice Noodles',
-  ],
-  Citrus: ['Lemon Juice', 'Lime Juice', 'Lemon', 'Lemon Dressing', 'Lime'],
-  Tacos: ['Corn Tortillas', 'Taco Shells', 'Flour Tortilla'],
-  Oil: ['Oil'],
-  wine: ['White Wine'],
-  apples: ['Apples'],
-  Nuts: ['Tahini', 'Sesame Seeds', 'Pine Nuts', 'Cashews'],
-  Bean: ['Tofu', 'Chickpeas', 'Black Beans', 'Falafel', 'Lentils'],
-  Peanuts: ['Peanuts'],
-  Egg: ['Egg', 'Eggs'],
-  Coconut: ['Coconut Oil', 'Coconut Milk', 'Coconut Aminos', 'Coconut Flakes'],
-  Eggplants: ['Eggplant'],
-  'Sweet Potato': ['Sweet Potatoes'],
-  Ginger: ['Ginger'],
-  Cauliflower: ['Cauliflower Rice', 'Broccoli', 'Cauliflower'],
-};
-
-const ingredientEmojis = {
-  Mushrooms: '🍄',
-  Green: '🥬',
-  Herbs: '🌿',
-  Cheese: '🧀',
-  Garlic: '🧄',
-  Olives: '🫒',
-  Rice: '🍚',
-  Avocados: '🥑',
-  Nori: '🍣',
-  Flour: '🌾',
-  Chocolate: '🍫',
-  Milk: '🥛',
-  Others: '🧂',
-  Dressing: '🫙',
-  Seafood: '🐟',
-  Potatoes: '🥔',
-  Onions: '🧅',
-  Meat: '🥩',
-  Tomatoes: '🍅',
-  Cucumber: '🥒',
-  Broth: '🍲',
-  Peppers: '🫑',
-  Chilli: '🌶️',
-  Bread: '🍞',
-  Carrots: '🥕',
-  Noodles: '🍝',
-  Citrus: '🍋',
-  Tacos: '🌮',
-  Oil: '🛢️',
-  wine: '🍷',
-  apples: '🍎',
-  Nuts: '🌰',
-  Bean: '🫘',
-  Peanuts: '🥜',
-  Egg: '🥚',
-  Coconut: '🥥',
-  Eggplants: '🍆',
-  'Sweet Potato': '🍠',
-  Ginger: '🫚',
-  Cauliflower: '🥦',
-};
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Controller } from 'swiper/modules';
+import 'swiper/css';
 
 function WeeklyMenu() {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -206,21 +22,8 @@ function WeeklyMenu() {
     useState(weekStartDate);
   const [isNextWeekDisabled, setIsNextWeekDisabled] = useState(false);
 
-  // to scroll horizontally when the user interacts withthe scroll wheel for small screen size
-  const scrollRef = useRef(null);
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    const handleWheelScroll = (event) => {
-      event.preventDefault();
-      scrollContainer.scrollLeft += event.deltaY;
-    };
-
-    scrollContainer.addEventListener('wheel', handleWheelScroll);
-    return () =>
-      scrollContainer.removeEventListener('wheel', handleWheelScroll);
-  }, []);
+  const dishSwiperRef = useRef(null);
+  const dateSwiperRef = useRef(null);
 
   // to fetch weekly menu
   const fetchWeeklyMenu = async (weekStart) => {
@@ -295,24 +98,6 @@ function WeeklyMenu() {
 
   // for previous and next week button
   const currentWeekStart = getWeekStartDate(new Date());
-
-  const getImageURL = (imageUrl) => {
-    const imageBasePath = 'https://res.cloudinary.com/dspxn4ees/image/upload/';
-    const imageName = dish.imageUrl
-      .replace('imagesPath/', '')
-      .replace('.jpg', '');
-    const imageExt = '.jpg';
-    const imageURL = `${imageBasePath}${imageName}${imageExt}`;
-    return imageURL;
-  };
-
-  const getIngredientEmoji = (ingredient) => {
-    for (const [category, ingredients] of Object.entries(ingredientCategories))
-      if (ingredients.includes(ingredient)) {
-        return ingredientEmojis[category] || '😊';
-      }
-    return '🤭';
-  };
 
   // next week button
   const handleNextWeekClick = async () => {
@@ -410,115 +195,151 @@ function WeeklyMenu() {
                 </button>
               )}
             </div>
-            {/* carousel of dates */}
-            <div
-              ref={scrollRef}
-              className='overflow-x-auto snap-x scrollbar-hide md:hidden flex w-full mt-1 ml-3 gap-[19.5px]'
-            >
-              {weekDates.map((item) => {
-                const isDisabled = item.dish === null;
-                const isSelected = selectedDate === item.fullDate;
-
-                return (
-                  <div
-                    key={item.fullDate}
-                    onClick={() =>
-                      !isDisabled && setSelectedDate(item.fullDate)
-                    }
-                    className={`cursor-pointer snap-start flex flex-col flex-[0_0_auto] items-center justify-center w-[71px] h-[71px] pt-[3px] border border-black rounded-md ${
-                      isDisabled
-                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : isSelected
-                        ? 'text-white bg-primary'
-                        : 'bg-[#F0EBF6]'
-                    }`}
+            <div className='bg-white md:hidden'>
+              {/* --- DATE SWIPER --- */}
+              {weekDates.length > 0 && (
+                <div className=''>
+                  <Swiper
+                    modules={[Controller]}
+                    slidesPerView='auto'
+                    spaceBetween={20}
+                    className='w-full h-auto max-w-[90vw] mt-1 ml-0'
+                    onSwiper={(swiper) => (dateSwiperRef.current = swiper)}
                   >
-                    <div className='text-[12px] font-extrabold'>{item.day}</div>
-                    <div className='text-[12px] font-extrabold'>
-                      {item.date}
-                    </div>
-                  </div>
-                );
-              })}
+                    {weekDates.map((item, index) => {
+                      const isDisabled = item.dish === null;
+                      const isSelected = selectedDate === item.fullDate;
+
+                      return (
+                        <SwiperSlide
+                          key={item.fullDate}
+                          style={{ width: '71px' }}
+                        >
+                          <div
+                            onClick={() => {
+                              if (!isDisabled) {
+                                setSelectedDate(item.fullDate);
+                                dishSwiperRef.current?.slideTo(index); // Move dish swiper
+                              }
+                            }}
+                            className={`cursor-pointer flex flex-col items-center justify-center w-[71px] h-[71px] pt-[3px] border border-black rounded-md ${
+                              isDisabled
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : isSelected
+                                ? 'text-white bg-primary'
+                                : 'bg-[#F0EBF6]'
+                            }`}
+                          >
+                            <div className='text-[12px] font-extrabold'>
+                              {item.day}
+                            </div>
+                            <div className='text-[12px] font-extrabold'>
+                              {item.date}
+                            </div>
+                          </div>
+                        </SwiperSlide>
+                      );
+                    })}
+                  </Swiper>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Dish details */}
-          <h1 className='text-center text-primary font-bold text-[24px] mt-[1.35rem] font-shantell md:hidden'>
+          <h1 className='text-center text-primary font-bold text-[24px] mt-[2.5rem] mb-3 font-shantell md:hidden'>
             Check this Week&apos;s Meals
           </h1>
-          {dish ? (
-            <div className='border-[1px] border-primary rounded-3xl w-full mt-[0.9rem] p-2 text-center pb-4'>
-              <div className='text-primary font-bold text-[36px] font-shantell'>
-                {dish.dishName}
-              </div>
-              <div className='mt-2 h-[217px] mx-1'>
-                <img
-                  src={getImageURL(dish.imageUrl)}
-                  alt={dish.dishName}
-                  className='rounded-xl border-[3px] border-primary object-cover h-full w-full'
-                />
-              </div>
-              <div className='mt-4 text-left mx-5'>
-                <h2 className='font-bold text-[20px] text-black'>
-                  Ingredients
-                </h2>
-                <div className='grid grid-cols-2 gap-5 mt-6'>
-                  {dish.ingredients.map((item) => (
-                    <li key={item} className='flex items-center gap-2'>
-                      {getIngredientEmoji(item)} {item}
-                    </li>
-                  ))}
-                </div>
-              </div>
-              <div className='mt-7 flex justify-start mx-3'>
-                <div className='bg-secondary text-black font-bold py-[0.5rem] px-3 inline-block'>
-                  Calories: {dish.calories}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <p className='text-center mt-5'>No meal planned for this date.</p>
-          )}
-
-          {/* Edit & Export  */}
-          {weekStartDate && (
-            <div className='mt-6 flex flex-col gap-7 items-center'>
-              {/* Export buttons */}
-              <div className='group relative flex flex-col items-center'>
-                <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer'>
-                  EXPORT WEEKLY PLAN <FaArrowDown />
-                </p>
-                <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
-                  <ExportToPDF weekDates={weekDates} />
-                  <ExportToExcel weekDates={weekDates} />
-                </div>
-              </div>
-              {/* Edit */}
-              <button
-                className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit ${
-                  currentWeekStartDate === currentWeekStart
-                    ? 'opacity-50 cursor-not-allowed'
-                    : ''
-                }`}
-                onClick={() => setIsModalOpen(true)}
-                disabled={currentWeekStartDate === currentWeekStart}
-              >
-                EDIT MEAL
-              </button>
-            </div>
-          )}
-
-          {/* The modal is rendered conditionally */}
-          {isModalOpen && (
-            <EditMealModal
-              isModalOpen={isModalOpen}
-              setIsModalOpen={setIsModalOpen}
-              weekDates={weekDates}
-              refreshMenu={refreshMenu}
-            />
-          )}
+          {/* Dish details for small screen*/}
+          <div className='md:hidden min-h-[620px]'>
+            <Swiper
+              modules={[Controller, Navigation]}
+              slidesPerView={1}
+              spaceBetween={0}
+              loop={false}
+              onSwiper={(swiper) => (dishSwiperRef.current = swiper)}
+              onSlideChange={(swiper) => {
+                const newDate = weekDates[swiper.activeIndex]?.fullDate;
+                setSelectedDate(newDate);
+                dateSwiperRef.current?.slideTo(swiper.activeIndex); // Move date swiper
+              }}
+            >
+              {weekDates.map((item) => (
+                <SwiperSlide key={item.fullDate}>
+                  <DishCard item={item} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+          {/* Dish details for medium and large screens */}
+          <div className='hidden md:block '>
+            {/* --- DISH SWIPER (Desktop) --- */}
+            <Swiper
+              modules={[Navigation]}
+              navigation={true}
+              slidesPerView={'2.5'} // Automatically calculate the number of cards based on their width
+              spaceBetween={40} // Gap between cards
+              loop={false}
+              breakpoints={{
+                640: {
+                  slidesPerView: 1, // On small screens, show only 1 slide
+                },
+                768: {
+                  slidesPerView: 1.5, // On medium screens, show 2 slides
+                },
+                1024: {
+                  slidesPerView: 2.5, // On large screens, show 3 slides
+                },
+              }}
+            >
+              {weekDates.map((item) => (
+                <SwiperSlide key={item.fullDate}>
+                  <div className='w-[430px] h-full'>
+                    <DishCard item={item} />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </div>
+
+        {/* Edit & Export  */}
+        {weekStartDate && (
+          <div className='mt-5 flex justify-between items-center border-t-2 border-b-2 border-primary px-3 pt-2 pb-1 bg-white'>
+            {/* Edit */}
+            <button
+              className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] shadow-md shadow-gray-400 w-fit ${
+                currentWeekStartDate === currentWeekStart
+                  ? 'opacity-50 cursor-not-allowed'
+                  : ''
+              }`}
+              onClick={() => setIsModalOpen(true)}
+              disabled={currentWeekStartDate === currentWeekStart}
+            >
+              Edit Menu
+            </button>
+
+            {/* Export buttons */}
+            <div className='group relative flex flex-col items-center '>
+              <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-md shadow-gray-400'>
+                Export Menu <FaArrowDown />
+              </p>
+              <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
+                <ExportToPDF weekDates={weekDates} />
+                <ExportToExcel weekDates={weekDates} />
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* The modal is rendered conditionally */}
+        {isModalOpen && (
+          <EditMealModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            weekDates={weekDates}
+            refreshMenu={refreshMenu}
+          />
+        )}
       </div>
     </div>
   );
