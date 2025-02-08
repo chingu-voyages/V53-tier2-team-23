@@ -152,9 +152,9 @@ function WeeklyMenu() {
         <h1 className='text-center text-primary font-bold text-[36px] mt-[0.8rem] lg:mt-[0.5rem] font-shantell hidden md:block pb-1'>
           Check this Week&apos;s Meals
         </h1>
-        <div className='md:bg-white'>
+        <div className='md:bg-white md:pb-10'>
           {/* Date selector */}
-          <div className='flex flex-col items-center bg-white border-t-2 border-b-2 md:border-2 lg:border-2 border-secondary shadow-md mt-[-5px] pb-[0.6rem] md:pb-[0.15rem] md:w-[503px] md:h-[74px] md:mt-[-6px] lg:mt-[-15px] mx-auto '>
+          <div className='flex flex-col items-center bg-white border-t-2 border-b-2 md:border-2 lg:border-2 border-secondary shadow-md md:shadow-none mt-[-5px] pb-[0.6rem] md:pb-[0.15rem] md:w-[503px] md:h-[74px] md:mt-[-6px] lg:mt-[-15px] mx-auto '>
             {/* next/prev week with weeek start date */}
             <div className='flex items-center justify-center w-full px-[1.35rem] md:px-[4rem] lg:px-[4.2rem] gap-24 md:gap-14 '>
               {weekStartDate && (
@@ -304,7 +304,7 @@ function WeeklyMenu() {
 
         {/* Edit & Export  */}
         {weekStartDate && (
-          <div className='mt-5 flex justify-between items-center border-t-2 border-b-2 border-primary px-3 pt-2 pb-1 bg-white'>
+          <div className='mt-5 md:mt-0 flex justify-between items-center border-t-2 border-b-2 border-primary px-3 pt-2 pb-1 bg-white'>
             {/* Edit */}
             <button
               className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] shadow-md shadow-gray-400 w-fit ${
@@ -319,11 +319,11 @@ function WeeklyMenu() {
             </button>
 
             {/* Export buttons */}
-            <div className='group relative flex flex-col items-center '>
+            <div className='group relative flex flex-col items-center'>
               <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-md shadow-gray-400'>
                 Export Menu <FaArrowDown />
               </p>
-              <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
+              <div className='hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] left-2 right-0 z-20'>
                 <ExportToPDF weekDates={weekDates} />
                 <ExportToExcel weekDates={weekDates} />
               </div>

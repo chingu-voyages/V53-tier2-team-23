@@ -32,9 +32,9 @@ const ExportToExcel = ({ weekDates }) => {
     <div>
       <button
         onClick={exportToExcel}
-        className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit'
+        className='border-[1px] border-primary text-[24px] h-[45px] w-[207px] bg-white'
       >
-        Export to Excel
+        Excel
       </button>
     </div>
   );
