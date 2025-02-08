@@ -314,6 +314,7 @@ function WeeklyMenu() {
     return '🤭';
   };
 
+  // next week button
   const handleNextWeekClick = async () => {
     const nextWeekStart = new Date(currentWeekStartDate);
     nextWeekStart.setDate(nextWeekStart.getDate() + 7);
@@ -349,6 +350,7 @@ function WeeklyMenu() {
     }
   };
 
+  // previous week button
   const handlePreviousWeekClick = () => {
     const previousWeekStart = new Date(currentWeekStartDate);
     previousWeekStart.setDate(previousWeekStart.getDate() - 7);
@@ -360,158 +362,164 @@ function WeeklyMenu() {
   };
 
   return (
-    <div>
-      {/* Date selector */}
-      <div className='flex flex-col items-center border-t-2 border-b-2 lg:border-2 border-primary rounded-lg shadow-md pb-2 md:pb-[0.15rem] lg:mt-[19px] lg:w-[845px] mx-auto '>
-        <div className='flex items-center justify-center w-full px-[1.35rem] md:px-[4rem] lg:px-[4.2rem]  '>
-          {weekStartDate && (
-            <button
-              className={`text-primary relative ${
-                currentWeekStartDate === currentWeekStart
-                  ? 'opacity-50 cursor-not-allowed'
-                  : ''
-              } `}
-              onClick={handlePreviousWeekClick}
-              disabled={currentWeekStartDate === currentWeekStart}
-            >
-              <LuCircleArrowLeft className='w-11 h-10 md:w-13 md:h-12' />
-            </button>
-          )}
-          <div className='text-center pt-1 md:pt-[0.4rem]'>
-            <div className='text-[16px]'>Week of</div>
-            <div className='text-[16px] font-bold'>
-              {weekDates.length > 0 &&
-                new Date(weekDates[0].fullDate).toLocaleDateString('en-US', {
-                  month: 'long',
-                  day: 'numeric',
-                })}
-            </div>
-          </div>
-          {weekStartDate && (
-            <button
-              className={`text-primary relative ${
-                isNextWeekDisabled ? 'opacity-50 cursor-not-allowed' : ''
-              } `}
-              onClick={handleNextWeekClick}
-              disabled={isNextWeekDisabled}
-            >
-              <LuCircleArrowRight className='w-11 h-10 md:w-13 md:h-12' />
-            </button>
-          )}
-        </div>
-        <div
-          ref={scrollRef}
-          className='overflow-x-auto snap-x scrollbar-hide md:overflow-visible md:snap-none flex w-full mt-1 gap-[19.5px] md:gap-5 ml-4 md:ml-0 md:justify-center md:mt-4'
-        >
-          {weekDates.map((item) => {
-            const isDisabled = item.dish === null;
-            const isSelected = selectedDate === item.fullDate;
-
-            return (
-              <div
-                key={item.fullDate}
-                onClick={() => !isDisabled && setSelectedDate(item.fullDate)}
-                className={`cursor-pointer snap-start flex flex-col flex-[0_0_auto] items-center justify-center w-[70px] h-[72px] md:h-[70px] pt-[3px] border border-black rounded-md ${
-                  isDisabled
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : isSelected
-                    ? 'text-white bg-primary'
-                    : 'bg-[#F0EBF6]'
-                }`}
-              >
-                <div
-                  className={`text-[11px] ${
-                    isSelected ? 'font-normal' : 'font-bold'
-                  }`}
+    <div className='custom-bg'>
+      <div className='relative z-10'>
+        <h1 className='text-center text-primary font-bold text-[36px] mt-[0.8rem] lg:mt-[0.5rem] font-shantell hidden md:block pb-1'>
+          Check this Week&apos;s Meals
+        </h1>
+        <div className='md:bg-white'>
+          {/* Date selector */}
+          <div className='flex flex-col items-center bg-white border-t-2 border-b-2 md:border-2 lg:border-2 border-secondary shadow-md mt-[-5px] pb-[0.6rem] md:pb-[0.15rem] md:w-[503px] md:h-[74px] md:mt-[-6px] lg:mt-[-15px] mx-auto '>
+            {/* next/prev week with weeek start date */}
+            <div className='flex items-center justify-center w-full px-[1.35rem] md:px-[4rem] lg:px-[4.2rem] gap-24 md:gap-14 '>
+              {weekStartDate && (
+                <button
+                  className={`text-primary relative ${
+                    currentWeekStartDate === currentWeekStart
+                      ? 'opacity-50 cursor-not-allowed'
+                      : ''
+                  } `}
+                  onClick={handlePreviousWeekClick}
+                  disabled={currentWeekStartDate === currentWeekStart}
                 >
-                  {item.day}
-                </div>
-                <div
-                  className={`text-[11px] ${
-                    isSelected ? 'font-normal' : 'font-bold'
-                  }`}
-                >
-                  {item.date}
+                  <LuCircleArrowLeft className='w-12 h-12' />
+                </button>
+              )}
+              <div className='text-center pt-[0.3rem] md:pt-[0.4rem] flex flex-col md:flex-row md:gap-1 md:text-nowrap lg:pt-3'>
+                <div className='text-[16.23px]'>Week of </div>
+                <div className='text-[16.23px] font-bold'>
+                  {weekDates.length > 0 &&
+                    new Date(weekDates[0].fullDate).toLocaleDateString(
+                      'en-US',
+                      {
+                        month: 'long',
+                        day: 'numeric',
+                      }
+                    )}
                 </div>
               </div>
-            );
-          })}
+              {weekStartDate && (
+                <button
+                  className={`text-primary relative ${
+                    isNextWeekDisabled ? 'opacity-50 cursor-not-allowed' : ''
+                  } `}
+                  onClick={handleNextWeekClick}
+                  disabled={isNextWeekDisabled}
+                >
+                  <LuCircleArrowRight className='w-12 h-12' />
+                </button>
+              )}
+            </div>
+            {/* carousel of dates */}
+            <div
+              ref={scrollRef}
+              className='overflow-x-auto snap-x scrollbar-hide md:hidden flex w-full mt-1 ml-3 gap-[19.5px]'
+            >
+              {weekDates.map((item) => {
+                const isDisabled = item.dish === null;
+                const isSelected = selectedDate === item.fullDate;
+
+                return (
+                  <div
+                    key={item.fullDate}
+                    onClick={() =>
+                      !isDisabled && setSelectedDate(item.fullDate)
+                    }
+                    className={`cursor-pointer snap-start flex flex-col flex-[0_0_auto] items-center justify-center w-[71px] h-[71px] pt-[3px] border border-black rounded-md ${
+                      isDisabled
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : isSelected
+                        ? 'text-white bg-primary'
+                        : 'bg-[#F0EBF6]'
+                    }`}
+                  >
+                    <div className='text-[12px] font-extrabold'>{item.day}</div>
+                    <div className='text-[12px] font-extrabold'>
+                      {item.date}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Dish details */}
+          <h1 className='text-center text-primary font-bold text-[24px] mt-[1.35rem] font-shantell md:hidden'>
+            Check this Week&apos;s Meals
+          </h1>
+          {dish ? (
+            <div className='border-[1px] border-primary rounded-3xl w-full mt-[0.9rem] p-2 text-center pb-4'>
+              <div className='text-primary font-bold text-[36px] font-shantell'>
+                {dish.dishName}
+              </div>
+              <div className='mt-2 h-[217px] mx-1'>
+                <img
+                  src={getImageURL(dish.imageUrl)}
+                  alt={dish.dishName}
+                  className='rounded-xl border-[3px] border-primary object-cover h-full w-full'
+                />
+              </div>
+              <div className='mt-4 text-left mx-5'>
+                <h2 className='font-bold text-[20px] text-black'>
+                  Ingredients
+                </h2>
+                <div className='grid grid-cols-2 gap-5 mt-6'>
+                  {dish.ingredients.map((item) => (
+                    <li key={item} className='flex items-center gap-2'>
+                      {getIngredientEmoji(item)} {item}
+                    </li>
+                  ))}
+                </div>
+              </div>
+              <div className='mt-7 flex justify-start mx-3'>
+                <div className='bg-secondary text-black font-bold py-[0.5rem] px-3 inline-block'>
+                  Calories: {dish.calories}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p className='text-center mt-5'>No meal planned for this date.</p>
+          )}
+
+          {/* Edit & Export  */}
+          {weekStartDate && (
+            <div className='mt-6 flex flex-col gap-7 items-center'>
+              {/* Export buttons */}
+              <div className='group relative flex flex-col items-center'>
+                <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer'>
+                  EXPORT WEEKLY PLAN <FaArrowDown />
+                </p>
+                <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
+                  <ExportToPDF weekDates={weekDates} />
+                  <ExportToExcel weekDates={weekDates} />
+                </div>
+              </div>
+              {/* Edit */}
+              <button
+                className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit ${
+                  currentWeekStartDate === currentWeekStart
+                    ? 'opacity-50 cursor-not-allowed'
+                    : ''
+                }`}
+                onClick={() => setIsModalOpen(true)}
+                disabled={currentWeekStartDate === currentWeekStart}
+              >
+                EDIT MEAL
+              </button>
+            </div>
+          )}
+
+          {/* The modal is rendered conditionally */}
+          {isModalOpen && (
+            <EditMealModal
+              isModalOpen={isModalOpen}
+              setIsModalOpen={setIsModalOpen}
+              weekDates={weekDates}
+              refreshMenu={refreshMenu}
+            />
+          )}
         </div>
       </div>
-
-      {/* Dish details */}
-      <h1 className='text-center text-primary font-bold text-[24px] mt-[1.35rem] font-shantell'>
-        Check this Week&apos;s Meals
-      </h1>
-      {dish ? (
-        <div className='border-[1px] border-primary rounded-3xl w-full mt-[0.9rem] p-2 text-center pb-4'>
-          <div className='text-primary font-bold text-[36px] font-shantell'>
-            {dish.dishName}
-          </div>
-          <div className='mt-2 h-[217px] mx-1'>
-            <img
-              src={getImageURL(dish.imageUrl)}
-              alt={dish.dishName}
-              className='rounded-xl border-[3px] border-primary object-cover h-full w-full'
-            />
-          </div>
-          <div className='mt-4 text-left mx-5'>
-            <h2 className='font-bold text-[20px] text-black'>Ingredients</h2>
-            <div className='grid grid-cols-2 gap-5 mt-6'>
-              {dish.ingredients.map((item) => (
-                <li key={item} className='flex items-center gap-2'>
-                  {getIngredientEmoji(item)} {item}
-                </li>
-              ))}
-            </div>
-          </div>
-          <div className='mt-7 flex justify-start mx-3'>
-            <div className='bg-secondary text-black font-bold py-[0.5rem] px-3 inline-block'>
-              Calories: {dish.calories}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <p className='text-center mt-5'>No meal planned for this date.</p>
-      )}
-
-      {/* Edit & Export  */}
-      {weekStartDate && (
-        <div className='mt-6 flex flex-col gap-7 items-center'>
-          {/* Export buttons */}
-          <div className='group relative flex flex-col items-center'>
-            <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer'>
-              EXPORT WEEKLY PLAN <FaArrowDown />
-            </p>
-            <div className='hidden group-hover:flex flex-col gap-3 mt-2'>
-              <ExportToPDF weekDates={weekDates} />
-              <ExportToExcel weekDates={weekDates} />
-            </div>
-          </div>
-          {/* Edit */}
-          <button
-            className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] font-shantell shadow-lg w-fit ${
-              currentWeekStartDate === currentWeekStart
-                ? 'opacity-50 cursor-not-allowed'
-                : ''
-            }`}
-            onClick={() => setIsModalOpen(true)}
-            disabled={currentWeekStartDate === currentWeekStart}
-          >
-            EDIT MEAL
-          </button>
-        </div>
-      )}
-
-      {/* The modal is rendered conditionally */}
-      {isModalOpen && (
-        <EditMealModal
-          isModalOpen={isModalOpen}
-          setIsModalOpen={setIsModalOpen}
-          weekDates={weekDates}
-          refreshMenu={refreshMenu}
-        />
-      )}
     </div>
   );
 }
