@@ -262,6 +262,7 @@ function WeeklyMenu() {
                 setSelectedDate(newDate);
                 dateSwiperRef.current?.slideTo(swiper.activeIndex); // Move date swiper
               }}
+              className='h-full'
             >
               {weekDates.map((item) => (
                 <SwiperSlide key={item.fullDate}>
@@ -271,7 +272,7 @@ function WeeklyMenu() {
             </Swiper>
           </div>
           {/* Dish details for medium and large screens */}
-          <div className='hidden md:block '>
+          <div className='hidden md:block min-h-[620px] '>
             {/* --- DISH SWIPER (Desktop) --- */}
             <Swiper
               modules={[Navigation]}
@@ -293,6 +294,7 @@ function WeeklyMenu() {
                   slidesPerView: 3,
                 },
               }}
+              className='h-full'
             >
               {weekDates.map((item) => (
                 <SwiperSlide key={item.fullDate}>

@@ -217,8 +217,7 @@ const DishCard = ({ item }) => {
   };
 
   return (
-    <div className='w-full md:w-[430px] h-full bg-white rounded-3xl md:rounded-none'>
-      {' '}
+    <div className='w-full md:w-[430px] min-h-[620px] bg-white rounded-3xl md:rounded-none'>
       {/* Ensure width is 430px for md and lg screens */}
       <div className='text-[16px] font-bold text-center pt-8'>
         {formatSelectedDate(item.fullDate)}
