@@ -92,22 +92,19 @@ const selectStyles = {
   }),
 };
 
-async function handleSaveEmployeeAllergies(event) {
-  event.preventDefault();
-  const newEmployee = {
-    identity,
-    selectedAllergies,
-  };
-  setEmployeeData(newEmployee);
-}
-
+//function ManageAllergies({employeeData}) {
+//const [employeeName, setEmployeeName] = useState(employeeData?.identity);
 function ManageAllergies() {
   const navigate = useNavigate();
   const location = useLocation();
-  const employeeData = location.state?.employeeData || {};
-  const { identity } = employeeData;
+  const employeeDataFromLocation = location.state?.employeeData || {};
+  const { identity } = employeeDataFromLocation;
+  const [employeeId, setEmployeeId] = useState('');
+  const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
 
-  const [employeeName, setEmployeeName] = useState('Sebastian King');
+  const [employeeName, setEmployeeName] = useState(
+    identity || 'Sebastian King'
+  );
 
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [allergies, setAllergies] = useState([]);
@@ -120,14 +117,13 @@ function ManageAllergies() {
   const [optionsState, setOptionsState] = useState([]);
 
   const [defaultOptions, setDefaultOptions] = useState([]);
-  // const [viewEditAllergies, setViewEditAllergies] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
       try {
         const chosenEmployee = await getEmployeeByName(employeeName);
         if (chosenEmployee && chosenEmployee.employee) {
+          setEmployeeId(chosenEmployee.employeeId);
           setChosenEmployeeAllergiesList(chosenEmployee.employee.allergies);
         }
       } catch (error) {
@@ -140,7 +136,31 @@ function ManageAllergies() {
     }
   }, [employeeName]);
 
-  //navigate('/manage-allergies');
+  const handleViewEmployee = () => {
+    navigate('/check-employee-details', {
+      state: {
+        employeeData: {
+          employeeId,
+          employeeName,
+          allergies: selectedAllergies,
+        },
+      },
+    });
+  };
+
+  async function handleSaveEmployeeAllergies(event) {
+    event.preventDefault();
+
+    setEmployeeData((prevData) => ({
+      ...prevData,
+      identity,
+      allergies: selectedAllergies,
+    }));
+
+    setTimeout(() => {
+      handleViewEmployee();
+    }, 100);
+  }
 
   async function getEmployeeByName(identity) {
     const response = await fetch(
@@ -157,22 +177,6 @@ function ManageAllergies() {
     const responseData = await response.json();
     return responseData.data;
   }
-
-  const updateEmployeeAllergies = async (employeeId, changedAllergies) => {
-    try {
-      const response = await fetch(`/api/employees/${employeeId}/allergies`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ allergies: changedAllergies }),
-      });
-
-      const responseData = await response.json();
-    } catch (error) {
-      console.error('Error updating allergies:', error);
-    }
-  };
 
   // get default allergies
   const getDefaultEmployeeAllergies = (
@@ -223,12 +227,6 @@ function ManageAllergies() {
       .map((isSelected, index) => (isSelected ? allergiesList[index] : null))
       .filter(Boolean);
   };
-
-  async function handleEditAllergiesPage(event) {
-    event.preventDefault();
-    await updateEmployeeAllergies(employeeId, selectedAllergies);
-    setFormSubmitted(true);
-  }
 
   const handleSelectAllergies = (select) => {
     // find selected allergies
@@ -332,28 +330,27 @@ function ManageAllergies() {
                   classNamePrefix='select'
                   styles={selectStyles}
                   getOptionLabel={(e) => getAllergyLabel(e.value)}
-                  // getOptionLabel={(e) => e.value}
                 />
                 <button
                   type='submit'
                   id='submitButton'
-                  // onClick={handleGetEmployeeByName}
+                  onClick={handleSaveEmployeeAllergies}
                   className={`${formContainerButton}
-            w-fit
-            rounded-full
-            border-none
-            p-[10px_20px]
-            box-border
-            bg-yellow-400
-            hover:bg-white
-            text-purple-800
-            hover:outline-2
-            hover:outline-solid
-            hover:outline-purple-800
-            uppercase
-            font-bold
-            shadow-[0px_4px_4px_0px_#00000040]
-            `}
+                  w-fit
+                  rounded-full
+                  border-none
+                  p-[10px_20px]
+                  box-border
+                  bg-yellow-400
+                  hover:bg-white
+                  text-purple-800
+                  hover:outline-2
+                  hover:outline-solid
+                  hover:outline-purple-800
+                  uppercase
+                  font-bold
+                  shadow-[0px_4px_4px_0px_#00000040]
+                  `}
                 >
                   Preview Changes
                 </button>
