@@ -41,11 +41,6 @@ This app was created for Chingu Voyage 53. It integrates with the [Dishes API](h
 
 ## Our Team
 
-Everyone on your team should add their name along with a link to their GitHub
-& optionally their LinkedIn profiles below. Do this in Sprint #1 to validate
-your repo access and to practice PR'ing with your team _before_ you start
-coding!
-
 # Scrum Master
 - Chinedu Olekah: [GitHub](https://github.com/kenako1) / [LinkedIn](www.linkedin.com/in/chinedu-olekah)
 
