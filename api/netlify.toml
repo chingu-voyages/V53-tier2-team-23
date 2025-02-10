@@ -1,7 +1,6 @@
 [build]
-  base = "api"  
-  functions = "api/src/functions"  
+  functions = "/src/functions"  
 
 [dev]
-  functions = "api/src/functions"
+  functions = "/src/functions"
   port = 8888
