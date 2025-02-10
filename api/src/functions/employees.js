@@ -208,11 +208,14 @@ exports.handler = async (event) => {
 
   // edit employee allergies
   if (
-    httpMethod === 'PATCH' &&
+    httpMethod === 'PUT' &&
     path.endsWith(`/employees/${employeeId}/allergies`)
   ) {
     try {
       const { allergies } = JSON.parse(body);
+
+      console.log('employeeId: ', employeeId);
+      console.log('allergies: ', allergies);
 
       if (!Array.isArray(allergies)) {
         return sendResponse(400, 'Invalid allergies data. Expected an array.');
@@ -222,6 +225,8 @@ exports.handler = async (event) => {
         employeeId,
         allergies
       );
+
+      console.log('updatedEmployee: ', updatedEmployee);
 
       if (!updatedEmployee) {
         return sendResponse(404, 'Employee not found.');
