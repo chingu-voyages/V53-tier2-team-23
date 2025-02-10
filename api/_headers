@@ -1,5 +1,5 @@
 /*
-  Content-Security-Policy: default-src 'self'; connect-src https://your-api-domain.com; img-src 'self' https://res.cloudinary.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com;
+  Content-Security-Policy: default-src 'self'; connect-src *; img-src 'self' https://res.cloudinary.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com;
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
   Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization
