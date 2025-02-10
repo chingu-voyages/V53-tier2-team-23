@@ -211,13 +211,10 @@ exports.handler = async (event) => {
     path.endsWith(`/employees/${employeeId}/allergies`)
   ) {
     try {
-      const { allergies } = req.body;
+      const { allergies } = JSON.parse(body);
 
-      if (!allergies) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ error: 'Allergies not found.' }),
-        };
+      if (!Array.isArray(allergies)) {
+        return sendResponse(400, 'Invalid allergies data. Expected an array.');
       }
 
       const updatedEmployee = await updateEmployeeAllergies(
@@ -225,11 +222,8 @@ exports.handler = async (event) => {
         allergies
       );
 
-      if (updatedEmployee.error) {
-        return {
-          statusCode: 404, // Employee not found
-          body: JSON.stringify({ error: updatedEmployee.error }),
-        };
+      if (!updatedEmployee) {
+        return sendResponse(404, 'Employee not found.');
       }
 
       // Successfully updated the employee's allergies
