@@ -79,7 +79,7 @@ function CheckEmployeeDetails() {
       const response = await fetch(
         `https://eato-meatplanner.netlify.app/.netlify/functions/employees/allergies/${employeeId}`,
         {
-          method: 'PATCH',
+          method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
