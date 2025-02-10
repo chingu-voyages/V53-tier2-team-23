@@ -12,8 +12,6 @@ import 'swiper/css';
 
 function WeeklyMenu() {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [menu, setMenu] = useState(null);
-  const [dish, setDish] = useState(null);
   const [weekDates, setWeekDates] = useState([]);
   const location = useLocation();
   const { weekStartDate } = location.state || {};
@@ -32,7 +30,6 @@ function WeeklyMenu() {
         `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${weekStart}`
       );
       const data = await response.json();
-      setMenu(data.data);
       // console.log(data.data);
       // Format weekDates with dish info
       const formattedDates = data.data.days.map((day) => ({
@@ -83,16 +80,6 @@ function WeeklyMenu() {
     }
   }, [currentWeekStartDate]);
 
-  // Update dish when selectedDate changes
-  useEffect(() => {
-    if (menu && selectedDate) {
-      const selectedDay = menu.days.find((day) =>
-        day.date.startsWith(selectedDate)
-      );
-      setDish(selectedDay?.dish || null);
-    }
-  }, [selectedDate, menu]);
-
   // to pass as props to EditMealModal to refresh the menu after updating
   const refreshMenu = () => fetchMenuForDate(weekStartDate);
 
@@ -113,7 +100,6 @@ function WeeklyMenu() {
 
       if (data.data && data.data.days.length > 0) {
         setCurrentWeekStartDate(nextWeekStartDate);
-        setMenu(data.data);
         const formattedDates = data.data.days.map((day) => ({
           day: new Date(day.date).toLocaleDateString('en-US', {
             weekday: 'short',
@@ -144,6 +130,19 @@ function WeeklyMenu() {
     setCurrentWeekStartDate(previousWeekStartDate);
     setIsNextWeekDisabled(false); // Re-enable the "Next Week" button
     fetchWeeklyMenu(previousWeekStartDate); // Fetch the menu for the previous week
+  };
+
+  const getImageURL = (imageUrl) => {
+    if (!imageUrl) {
+      // return a default image if imageUrl is not provided
+      return 'https://placehold.it/400x300';
+    }
+
+    const imageBasePath = 'https://res.cloudinary.com/dspxn4ees/image/upload/';
+    const imageName = imageUrl.replace('imagesPath/', '').replace('.jpg', '');
+    const imageExt = '.jpg';
+    const imageURL = `${imageBasePath}${imageName}${imageExt}`;
+    return imageURL;
   };
 
   return (
@@ -266,7 +265,7 @@ function WeeklyMenu() {
             >
               {weekDates.map((item) => (
                 <SwiperSlide key={item.fullDate}>
-                  <DishCard item={item} />
+                  <DishCard item={item} getImageURL={getImageURL} />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -299,7 +298,7 @@ function WeeklyMenu() {
               {weekDates.map((item) => (
                 <SwiperSlide key={item.fullDate}>
                   <div className='w-[430px] h-full'>
-                    <DishCard item={item} />
+                    <DishCard item={item} getImageURL={getImageURL} />
                   </div>
                 </SwiperSlide>
               ))}
@@ -329,7 +328,7 @@ function WeeklyMenu() {
                 Export Menu <FaArrowDown />
               </p>
               <div className='hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] left-2 right-0 z-20'>
-                <ExportToPDF weekDates={weekDates} />
+                <ExportToPDF weekDates={weekDates} getImageURL={getImageURL} />
                 <ExportToExcel weekDates={weekDates} />
               </div>
             </div>
