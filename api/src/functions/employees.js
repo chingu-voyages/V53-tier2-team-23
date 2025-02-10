@@ -209,10 +209,10 @@ exports.handler = async (event) => {
   // edit employee allergies
   if (
     httpMethod === 'PUT' &&
-    path.endsWith(`/employees/${employeeId}/allergies`)
+    path.endsWith(`/employees/allergies/${employeeId}`)
   ) {
     try {
-      const { employeeId, allergies } = JSON.parse(body);
+      const { allergies } = JSON.parse(body);
 
       console.log('employeeId: ', employeeId);
       console.log('allergies: ', allergies);
