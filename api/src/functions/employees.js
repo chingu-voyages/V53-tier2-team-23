@@ -212,10 +212,17 @@ exports.handler = async (event) => {
     path.endsWith(`/employees/${employeeId}/allergies`)
   ) {
     try {
-      const { allergies } = JSON.parse(body);
+      const { employeeId, allergies } = JSON.parse(body);
 
       console.log('employeeId: ', employeeId);
       console.log('allergies: ', allergies);
+
+      if (!employeeId) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing employeeId' }),
+        };
+      }
 
       if (!Array.isArray(allergies)) {
         return sendResponse(400, 'Invalid allergies data. Expected an array.');
