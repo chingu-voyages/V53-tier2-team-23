@@ -1,13 +1,16 @@
 [build]
-  functions = "/src/functions"  
+  base = "api"  # Base directory for your project
+  functions = "api/src/functions"  # Correct functions path
 
 [dev]
-  functions = "/src/functions"
+  functions = "api/src/functions"
   port = 8888
 
 [[headers]]
   for = "/.netlify/functions/*"
-  [headers.values]
+    [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, PUT, PATCH, DELETE, OPTIONS"
     Access-Control-Allow-Headers = "Content-Type, Authorization"
+    Access-Control-Allow-Credentials = "true"
+    Access-Control-Max-Age = "86400"
