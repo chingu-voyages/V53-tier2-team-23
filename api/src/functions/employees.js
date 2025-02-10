@@ -207,7 +207,7 @@ exports.handler = async (event) => {
 
   // edit employee allergies
   if (
-    httpMethod === 'PUT' &&
+    httpMethod === 'PATCH' &&
     path.endsWith(`/employees/${employeeId}/allergies`)
   ) {
     try {
