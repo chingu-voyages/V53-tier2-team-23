@@ -77,7 +77,7 @@ function CheckEmployeeDetails() {
   const updateEmployeeAllergies = async (employeeId, changedAllergies) => {
     try {
       const response = await fetch(
-        `https://eato-meatplanner.netlify.app/.netlify/functions/employees/${employeeId}/allergies`,
+        `https://eato-meatplanner.netlify.app/.netlify/functions/employees/allergies/${employeeId}`,
         {
           method: 'PATCH',
           headers: {
