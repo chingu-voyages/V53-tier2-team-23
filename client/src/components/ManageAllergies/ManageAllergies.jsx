@@ -92,19 +92,16 @@ const selectStyles = {
   }),
 };
 
-//function ManageAllergies({employeeData}) {
-//const [employeeName, setEmployeeName] = useState(employeeData?.identity);
 function ManageAllergies() {
   const navigate = useNavigate();
   const location = useLocation();
   const employeeDataFromLocation = location.state?.employeeData || {};
+
   const { identity } = employeeDataFromLocation;
   const [employeeId, setEmployeeId] = useState('');
   const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
 
-  const [employeeName, setEmployeeName] = useState(
-    identity || 'Sebastian King'
-  );
+  const [employeeName, setEmployeeName] = useState(identity);
 
   const [selectedAllergies, setSelectedAllergies] = useState([]);
   const [allergies, setAllergies] = useState([]);

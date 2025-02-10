@@ -69,6 +69,7 @@ function CheckEmployeeDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const employeeDataFromLocation = location.state?.employeeData || {};
+  console.log(employeeDataFromLocation);
   const { employeeName, allergies, employeeId } = employeeDataFromLocation;
   const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
   const [selectedAllergies, setSelectedAllergies] = useState(allergies || []);
@@ -96,7 +97,6 @@ function CheckEmployeeDetails() {
 
   async function handleSaveAllergies(event) {
     event.preventDefault();
-    console.log(employeeId);
     await updateEmployeeAllergies(employeeId, selectedAllergies);
     setFormSubmitted(true);
   }
