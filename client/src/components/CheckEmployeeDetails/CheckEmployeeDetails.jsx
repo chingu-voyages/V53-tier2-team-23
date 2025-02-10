@@ -84,6 +84,7 @@ function CheckEmployeeDetails() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ allergies: changedAllergies }),
+          mode: 'cors',
         }
       );
 
