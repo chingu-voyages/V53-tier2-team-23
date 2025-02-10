@@ -1,4 +1,6 @@
-const DishCard = ({ item }) => {
+import PropTypes from 'prop-types';
+
+const DishCard = ({ item, getImageURL }) => {
   const ingredientCategories = {
     Mushrooms: ['Portobello Mushroom', 'Mushrooms'],
     Herbs: [
@@ -192,14 +194,6 @@ const DishCard = ({ item }) => {
     Cauliflower: '🥦',
   };
 
-  const getImageURL = (imageUrl) => {
-    const imageBasePath = 'https://res.cloudinary.com/dspxn4ees/image/upload/';
-    const imageName = imageUrl.replace('imagesPath/', '').replace('.jpg', '');
-    const imageExt = '.jpg';
-    const imageURL = `${imageBasePath}${imageName}${imageExt}`;
-    return imageURL;
-  };
-
   const getIngredientEmoji = (ingredient) => {
     for (const [category, ingredients] of Object.entries(ingredientCategories))
       if (ingredients.includes(ingredient)) {
@@ -223,11 +217,11 @@ const DishCard = ({ item }) => {
         {formatSelectedDate(item.fullDate)}
       </div>
       {!item.dish ? (
-        <div className='text-[16px] font-bold text-center h-full flex justify-center items-center border-8 border-secondary rounded-3xl'>
+        <div className='text-[36px] font-bold text-center h-[640px] flex justify-center items-center border-8 border-secondary rounded-3xl font-shantell text-gray-500 bg-gray-300'>
           No meal planned for this date
         </div>
       ) : (
-        <div className='border-8 border-secondary rounded-3xl w-full h-full mt-[0.2rem] p-2 text-center pb-4'>
+        <div className='border-8 border-secondary rounded-3xl w-full min-h-[640px] mt-[0.2rem] p-2 text-center pb-4'>
           <div className='text-primary font-semibold text-[36px] font-shantell'>
             {item.dish.dishName}
           </div>
@@ -257,6 +251,18 @@ const DishCard = ({ item }) => {
       )}
     </div>
   );
+};
+
+DishCard.propTypes = {
+  item: PropTypes.shape({
+    fullDate: PropTypes.string.isRequired,
+    dish: PropTypes.shape({
+      dishName: PropTypes.string.isRequired,
+      imageUrl: PropTypes.string.isRequired,
+      ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+      calories: PropTypes.number.isRequired,
+    }),
+  }).isRequired,
 };
 
 export default DishCard;

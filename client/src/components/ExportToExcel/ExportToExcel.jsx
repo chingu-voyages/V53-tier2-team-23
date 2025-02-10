@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ExportToExcel = ({ weekDates }) => {
   const exportToExcel = () => {
@@ -38,6 +39,20 @@ const ExportToExcel = ({ weekDates }) => {
       </button>
     </div>
   );
+};
+
+// define proptypes
+ExportToExcel.propTypes = {
+  weekDates: PropTypes.arrayOf(
+    PropTypes.shape({
+      fullDate: PropTypes.string.isRequired,
+      dish: PropTypes.shape({
+        dishName: PropTypes.string,
+        calories: PropTypes.number,
+        ingredients: PropTypes.arrayOf(PropTypes.string),
+      }),
+    })
+  ).isRequired,
 };
 
 export default ExportToExcel;
