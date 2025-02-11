@@ -48,7 +48,7 @@ const employeeSchema = new Schema({
     {
       type: String, // Store the allergy name as a string
       enum: allergen, // Restrict values to the predefined list
-      default: [],
+      default: ['no allergies'],
     },
   ],
   dietaryRestrictions: [
