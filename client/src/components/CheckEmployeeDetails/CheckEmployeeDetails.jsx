@@ -69,7 +69,7 @@ function CheckEmployeeDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const employeeDataFromLocation = location.state?.employeeData || {};
-  console.log(employeeDataFromLocation);
+
   const { employeeName, allergies, employeeId } = employeeDataFromLocation;
   const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
   const [selectedAllergies, setSelectedAllergies] = useState(allergies || []);

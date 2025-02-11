@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './ManageAllergies.module.css';
 
 const allergiesList = [
+  { value: 'no allergies', label: 'no allergies' },
   { value: 'gluten', label: 'Gluten' },
   { value: 'dairy', label: 'Dairy' },
   { value: 'egg', label: 'Egg' },
@@ -114,6 +115,9 @@ function ManageAllergies() {
   const [optionsState, setOptionsState] = useState([]);
 
   const [defaultOptions, setDefaultOptions] = useState([]);
+  const [isLoadedAllergies, setIsLoadedAllergies] = useState(true);
+
+  const isAnyAllergySelected = optionsState.some((value) => value === true);
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
@@ -121,7 +125,9 @@ function ManageAllergies() {
         const chosenEmployee = await getEmployeeByName(employeeName);
         if (chosenEmployee && chosenEmployee.employee) {
           setEmployeeId(chosenEmployee.employeeId);
-          setChosenEmployeeAllergiesList(chosenEmployee.employee.allergies);
+          if (chosenEmployee.employee.allergies.length > 0) {
+            setChosenEmployeeAllergiesList(chosenEmployee.employee.allergies);
+          }
         }
       } catch (error) {
         console.error('Error fetching employee data:', error);
@@ -204,19 +210,22 @@ function ManageAllergies() {
         })
         .filter((index) => index !== -1);
       setDefaultAllergiesListIndeces(getDefaultAllergiesListIndeces);
-    } else {
     }
   }, [chosenEmployeeAllergiesList, allergiesList]);
 
   useEffect(() => {
-    if (defaultAllergiesListIndeces.length > 0) {
+    if (defaultAllergiesListIndeces.length === 0) {
+      setOptionsState([]);
+      //setIsLoadedNoAllergies(true);
+    } else if (defaultAllergiesListIndeces.length > 0) {
       const updatedState = new Array(14).fill(false);
       defaultAllergiesListIndeces.forEach((index) => {
         updatedState[index] = true;
       });
       setOptionsState(updatedState);
+      // setIsLoadedAllergies(true);
     }
-  }, [defaultAllergiesListIndeces]);
+  }, [defaultAllergiesListIndeces, allergiesList]);
 
   // preselected options based on optionsState
   const getPreselectedOptions = () => {
@@ -252,12 +261,23 @@ function ManageAllergies() {
 
   const allergenIconURL =
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
+  useEffect(() => {
+    console.log('isAnyAllergySelected:', isAnyAllergySelected);
+    console.log(optionsState.length);
+    // if (optionsState.length > 0) {
+    //   console.log('optionsState is non-empty:', optionsState);
+    // } else {
+    //   console.log('optionsState is empty');
+    // }
+  }, [isAnyAllergySelected, optionsState.length]); // Runs whenever optionsState changes
 
-  if (optionsState.length > 0) {
+  if (optionsState.length > 0 && !isAnyAllergySelected) {
     return (
+      // {optionsState.some((value) => value === true) ? (
       <div className={`flex flex-col justify-center ${formContainer}`}>
         <h1 className={`text-[#513174] font-bold`}>
-          Check Collaborator Details
+          Check Collaborator Details (
+          {isAnyAllergySelected ? 'with allergies' : 'no allergies'})
         </h1>
         <div className={`flex flex-col gap-10 justify-center ${formContainer}`}>
           <div
@@ -304,10 +324,7 @@ function ManageAllergies() {
           <div
             className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
           >
-            <form
-              // onSubmit={handleSubmitEmployeeData}
-              className={`${formContainerForm} px-4 py-4 rounded-[10px]`}
-            >
+            <form className={`${formContainerForm} px-4 py-4 rounded-[10px]`}>
               <h2
                 className={`${formContainerTitle} text-[#513174] font-bold text-xl uppercase font-shantell`}
               >
@@ -318,7 +335,113 @@ function ManageAllergies() {
                   Allergies
                 </h4>
                 <Select
-                  defaultValue={getPreselectedOptions()}
+                  isMulti
+                  name='allergiesList'
+                  options={allergiesList}
+                  onChange={handleSelectAllergies}
+                  className='basic-multi-select'
+                  classNamePrefix='select'
+                  styles={selectStyles}
+                  getOptionLabel={(e) => getAllergyLabel(e.value)}
+                />
+                <button
+                  type='submit'
+                  id='submitButton'
+                  onClick={handleSaveEmployeeAllergies}
+                  className={`${formContainerButton}
+                  w-fit
+                  rounded-full
+                  border-none
+                  p-[10px_20px]
+                  box-border
+                  bg-yellow-400
+                  hover:bg-white
+                  text-purple-800
+                  hover:outline-2
+                  hover:outline-solid
+                  hover:outline-purple-800
+                  uppercase
+                  font-bold
+                  shadow-[0px_4px_4px_0px_#00000040]
+                  `}
+                >
+                  Preview Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (optionsState.length > 0 && isAnyAllergySelected) {
+    return (
+      // {optionsState.some((value) => value === true) ? (
+      <div className={`flex flex-col justify-center ${formContainer}`}>
+        <h1 className={`text-[#513174] font-bold`}>
+          Check Collaborator Details (
+          {isAnyAllergySelected ? 'with allergies' : 'no allergies'})
+        </h1>
+        <div className={`flex flex-col gap-10 justify-center ${formContainer}`}>
+          <div
+            className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
+          >
+            <h2
+              className={`${formContainerTitle} text-[#513174] font-bold uppercase`}
+            >
+              Collaborator Allergies Overview
+            </h2>
+            <div className='flex items-center gap-8'>
+              <span className='pl-10 py-10'>
+                <img
+                  className={profileIcon}
+                  src='https://res.cloudinary.com/dspxn4ees/image/upload/v1738656644/profil-icon.svg'
+                  alt='profile-icon'
+                />
+              </span>
+              <h4 className='text-[#513174] font-semibold capitalize mt-4'>
+                {employeeName}
+              </h4>
+            </div>
+            {
+              <ul className='flex flex-col mb-14 gap-5 px-10'>
+                {allergies &&
+                  allergies.map((allergy, index) => (
+                    <li className='flex flex-wrap gap-2' key={index}>
+                      <span>
+                        <img
+                          className={allergyIcon}
+                          src={`${allergenIconURL}${allergy.replace(
+                            ' ',
+                            '_'
+                          )}.svg`}
+                          alt={allergy}
+                        />
+                      </span>
+                      <span>{allergy}</span>
+                    </li>
+                  ))}
+              </ul>
+            }
+          </div>
+          <div
+            className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
+          >
+            <form className={`${formContainerForm} px-4 py-4 rounded-[10px]`}>
+              <h2
+                className={`${formContainerTitle} text-[#513174] font-bold text-xl uppercase font-shantell`}
+              >
+                Manage Allergies
+              </h2>
+              <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+                <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+                  Allergies
+                </h4>
+                <Select
+                  {...(isAnyAllergySelected
+                    ? { defaultValue: getPreselectedOptions() }
+                    : {})}
                   isMulti
                   name='allergiesList'
                   options={allergiesList}
@@ -359,5 +482,107 @@ function ManageAllergies() {
     );
   }
 }
+// else {
+//     return (
+//       <div className={`flex flex-col justify-center ${formContainer}`}>
+//         <h1 className={`text-[#513174] font-bold`}>
+//           Check Collaborator Details ( no allergies )
+//         </h1>
+//         <div className={`flex flex-col gap-10 justify-center ${formContainer}`}>
+//           <div
+//             className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
+//           >
+//             <h2
+//               className={`${formContainerTitle} text-[#513174] font-bold uppercase`}
+//             >
+//               Collaborator Allergies Overview
+//             </h2>
+//             <div className='flex items-center gap-8'>
+//               <span className='pl-10 py-10'>
+//                 <img
+//                   className={profileIcon}
+//                   src='https://res.cloudinary.com/dspxn4ees/image/upload/v1738656644/profil-icon.svg'
+//                   alt='profile-icon'
+//                 />
+//               </span>
+//               <h4 className='text-[#513174] font-semibold capitalize mt-4'>
+//                 {employeeName}
+//               </h4>
+//             </div>
+//             {
+//               <ul className='flex flex-col mb-14 gap-5 px-10'>
+//                 {allergies &&
+//                   allergies.map((allergy, index) => (
+//                     <li className='flex flex-wrap gap-2' key={index}>
+//                       <span>
+//                         <img
+//                           className={allergyIcon}
+//                           src={`${allergenIconURL}${allergy.replace(
+//                             ' ',
+//                             '_'
+//                           )}.svg`}
+//                           alt={allergy}
+//                         />
+//                       </span>
+//                       <span>{allergy}</span>
+//                     </li>
+//                   ))}
+//               </ul>
+//             }
+//           </div>
+//           <div
+//             className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
+//           >
+//             <form className={`${formContainerForm} px-4 py-4 rounded-[10px]`}>
+//               <h2
+//                 className={`${formContainerTitle} text-[#513174] font-bold text-xl uppercase font-shantell`}
+//               >
+//                 Manage Allergies
+//               </h2>
+//               <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+//                 <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+//                   Allergies
+//                 </h4>
+//                 <Select
+//                   isMulti
+//                   name='allergiesList'
+//                   options={allergiesList}
+//                   onChange={handleSelectAllergies}
+//                   className='basic-multi-select'
+//                   classNamePrefix='select'
+//                   styles={selectStyles}
+//                   getOptionLabel={(e) => getAllergyLabel(e.value)}
+//                 />
+//                 <button
+//                   type='submit'
+//                   id='submitButton'
+//                   onClick={handleSaveEmployeeAllergies}
+//                   className={`${formContainerButton}
+//                   w-fit
+//                   rounded-full
+//                   border-none
+//                   p-[10px_20px]
+//                   box-border
+//                   bg-yellow-400
+//                   hover:bg-white
+//                   text-purple-800
+//                   hover:outline-2
+//                   hover:outline-solid
+//                   hover:outline-purple-800
+//                   uppercase
+//                   font-bold
+//                   shadow-[0px_4px_4px_0px_#00000040]
+//                   `}
+//                 >
+//                   Preview Changes
+//                 </button>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       </div>
+//     );
+//   }
+// }
 
 export default ManageAllergies;
