@@ -215,9 +215,6 @@ exports.handler = async (event) => {
     try {
       const { allergies } = JSON.parse(body);
 
-      console.log('employeeId: ', employeeId);
-      console.log('allergies: ', allergies);
-
       if (!employeeId) {
         return {
           statusCode: 400,
@@ -233,8 +230,6 @@ exports.handler = async (event) => {
         employeeId,
         allergies
       );
-
-      console.log('updatedEmployee: ', updatedEmployee);
 
       if (!updatedEmployee) {
         return sendResponse(404, 'Employee not found.');
