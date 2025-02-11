@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const allergen = [
+  'no allergies',
   'gluten',
   'dairy',
   'egg',

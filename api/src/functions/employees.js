@@ -5,6 +5,7 @@ const Employee = require('../models/employee.models');
 
 // Validations
 const validAllergies = [
+  'no allergies'
   'gluten',
   'dairy',
   'egg',
