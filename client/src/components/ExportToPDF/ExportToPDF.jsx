@@ -24,7 +24,8 @@ const ExportToPDF = ({ weekDates, getImageURL, getIngredientEmoji }) => {
 
       const dishElement = document.createElement('div');
       dishElement.style.display = 'block';
-      dishElement.style.width = '70%';
+      dishElement.style.width = '210mm'; // a4 width
+      dishElement.style.height = '297mm'; //  a4 height
       dishElement.style.margin = '0 auto';
       dishElement.innerHTML = `
         <div style="text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 10px;">
