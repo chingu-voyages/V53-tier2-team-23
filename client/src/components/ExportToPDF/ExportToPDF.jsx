@@ -1,80 +1,127 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import PropTypes from 'prop-types';
 
-const ExportToPDF = ({ weekDates }) => {
+const ExportToPDF = ({ weekDates, getImageURL, getIngredientEmoji }) => {
   const exportToPDF = () => {
     const pdf = new jsPDF('p', 'mm', 'a4');
+    let hasDishes = false;
+    let pageIndex = 0;
 
-    weekDates.forEach((item, index) => {
+    const processDish = (item, index) => {
       const dishExists = item.dish && item.dish.dishName;
+      if (!dishExists) return;
+
+      hasDishes = true;
+
       const dateString = new Date(item.fullDate).toLocaleDateString('en-US', {
-        weekday: 'long', month: 'long', day: 'numeric'
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
       });
 
+      const imageURL = getImageURL(item.dish.imageUrl || null);
+
       const dishElement = document.createElement('div');
+      dishElement.style.display = 'block';
+      dishElement.style.width = '210mm'; // a4 width
+      dishElement.style.height = '297mm'; //  a4 height
+      dishElement.style.margin = '0 auto';
       dishElement.innerHTML = `
-        <div class="text-center text-primary font-bold text-[20px] mt-4">
+        <div style="text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 10px;">
           ${dateString}
         </div>
-        ${dishExists ? `
-          <div class="border-[1px] border-primary rounded-3xl w-full mt-[0.9rem] p-2 text-center pb-4">
-            <div class="text-primary font-bold text-[36px] font-shantell">
-              ${item.dish.dishName}
-            </div>
-            <div class="mt-2 h-[217px] mx-1">
-              <img src="${item.dish.imageUrl}" alt="${item.dish.dishName}" onError="this.src='https://placehold.co/400'" class="rounded-xl border-[3px] border-primary object-cover h-full w-full" />
-            </div>
-            <div class="mt-4 text-left mx-5">
-              <h2 class="font-bold text-[20px]">Ingredients</h2>
-              <div class="grid grid-cols-2 gap-5 mt-6">
-                ${item.dish.ingredients.map(ingredient => `
-                  <div class="flex items-center gap-2">
-                    <span class="text-[20px]">${ingredient}</span>
-                  </div>
-                `).join('')}
-              </div>
-            </div>
-            <div class="mt-7 flex justify-start mx-3">
-              <div class="bg-secondary text-black font-bold py-[0.5rem] px-3 inline-block">
-                Calories: ${item.dish.calories}
-              </div>
+        <div style="border: 8px solid #FFC107; border-radius: 20px; width: 100%; min-height: 640px; padding: 16px; text-align: center;">
+          <h2 style="color: #4A148C; font-size: 36px; font-family: 'Shantell Sans', cursive; font-weight: 600;">
+            ${item.dish.dishName}
+          </h2>
+          <div style="margin-top: 8px; margin-left: 4px; margin-right: 4px;">
+            <img src="${imageURL}" alt="${item.dish.dishName}" 
+              onError="this.src='https://placehold.co/400'"
+              class="rounded-xl border-[3px] border-primary object-cover h-full w-full" />
+          </div>
+          <div style="margin-top: 16px; text-align: left; margin-left: 20px;">
+            <h2 style="font-weight: bold; font-size: 20px; color: black;">Ingredients</h2>
+            <ul style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 24px; list-style: none; padding: 0;">
+              ${item.dish.ingredients
+                .map(
+                  (ingredient) =>
+                    `<li style="display: flex; align-items: center; gap: 8px; font-size: 16px;">${getIngredientEmoji(
+                      ingredient
+                    )} ${ingredient}</li>`
+                )
+                .join('')}
+            </ul>
+          </div>
+          <div style="margin-top: 28px; display: flex; justify-content: start; margin-left: 12px;">
+            <div style="background: #FFC107; color: black; font-weight: bold; padding: 0px 10px 15px; display: inline-block;">
+              Calories: ${item.dish.calories}
             </div>
           </div>
-        ` : `
-          <div class="text-center text-primary font-bold text-[20px] mt-4">
-            No dish assigned for this day.
-          </div>
-        `}`;
+        </div>`;
 
       document.body.appendChild(dishElement);
 
-      html2canvas(dishElement, { scale: 2 }).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+      html2canvas(dishElement, { scale: 2, useCORS: true })
+        .then((canvas) => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdfWidth = pdf.internal.pageSize.getWidth();
 
-        if (index > 0) {
-          pdf.addPage();
-        }
+          const imgWidth = pdfWidth * 0.8; // Makes sure the bordered div is well positioned
+          const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          const x = (pdfWidth - imgWidth) / 2; // Center horizontally
+          const y = 10; // Keeps natural vertical position
 
-        if (index === weekDates.length - 1) {
-          pdf.save('WeeklyMenu.pdf');
-        }
+          if (pageIndex > 0) {
+            pdf.addPage();
+          }
 
-        document.body.removeChild(dishElement);
-      }).catch((error) => {
-        console.error('Error generating PDF:', error);
-      });
-    });
+          pdf.addImage(imgData, 'PNG', x, y, imgWidth, imgHeight);
+          pageIndex++;
+
+          if (index === weekDates.length - 1 && hasDishes) {
+            pdf.save('WeeklyMenu.pdf');
+          }
+
+          document.body.removeChild(dishElement);
+        })
+        .catch((error) => {
+          console.error('Error generating PDF:', error);
+        });
+    };
+
+    weekDates.forEach((item, index) => processDish(item, index));
+
+    if (!hasDishes) {
+      alert('No dishes assigned this week. PDF will not be generated.');
+    }
   };
 
   return (
-    <button onClick={exportToPDF} className="bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit">
-      Export to PDF
+    <button
+      onClick={exportToPDF}
+      className='border-[1px] border-primary text-[24px] h-[45px] w-[207px] bg-white'
+    >
+      PDF
     </button>
   );
+};
+
+ExportToPDF.propTypes = {
+  weekDates: PropTypes.arrayOf(
+    PropTypes.shape({
+      fullDate: PropTypes.string.isRequired,
+      dish: PropTypes.shape({
+        dishName: PropTypes.string.isRequired,
+        imageUrl: PropTypes.string,
+        ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+        calories: PropTypes.number.isRequired,
+      }),
+    })
+  ).isRequired,
+  getImageURL: PropTypes.func.isRequired,
+  getIngredientEmoji: PropTypes.func.isRequired,
 };
 
 export default ExportToPDF;

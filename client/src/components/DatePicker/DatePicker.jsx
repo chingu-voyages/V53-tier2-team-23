@@ -205,17 +205,25 @@ export default function DatePicker({
       } */
 
       const filteredDishesRes = await filteredDishes.json();
-
-      // to extract only the _id of each dish
-      const dishIds = filteredDishesRes.data.dishes.map((dish) => dish._id);
+      const dishIds = filteredDishesRes.data.dishes.map((dish) => dish._id); // to extract only the _id of each dish
+      const usedDishes = new Set(); // to keep track of used dishes
 
       // function to get a random dish
       const getRandomDish = () => {
         if (dishIds.length === 0) {
           return handleNotice('No dishes available');
         }
-        const randomIndex = Math.floor(Math.random() * dishIds.length);
-        return dishIds[randomIndex];
+
+        let randomDish;
+
+        do {
+          const randomIndex = Math.floor(Math.random() * dishIds.length);
+          randomDish = dishIds[randomIndex];
+        } while (usedDishes.has(randomDish));
+
+        usedDishes.add(randomDish);
+
+        return randomDish;
       };
 
       // to assign random dishes but null on days off

@@ -6,6 +6,7 @@ import Management from './components/Management/Management';
 import DatePickerContainer from './components/DatePicker/DatePickerContainer';
 import WeeklyMenu from './components/WeeklyMenu/WeeklyMenu';
 import CreateEmployee from './components/CreateEmployee/CreateEmployee';
+import ImageTest from './components/ImageTest/ImageTest';
 import Footer from './components/Footer/Footer';
 import './index.css';
 import { fr } from 'date-fns/locale';
@@ -21,6 +22,8 @@ function App() {
         <Route path='/calendar' element={<DatePickerContainer />} />
         <Route path='/menu' element={<WeeklyMenu />} />
         <Route path='/create-employee' element={<CreateEmployee />} />
+        {/* for test only */}
+        <Route path='/image-test' element={<ImageTest />} />
       </Routes>
       <Footer />
     </Router>

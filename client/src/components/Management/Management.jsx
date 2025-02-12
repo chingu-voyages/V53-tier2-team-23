@@ -53,7 +53,7 @@ function Management() {
 
   return (
     <div className='custom-bg md:h-[995px] lg:h-[907px]'>
-      <div className='relative z-10 flex flex-col items-center gap-10 md:mt-3 lg:mt-0 '>
+      <div className='relative z-10 flex flex-col items-center gap-10 md:mt-1 lg:mt-0 '>
         <h1 className='font-shantell text-[24px] sm:hidden'>
           Welcome {username}!
         </h1>
