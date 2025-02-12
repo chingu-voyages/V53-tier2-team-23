@@ -1,7 +1,8 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import PropTypes from 'prop-types';
 
-const ExportToPDF = ({ weekDates, getImageURL }) => {
+const ExportToPDF = ({ weekDates, getImageURL, getIngredientEmoji }) => {
   const exportToPDF = () => {
     const pdf = new jsPDF('p', 'mm', 'a4');
     let hasDishes = false;
@@ -23,37 +24,38 @@ const ExportToPDF = ({ weekDates, getImageURL }) => {
 
       const dishElement = document.createElement('div');
       dishElement.style.display = 'block';
-      dishElement.style.width = '70%'; // Ensures content is centered within a reasonable width
-      dishElement.style.margin = '0 auto'; // Horizontally centers the container
+      dishElement.style.width = '70%';
+      dishElement.style.margin = '0 auto';
       dishElement.innerHTML = `
-        <div class='text-center text-[32px] font-bold pb-[10px]'>
+        <div style="text-align: center; font-weight: bold; font-size: 18px; margin-bottom: 10px;">
           ${dateString}
         </div>
-        <div class='border-8 border-secondary rounded-3xl p-4'>
-          <div class="text-primary font-bold text-[40px] font-shantell text-center pb-5">
+        <div style="border: 8px solid #FFC107; border-radius: 20px; width: 100%; min-height: 640px; padding: 16px; text-align: center;">
+          <h2 style="color: #4A148C; font-size: 36px; font-family: 'Shantell Sans', cursive; font-weight: 600;">
             ${item.dish.dishName}
-          </div>
-          <div class="mt-2 mx-1">
+          </h2>
+          <div style="margin-top: 8px; margin-left: 4px; margin-right: 4px;">
             <img src="${imageURL}" alt="${item.dish.dishName}" 
               onError="this.src='https://placehold.co/400'"
               class="rounded-xl border-[3px] border-primary object-cover h-full w-full" />
           </div>
-          <div class="mb-4 mx-5 text-left">
-            <h2 class="font-bold text-[28px]">Ingredients</h2>
-            <div class="grid grid-cols-2 gap-5 mt-6">
+          <div style="margin-top: 16px; text-align: left; margin-left: 20px;">
+            <h2 style="font-weight: bold; font-size: 20px; color: black;">Ingredients</h2>
+            <ul style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 24px; list-style: none; padding: 0;">
               ${item.dish.ingredients
                 .map(
-                  (ingredient) => `
-                  <div class="flex items-center gap-2">
-                    <span class="text-[20px]">${ingredient}</span>
-                  </div>
-                `
+                  (ingredient) =>
+                    `<li style="display: flex; align-items: center; gap: 8px; font-size: 16px;">${getIngredientEmoji(
+                      ingredient
+                    )} ${ingredient}</li>`
                 )
                 .join('')}
-            </div>
+            </ul>
           </div>
-          <div style="background: #FFC107; color: black; font-weight: bold; padding: 0px 20px 10px; display: inline-block; margin-left: 20px;">
-            Calories: ${item.dish.calories}
+          <div style="margin-top: 28px; display: flex; justify-content: start; margin-left: 12px;">
+            <div style="background: #FFC107; color: black; font-weight: bold; padding: 0px 10px 15px; display: inline-block;">
+              Calories: ${item.dish.calories}
+            </div>
           </div>
         </div>`;
 
@@ -103,6 +105,22 @@ const ExportToPDF = ({ weekDates, getImageURL }) => {
       PDF
     </button>
   );
+};
+
+ExportToPDF.propTypes = {
+  weekDates: PropTypes.arrayOf(
+    PropTypes.shape({
+      fullDate: PropTypes.string.isRequired,
+      dish: PropTypes.shape({
+        dishName: PropTypes.string.isRequired,
+        imageUrl: PropTypes.string,
+        ingredients: PropTypes.arrayOf(PropTypes.string).isRequired,
+        calories: PropTypes.number.isRequired,
+      }),
+    })
+  ).isRequired,
+  getImageURL: PropTypes.func.isRequired,
+  getIngredientEmoji: PropTypes.func.isRequired,
 };
 
 export default ExportToPDF;

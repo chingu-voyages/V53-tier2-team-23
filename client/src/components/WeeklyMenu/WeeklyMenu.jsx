@@ -23,6 +23,199 @@ function WeeklyMenu() {
   const dishSwiperRef = useRef(null);
   const dateSwiperRef = useRef(null);
 
+  const ingredientCategories = {
+    Mushrooms: ['Portobello Mushroom', 'Mushrooms'],
+    Herbs: [
+      'Chives',
+      'Cilantro',
+      'Basil',
+      'Thyme',
+      'Coriander',
+      'Rosemary',
+      'Basil Pesto',
+      'Parsley',
+      'Wasabi',
+    ],
+    Green: [
+      'Spinach',
+      'Celery',
+      'Zucchini',
+      'Lettuce',
+      'Asparagus',
+      'Cabbage',
+      'Peas',
+      'Romaine Lettuce',
+    ],
+    Cheese: [
+      'Mozzarella',
+      'Ricotta Cheese',
+      'Mozzarella Cheese',
+      'Vegan Cheese',
+      'Parmesan Cheese',
+      'Parmesan',
+      'Cheese',
+      'Cheddar Cheese',
+      'Vegan Cheese Sauce',
+      'Blue Cheese',
+    ],
+    Garlic: ['Garlic', 'Garlic Powder'],
+    Olives: ['Olive Oil', 'Olives'],
+    Rice: ['Quinoa', 'Arborio Rice', 'Rice'],
+    Avocados: ['Avocado', 'Guacamole'],
+    Nori: ['Nori'],
+    Flour: ['Flour', 'Almond Flour', 'Gluten-Free Oats', 'Gluten-Free Flour'],
+    Chocolate: ['Cocoa Powder', 'Chocolate Chips'],
+    Milk: ['Almond Milk', 'Cream', 'Butter', 'Heavy Cream', 'Milk'],
+    Others: [
+      'Sugar',
+      'Baking Powder',
+      'Soy Sauce',
+      'Salt',
+      'Curry Powder',
+      'Taco Seasoning',
+      'Cinnamon',
+      'Nutritional Yeast',
+      'Turmeric',
+      'Cumin',
+    ],
+    Dressing: [
+      'Hummus',
+      'Caesar Dressing',
+      'Mayo',
+      'Gluten-Free Soy Sauce',
+      'Balsamic Vinegar',
+      'Maple Syrup',
+      'Tamari Sauce',
+      'Vegan Caesar Dressing',
+    ],
+    Seafood: [
+      'Clams',
+      'Tuna',
+      'Shrimp',
+      'Salmon',
+      'White Fish',
+      'Cod',
+      'Lobster',
+      'Mussels',
+    ],
+    Potatoes: ['Potatoes', 'Mashed Potatoes'],
+    Onions: ['Onion', 'Shallots'],
+    Meat: [
+      'Chicken Breast',
+      'Beef',
+      'Ground Chicken',
+      'Pepperoni',
+      'Ground Beef',
+      'Ground Turkey',
+      'Turkey',
+      'Chicken',
+      'Chicken Thighs',
+      'Bacon',
+      'Beef Strips',
+    ],
+    Tomatoes: [
+      'Tomato',
+      'Tomato Sauce',
+      'Tomato Sauce',
+      'Tomatoes',
+      'Salsa',
+      'Cherry Tomatoes',
+    ],
+    Cucumber: ['Cucumber', 'Pickles'],
+    Broth: ['Broth', 'Vegetable Broth'],
+    Peppers: ['Bell Pepper', 'Bell Peppers'],
+    Chilli: ['Chili Powder', 'Paprika'],
+    Bread: [
+      'Whole Wheat Bun',
+      'Breadcrumbs',
+      'Gluten-Free Pizza Dough',
+      'Croutons',
+      'Whole Wheat Wrap',
+      'Gluten-Free Pizza Crust',
+      'Pizza Dough',
+      'Burger Bun',
+      'Vegan Bun',
+      'Brioche Bun',
+      'Bread',
+      'Pastry',
+      'Gluten-Free Breadcrumbs',
+    ],
+    Carrots: ['Carrots'],
+    Noodles: [
+      'Gluten-Free Pasta',
+      'Fettuccine',
+      'Linguine',
+      'Lasagna Noodles',
+      'Spaghetti',
+      'Lasagna Sheets',
+      'Spaghetti Squash',
+      'Pasta',
+      'Rice Noodles',
+    ],
+    Citrus: ['Lemon Juice', 'Lime Juice', 'Lemon', 'Lemon Dressing', 'Lime'],
+    Tacos: ['Corn Tortillas', 'Taco Shells', 'Flour Tortilla'],
+    Oil: ['Oil'],
+    wine: ['White Wine'],
+    apples: ['Apples'],
+    Nuts: ['Tahini', 'Sesame Seeds', 'Pine Nuts', 'Cashews'],
+    Bean: ['Tofu', 'Chickpeas', 'Black Beans', 'Falafel', 'Lentils'],
+    Peanuts: ['Peanuts'],
+    Egg: ['Egg', 'Eggs'],
+    Coconut: [
+      'Coconut Oil',
+      'Coconut Milk',
+      'Coconut Aminos',
+      'Coconut Flakes',
+    ],
+    Eggplants: ['Eggplant'],
+    'Sweet Potato': ['Sweet Potatoes'],
+    Ginger: ['Ginger'],
+    Cauliflower: ['Cauliflower Rice', 'Broccoli', 'Cauliflower'],
+  };
+
+  const ingredientEmojis = {
+    Mushrooms: '🍄',
+    Green: '🥬',
+    Herbs: '🌿',
+    Cheese: '🧀',
+    Garlic: '🧄',
+    Olives: '🫒',
+    Rice: '🍚',
+    Avocados: '🥑',
+    Nori: '🍣',
+    Flour: '🌾',
+    Chocolate: '🍫',
+    Milk: '🥛',
+    Others: '🧂',
+    Dressing: '🫙',
+    Seafood: '🐟',
+    Potatoes: '🥔',
+    Onions: '🧅',
+    Meat: '🥩',
+    Tomatoes: '🍅',
+    Cucumber: '🥒',
+    Broth: '🍲',
+    Peppers: '🫑',
+    Chilli: '🌶️',
+    Bread: '🍞',
+    Carrots: '🥕',
+    Noodles: '🍝',
+    Citrus: '🍋',
+    Tacos: '🌮',
+    Oil: '🛢️',
+    wine: '🍷',
+    apples: '🍎',
+    Nuts: '🌰',
+    Bean: '🫘',
+    Peanuts: '🥜',
+    Egg: '🥚',
+    Coconut: '🥥',
+    Eggplants: '🍆',
+    'Sweet Potato': '🍠',
+    Ginger: '🫚',
+    Cauliflower: '🥦',
+  };
+
   // to fetch weekly menu
   const fetchWeeklyMenu = async (weekStart) => {
     try {
@@ -82,6 +275,14 @@ function WeeklyMenu() {
 
   // to pass as props to EditMealModal to refresh the menu after updating
   const refreshMenu = () => fetchMenuForDate(weekStartDate);
+
+  const getIngredientEmoji = (ingredient) => {
+    for (const [category, ingredients] of Object.entries(ingredientCategories))
+      if (ingredients.includes(ingredient)) {
+        return ingredientEmojis[category] || '😊';
+      }
+    return '🤭';
+  };
 
   // for previous and next week button
   const currentWeekStart = getWeekStartDate(new Date());
@@ -265,7 +466,11 @@ function WeeklyMenu() {
             >
               {weekDates.map((item) => (
                 <SwiperSlide key={item.fullDate}>
-                  <DishCard item={item} getImageURL={getImageURL} />
+                  <DishCard
+                    item={item}
+                    getImageURL={getImageURL}
+                    getIngredientEmoji={getIngredientEmoji}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -298,7 +503,11 @@ function WeeklyMenu() {
               {weekDates.map((item) => (
                 <SwiperSlide key={item.fullDate}>
                   <div className='w-[430px] h-full'>
-                    <DishCard item={item} getImageURL={getImageURL} />
+                    <DishCard
+                      item={item}
+                      getImageURL={getImageURL}
+                      getIngredientEmoji={getIngredientEmoji}
+                    />
                   </div>
                 </SwiperSlide>
               ))}
@@ -328,7 +537,11 @@ function WeeklyMenu() {
                 Export Menu <FaArrowDown />
               </p>
               <div className='hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] left-2 right-0 z-20'>
-                <ExportToPDF weekDates={weekDates} getImageURL={getImageURL} />
+                <ExportToPDF
+                  weekDates={weekDates}
+                  getImageURL={getImageURL}
+                  getIngredientEmoji={getIngredientEmoji}
+                />
                 <ExportToExcel weekDates={weekDates} />
               </div>
             </div>
