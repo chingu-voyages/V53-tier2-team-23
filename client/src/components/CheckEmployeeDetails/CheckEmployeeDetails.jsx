@@ -68,11 +68,25 @@ const selectStyles = {
 function CheckEmployeeDetails() {
   const navigate = useNavigate();
   const location = useLocation();
-  const employeeDataFromLocation = location.state?.employeeData || {};
 
-  const { employeeName, allergies, employeeId } = employeeDataFromLocation;
-  const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
-  const [selectedAllergies, setSelectedAllergies] = useState(allergies || []);
+  const storedEmployee = sessionStorage.getItem('employeeData');
+  const storedOptionsState = sessionStorage.getItem('optionsState');
+  const initialEmployeeData =
+    location.state?.employeeData ||
+    (storedEmployee ? JSON.parse(storedEmployee) : {});
+  const initialOptionsState = storedOptionsState
+    ? JSON.parse(storedOptionsState)
+    : [];
+
+  const [employeeData, setEmployeeData] = useState(initialEmployeeData);
+  const [optionsState, setOptionsState] = useState(initialOptionsState);
+  const [selectedAllergies, setSelectedAllergies] = useState(
+    initialEmployeeData.allergies || []
+  );
+  // const employeeDataFromLocation = location.state?.employeeData || {};
+  const { identity, allergies, employeeId } = initialEmployeeData;
+  // const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
+  // const [selectedAllergies, setSelectedAllergies] = useState(allergies || []);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
   const updateEmployeeAllergies = async (employeeId, changedAllergies) => {
@@ -101,13 +115,35 @@ function CheckEmployeeDetails() {
     setFormSubmitted(true);
   }
 
+  // // Update state when receiving new data
+  // useEffect(() => {
+  //   // Update employeeData and selectedAllergies when navigating back
+  //   if (location.state?.employeeData) {
+  //     setEmployeeData(location.state.employeeData);
+  //     setSelectedAllergies(location.state.employeeData.allergies || []);
+  //   }
+  // }, [location.state?.employeeData]);
+  useEffect(() => {
+    // Update state with sessionStorage values on component mount if data exists
+    const storedEmployeeData = sessionStorage.getItem('employeeData');
+    const storedOptionsState = sessionStorage.getItem('optionsState');
+
+    console.log(storedEmployeeData);
+
+    if (storedEmployeeData) {
+      setEmployeeData(JSON.parse(storedEmployeeData));
+    }
+
+    if (storedOptionsState) {
+      setOptionsState(JSON.parse(storedOptionsState));
+    }
+  }, [location.state]); // Re-fetch from sessionStorage if location state changes
+
   const handleEditAllergies = () => {
+    sessionStorage.setItem('clearSession', 'false');
     navigate('/manage-allergies', {
       state: {
-        employeeData: {
-          ...employeeData,
-          allergies: selectedAllergies,
-        },
+        employeeData: { ...employeeData, allergies: selectedAllergies },
       },
     });
   };
@@ -117,7 +153,7 @@ function CheckEmployeeDetails() {
 
   return (
     <div className={`flex flex-col justify-center ${formContainer}`}>
-      <h1 className={`text-[#513174] font-bold`}>Check Collaborator Details</h1>
+      <h1 className={`text-[#513174] font-bold`}>Check Employee Details</h1>
       <div className={`flex flex-col gap-10 justify-center ${formContainer}`}>
         <div
           className={`shadow-md border-[#fdd053] px-4 py-3 border-4 rounded-[10px]`}
@@ -125,7 +161,7 @@ function CheckEmployeeDetails() {
           <h2
             className={`${formContainerTitle} text-[#513174] font-bold uppercase`}
           >
-            Collaborator Allergies Overview
+            Employee Allergies Overview
           </h2>
           <div className='flex items-center gap-8'>
             <span className='pl-10 py-10'>
@@ -136,7 +172,7 @@ function CheckEmployeeDetails() {
               />
             </span>
             <h4 className='text-[#513174] font-semibold capitalize mt-4'>
-              {employeeName}
+              {identity}
             </h4>
           </div>
           <AddedAllergiesNotification

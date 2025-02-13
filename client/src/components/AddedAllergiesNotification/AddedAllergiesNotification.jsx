@@ -1,25 +1,34 @@
 import React from 'react';
 
 function generateAllergyMessage(allergies) {
-  if (allergies.length === 0) {
+  const lastAllergyRemovedArray = allergies.slice(0, -1);
+  const lastAllergyIndex = allergies[allergies.length - 1];
+
+  const oneAllergy = allergies.map((allergy) =>
+    typeof allergy === 'object' ? allergy.value : allergy
+  );
+
+  const lastAllergyRemovedList = lastAllergyRemovedArray
+    .map((allergy) => (typeof allergy === 'object' ? allergy.value : allergy))
+    .join(', ');
+
+  const lastAllergy =
+    typeof lastAllergyIndex === 'object'
+      ? lastAllergyIndex.value
+      : lastAllergyIndex;
+
+  const noAllergies = allergies.some(
+    (allergy) =>
+      (typeof allergy === 'object' ? allergy.value : allergy) === 'no allergies'
+  );
+
+  if (allergies.length === 1 && noAllergies) {
     return `no allergies have been added`;
-  } else if (allergies.length === 1) {
-    return `${allergies} has been added`;
-  } else if (allergies.length > 1) {
-    const lastAllergyRemovedArray = allergies.slice(0, -1);
-    const lastAllergyIndex = allergies[allergies.length - 1];
-
-    const lastAllergyRemovedList = lastAllergyRemovedArray
-      .map((allergy) => (typeof allergy === 'object' ? allergy.value : allergy))
-      .join(', ');
-
-    const lastAllergy =
-      typeof lastAllergyIndex === 'object'
-        ? lastAllergyIndex.value
-        : lastAllergyIndex;
-    return `${lastAllergyRemovedList} and ${lastAllergy} have been added`;
+  } else if (allergies.length === 1 && !noAllergies) {
+    return `${oneAllergy} has been added`;
   }
-  return '';
+
+  return `${lastAllergyRemovedList} and ${lastAllergy} have been added`;
 }
 
 function AddedAllergiesNotification({ allergies }) {
