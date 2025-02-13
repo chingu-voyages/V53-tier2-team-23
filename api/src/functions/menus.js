@@ -107,11 +107,11 @@ exports.handler = async (event) => {
   // Edit menu (PUT)
   if (httpMethod === 'PUT' && path.endsWith('/menus')) {
     try {
-      const { weekStartDate, date, dish } = JSON.parse(body);
+      const { weekStartDate, updates } = JSON.parse(body);
 
       // Validate input
-      if (!weekStartDate || !date) {
-        return sendResponse(400, 'weekStartDate and date are required.');
+      if (!weekStartDate || !Array.isArray(updates) || updates.length === 0) {
+        return sendResponse(400, 'weekStartDate and updates are required.');
       }
 
       const menu = await Menus.findOne({
@@ -119,44 +119,53 @@ exports.handler = async (event) => {
       });
 
       if (!menu) {
-        return sendResponse(404, 'Menu not found for the given weekStartDate');
+        return sendResponse(404, 'Menu not found for the given weekStartDate.');
       }
 
-      // Find the specific day to update
-      const dayToUpdate = menu.days.find(
-        (day) =>
-          new Date(day.date).toISOString() === new Date(date).toISOString()
-      );
+      let assignedDishes = new Set();
+      let nullDishCount = 0;
 
-      if (!dayToUpdate) {
-        return sendResponse(404, `No day found for the date: ${date}`);
-      }
+      menu.days.forEach((day) => {
+        if (day.dish) assignedDishes.add(day.dish.toString());
+        else nullDishCount++;
+      });
 
-      if (dish) {
-        const dishExists = await Dishes.findById(dish);
-        if (!dishExists) {
-          return sendResponse(400, `Dish with ID ${dish} does not exist.`);
-        }
-
-        const isDishAlreadyAssigned = menu.days.some(
-          (day) => day.dish && day.dish.toString() === dish
+      for (const { date, dish } of updates) {
+        const dayToUpdate = menu.days.find(
+          (day) =>
+            new Date(day.date).toISOString() === new Date(date).toISOString()
         );
 
-        if (isDishAlreadyAssigned) {
-          console.log(`Dish with ID ${dish} is already assigned in this week.`);
-          return sendResponse(
-            400,
-            `Duplicate dish found. Each dish can only be used once per week.`
-          );
+        if (!dayToUpdate) {
+          return sendResponse(404, `No day found for the date: ${date}`);
         }
-      } else {
-        const nullDishCount = menu.days.filter((day) => !day.dish).length;
-        if (nullDishCount >= 2) {
-          return sendResponse(400, 'Only 2 days off are allowed per week.');
-        }
-      }
 
-      dayToUpdate.dish = dish || null;
+        if (dish) {
+          const dishExists = await Dishes.findById(dish);
+          if (!dishExists) {
+            return sendResponse(400, `Dish with ID ${dish} does not exist.`);
+          }
+
+          if (assignedDishes.has(dish)) {
+            return sendResponse(
+              400,
+              `Duplicate dish found. Each dish can only be used once per week.`
+            );
+          }
+
+          assignedDishes.add(dish);
+        } else {
+          if (nullDishCount >= 2) {
+            return sendResponse(
+              400,
+              `Maximum of 2 'Day Off' allowed per week.`
+            );
+          }
+          nullDishCount++;
+        }
+
+        dayToUpdate.dish = dish || null;
+      }
 
       await menu.save();
       const updatedMenu = await Menus.findOne({
@@ -165,7 +174,7 @@ exports.handler = async (event) => {
 
       return sendResponse(200, 'Menu updated successfully', updatedMenu);
     } catch (error) {
-      return handleError(error, 'updating specific day');
+      return handleError(error, 'updating menu');
     }
   }
 
