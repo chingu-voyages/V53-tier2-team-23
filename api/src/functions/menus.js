@@ -74,7 +74,10 @@ exports.handler = async (event) => {
       });
 
       if (existingMenu) {
-        return sendResponse(409, `A menu already exists for the week starting on ${weekStartDate}.`)
+        return sendResponse(
+          409,
+          `A menu already exists for the week starting on ${weekStartDate}.`
+        );
       }
 
       for (const day of days) {
@@ -133,6 +136,23 @@ exports.handler = async (event) => {
         const dishExists = await Dishes.findById(dish);
         if (!dishExists) {
           return sendResponse(400, `Dish with ID ${dish} does not exist.`);
+        }
+
+        const isDishAlreadyAssigned = menu.days.some(
+          (day) => day.dish && day.dish.toString() === dish
+        );
+
+        if (isDishAlreadyAssigned) {
+          console.log(`Dish with ID ${dish} is already assigned in this week.`);
+          return sendResponse(
+            400,
+            `Duplicate dish found. Each dish can only be used once per week.`
+          );
+        }
+      } else {
+        const nullDishCount = menu.days.filter((day) => !day.dish).length;
+        if (nullDishCount >= 2) {
+          return sendResponse(400, 'Only 2 days off are allowed per week.');
         }
       }
 
