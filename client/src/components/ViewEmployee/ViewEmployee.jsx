@@ -36,16 +36,22 @@ function ViewEmployee() {
   const [employeeName, setEmployeeName] = useState(identity);
   const [allergies, setAllergies] = useState(selectedAllergies || []);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [navigateManagement, setNavigateManagement] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(navigateManagement);
     if (formSubmitted) {
       setTimeout(() => {
-        setFormSubmitted(false);
-        navigate('/management');
+        setNavigateManagement(true);
       }, 3000);
     }
   }, [formSubmitted]);
+
+  function handleNavigateManagement() {
+    setFormSubmitted(false);
+    navigate('/management');
+  }
 
   async function handleCreateEmployee(identity, selectedAllergies) {
     const response = await fetch(
@@ -121,13 +127,13 @@ function ViewEmployee() {
           onSubmit={handleSubmitEmployeeData}
           className={`${formContainerForm} px-4 py-4 rounded-[10px]`}
         >
-          {formSubmitted ? (
+          {formSubmitted && (
             <CreateEmployeeNotification employeeData={employeeData} />
-          ) : (
-            <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+          )}
+          <div className='buttons-container flex flex-col m-0.5 flex-wrap'>
+            {navigateManagement && (
               <button
-                type='submit'
-                id='submitButton'
+                onClick={handleNavigateManagement}
                 className={`${formContainerButton}
                 w-fit
                 rounded-full
@@ -145,10 +151,32 @@ function ViewEmployee() {
                 shadow-md
                 `}
               >
-                Save Changes
+                Go to Management
               </button>
-            </div>
-          )}
+            )}
+            <button
+              type='submit'
+              id='submitButton'
+              className={`${formContainerButton}
+                w-fit
+                rounded-full
+                border-none
+                p-[10px_20px]
+                box-border
+                bg-yellow-400
+                hover:bg-white
+                text-purple-800
+                hover:border-2
+                hover:border-solid
+                hover:border-purple-800
+                uppercase
+                font-bold
+                shadow-md
+                `}
+            >
+              Save Changes
+            </button>
+          </div>
         </form>
       </div>
     </div>

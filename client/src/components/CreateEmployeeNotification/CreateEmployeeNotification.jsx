@@ -1,7 +1,6 @@
 import React from 'react';
 
 function CreateEmployeeNotification({ employeeData }) {
-  console.log(employeeData);
   return (
     <div className={`flex flex-row items-center justify-center flex-wrap`}>
       <p className='text-[#0DB14B] font-poppins'>
