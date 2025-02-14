@@ -115,20 +115,10 @@ function CheckEmployeeDetails() {
     setFormSubmitted(true);
   }
 
-  // // Update state when receiving new data
-  // useEffect(() => {
-  //   // Update employeeData and selectedAllergies when navigating back
-  //   if (location.state?.employeeData) {
-  //     setEmployeeData(location.state.employeeData);
-  //     setSelectedAllergies(location.state.employeeData.allergies || []);
-  //   }
-  // }, [location.state?.employeeData]);
   useEffect(() => {
     // Update state with sessionStorage values on component mount if data exists
     const storedEmployeeData = sessionStorage.getItem('employeeData');
     const storedOptionsState = sessionStorage.getItem('optionsState');
-
-    console.log(storedEmployeeData);
 
     if (storedEmployeeData) {
       setEmployeeData(JSON.parse(storedEmployeeData));

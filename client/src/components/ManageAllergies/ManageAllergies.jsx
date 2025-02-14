@@ -372,16 +372,6 @@ function ManageAllergies() {
   const allergenIconURL =
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
 
-  // useEffect(() => {
-  //   console.log('isAnyAllergySelected:', isAnyAllergySelected);
-  //   console.log(optionsState.length);
-  //   // if (optionsState.length > 0) {
-  //   //   console.log('optionsState is non-empty:', optionsState);
-  //   // } else {
-  //   //   console.log('optionsState is empty');
-  //   // }
-  // }, [isAnyAllergySelected, optionsState.length]); // Runs whenever optionsState changes
-
   if (optionsState.length > 0 && isAnyAllergySelected) {
     return (
       // {optionsState.some((value) => value === true) ? (
