@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function Management() {
-  const [buttonText, setButtonText] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false); // for employees dropdown
+  const [buttonText, setButtonText] = useState(''); // for button "generate" or "view" text
+  const [showDropdown, setShowDropdown] = useState(false);
   const [employees, setEmployees] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // for search funtion
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const { username } = location.state || {};
@@ -38,10 +38,12 @@ function Management() {
         if (responseData.data) {
           setEmployees(responseData.data);
         } else {
-          console.error('Unexpected API response format:', responseData);
+          alert('Unexpected API response format');
+          // console.error('Unexpected API response format:', responseData);
         }
       } catch (error) {
-        console.error('Error fetching employees: ', error);
+        alert('Error fetching employees');
+        // console.error('Error fetching employees: ', error);
       }
     };
     fetchEmployees();

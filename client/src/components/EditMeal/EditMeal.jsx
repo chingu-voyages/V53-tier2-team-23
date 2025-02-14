@@ -30,10 +30,12 @@ const EditMealModal = ({
         if (responseData?.data?.dishes) {
           setFilterDishes(responseData.data.dishes);
         } else {
-          console.error('Unexpected API error:', responseData);
+          alert('Unexpected API error');
+          // console.error('Unexpected API error:', responseData);
         }
       } catch (error) {
-        console.error('Error fetching filtered dishes:', error);
+        alert('Error fetching filtered dishes');
+        // console.error('Error fetching filtered dishes:', error);
       }
     };
     fetchFilterDishes();
@@ -51,7 +53,7 @@ const EditMealModal = ({
       });
       setSelectedDishes(initialDishes);
       setSearchTerms(initialSearchTerms);
-      setSelectedDate(weekDates[0]?.fullDate); // Default to first date
+      setSelectedDate(weekDates[0]?.fullDate);
     }
   }, [isModalOpen, weekDates]);
 
@@ -63,7 +65,6 @@ const EditMealModal = ({
     );
   });
 
-  // Count current "Day Off" days
   const dayOffCount = Object.values(selectedDishes).filter(
     (dish) => dish === null
   ).length;
@@ -72,14 +73,14 @@ const EditMealModal = ({
   // Handle dish selection from dropdown
   const handleDishSelect = (date, dishName) => {
     setSelectedDishes((prev) => ({ ...prev, [date]: dishName }));
-    setSearchTerms((prev) => ({ ...prev, [date]: dishName })); // update input field
-    setIsDropdownOpen((prev) => ({ ...prev, [date]: false })); // close dropdown
+    setSearchTerms((prev) => ({ ...prev, [date]: dishName }));
+    setIsDropdownOpen((prev) => ({ ...prev, [date]: false }));
   };
 
   // Handle input typing
   const handleSearchChange = (date, value) => {
     setSearchTerms((prev) => ({ ...prev, [date]: value }));
-    setIsDropdownOpen((prev) => ({ ...prev, [date]: true })); // open dropdown when typing
+    setIsDropdownOpen((prev) => ({ ...prev, [date]: true }));
     setSelectedDishes((prev) => ({ ...prev, [date]: value || '' }));
   };
 
@@ -126,21 +127,6 @@ const EditMealModal = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // "Day off" toggle
-  /*   const handleDayOffToggle = (date) => {
-    const isDayOff = selectedDishes[date] === null;
-    if (isDayOff && Object.values(selectedDishes).filter((dish) => dish=== null).length >= maxDayOff) {
-      alert('You can only set a maximum of 2 days off in a week.');
-      return;
-    }
-
-    setSelectedDate((prev) => ({
-      ...prev,
-      [date]: isDayOff ? 'Assigned' : null,
-    }));
-  }; */
-
-  // Save the changes
   const handleSave = async () => {
     if (!selectedDate) return;
 
@@ -163,14 +149,6 @@ const EditMealModal = ({
         }
         dishId = dish._id;
       }
-      console.log(
-        'updates:',
-        JSON.stringify({
-          weekStartDate: weekDates[0]?.fullDate,
-          date: selectedDate,
-          dish: dishId || null,
-        })
-      );
 
       const response = await fetch(
         'https://eato-meatplanner.netlify.app/.netlify/functions/menus',
@@ -181,9 +159,9 @@ const EditMealModal = ({
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            weekStartDate: weekDates[0]?.fullDate, // Get the first date of the week
+            weekStartDate: weekDates[0]?.fullDate,
             date: selectedDate,
-            dish: dishId || null, // Null if "Day Off"
+            dish: dishId || null,
           }),
         }
       );
@@ -202,7 +180,7 @@ const EditMealModal = ({
       alert(
         'An unexpected error occurred while updating the menu. Please try again.'
       );
-      console.error('Error updating menu:', error);
+      // console.error('Error updating menu:', error);
     }
   };
 
