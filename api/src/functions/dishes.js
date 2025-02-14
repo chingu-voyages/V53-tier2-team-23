@@ -138,14 +138,14 @@ async function getFilteredDishes() {
     const employees = await Employee.find({}).exec();
 
     // get employees allergies
-    const employeesAllergensArray = employees.flatMap(
-      (employee) => employee.allergies || []
+    const employeesAllergensArray = employees.flatMap((employee) =>
+      employee.allergies.filter((allergen) => allergen !== 'no allergies')
     );
+    // collection of unique values from employees allergens
+    const allergensSet = new Set(employeesAllergensArray);
 
     // get dishes from the database
     const databaseDishes = await Dishes.find({}).exec();
-
-    const allergensSet = new Set(employeesAllergensArray); // collection of unique values from employees allergens
 
     const images = await Image.find({}).exec();
 
