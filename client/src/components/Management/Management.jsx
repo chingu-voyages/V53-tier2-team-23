@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function Management() {
-  const [buttonText, setButtonText] = useState('');
-  const [showDropdown, setShowDropdown] = useState(false); // for employees dropdown
+  const [buttonText, setButtonText] = useState(''); // for button "generate" or "view" text
+  const [showDropdown, setShowDropdown] = useState(false);
   const [employees, setEmployees] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(''); // for search funtion
+  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const { username } = location.state || {};
@@ -38,10 +38,12 @@ function Management() {
         if (responseData.data) {
           setEmployees(responseData.data);
         } else {
-          console.error('Unexpected API response format:', responseData);
+          alert('Unexpected API response format');
+          // console.error('Unexpected API response format:', responseData);
         }
       } catch (error) {
-        console.error('Error fetching employees: ', error);
+        alert('Error fetching employees');
+        // console.error('Error fetching employees: ', error);
       }
     };
     fetchEmployees();
@@ -62,7 +64,7 @@ function Management() {
           <span className='hidden md:inline'>Plan your weekly menu!</span>
         </h1>
 
-        <div className='flex flex-col gap-24 justify-center items-center mt-5 md:mt-[0.9rem] md:gap-14 md:py-[98px] md:bg-white md:w-[465px] md:h-[570px] md:rounded-3xl lg:py-[115px] lg:gap-24'>
+        <div className='flex flex-col gap-24 justify-center items-center mb-10 mt-5 md:mt-[0.9rem] md:gap-14 md:py-[98px] md:bg-white md:w-[465px] md:h-[570px] md:rounded-3xl lg:py-[115px] lg:gap-24'>
           {/* Menu Section */}
           <div className='flex flex-col gap-3'>
             <p className='font-shantell text-primary text-[24px] font-bold text-center'>
@@ -92,7 +94,7 @@ function Management() {
           </div>
 
           {/* Allergy Section */}
-          <div className='flex flex-col gap-3 items-center justify-center h-full'>
+          <div className='flex flex-col gap-3 items-center justify-center h-full p-16 md:p-0'>
             <p className='font-shantell text-primary max-w-[283px] text-[24px] font-bold text-center'>
               Need to edit allergies of an employee?
             </p>

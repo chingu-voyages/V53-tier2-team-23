@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { FaArrowDown } from 'react-icons/fa6';
 import { LuCircleArrowRight, LuCircleArrowLeft } from 'react-icons/lu';
 import ExportToPDF from '../ExportToPDF/ExportToPDF';
@@ -19,6 +19,7 @@ function WeeklyMenu() {
   const [currentWeekStartDate, setCurrentWeekStartDate] =
     useState(weekStartDate);
   const [isNextWeekDisabled, setIsNextWeekDisabled] = useState(false);
+  const token = localStorage.getItem('token');
 
   const dishSwiperRef = useRef(null);
   const dateSwiperRef = useRef(null);
@@ -216,6 +217,14 @@ function WeeklyMenu() {
     Cauliflower: '🥦',
   };
 
+  const getIngredientEmoji = (ingredient) => {
+    for (const [category, ingredients] of Object.entries(ingredientCategories))
+      if (ingredients.includes(ingredient)) {
+        return ingredientEmojis[category] || '🍴';
+      }
+    return '🍽️';
+  };
+
   // to fetch weekly menu
   const fetchWeeklyMenu = async (weekStart) => {
     try {
@@ -223,7 +232,6 @@ function WeeklyMenu() {
         `https://eato-meatplanner.netlify.app/.netlify/functions/menus?weekStartDate=${weekStart}`
       );
       const data = await response.json();
-      // console.log(data.data);
       // Format weekDates with dish info
       const formattedDates = data.data.days.map((day) => ({
         day: new Date(day.date).toLocaleDateString('en-US', {
@@ -235,10 +243,10 @@ function WeeklyMenu() {
       }));
 
       setWeekDates(formattedDates);
-      console.log('weekstart dish', formattedDates);
       setSelectedDate(formattedDates[0]?.fullDate);
     } catch (error) {
-      console.error('Error fetching weekly menu:', error);
+      alert('Error fetching weekly menu');
+      // console.error('Error fetching weekly menu:', error);
     }
   };
 
@@ -254,35 +262,23 @@ function WeeklyMenu() {
   };
 
   // fetch the weekly menu
-  const fetchMenuForDate = (weekStartDate) => {
+  const fetchMenuForDate = useCallback((weekStartDate) => {
     if (weekStartDate) {
       fetchWeeklyMenu(weekStartDate);
     }
-  };
-
-  // Fetch weekly menu on mount
-  useEffect(() => {
-    const weekStart = weekStartDate || getWeekStartDate();
-    fetchMenuForDate(weekStart);
-  }, [weekStartDate]);
+  }, []);
 
   // Fetch menu on mount and when currentWeekStartDate changes
   useEffect(() => {
-    if (currentWeekStartDate) {
-      fetchMenuForDate(currentWeekStartDate);
+    const weekStart =
+      currentWeekStartDate || weekStartDate || getWeekStartDate();
+    if (weekStart) {
+      fetchMenuForDate(weekStart);
     }
-  }, [currentWeekStartDate]);
+  }, [weekStartDate, currentWeekStartDate, fetchMenuForDate]);
 
   // to pass as props to EditMealModal to refresh the menu after updating
   const refreshMenu = () => fetchMenuForDate(weekStartDate);
-
-  const getIngredientEmoji = (ingredient) => {
-    for (const [category, ingredients] of Object.entries(ingredientCategories))
-      if (ingredients.includes(ingredient)) {
-        return ingredientEmojis[category] || '😊';
-      }
-    return '🤭';
-  };
 
   // for previous and next week button
   const currentWeekStart = getWeekStartDate(new Date());
@@ -317,8 +313,8 @@ function WeeklyMenu() {
         setIsNextWeekDisabled(true);
       }
     } catch (error) {
-      console.error('Error fetching the menu:', error);
       alert('An error occurred while fetching the menu.');
+      // console.error('Error fetching the menu:', error);
     }
   };
 
@@ -344,6 +340,75 @@ function WeeklyMenu() {
     const imageExt = '.jpg';
     const imageURL = `${imageBasePath}${imageName}${imageExt}`;
     return imageURL;
+  };
+
+  // for menu regen
+  const regenerateMenu = async (token) => {
+    if (!weekDates.length) return;
+
+    try {
+      const filteredDishes = await fetch(
+        'https://eato-meatplanner.netlify.app/.netlify/functions/dishes/filtered',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const filteredDishesRes = await filteredDishes.json();
+      const dishIds = filteredDishesRes.data.dishes.map((dish) => dish._id);
+
+      if (dishIds.length === 0) {
+        return;
+      }
+
+      const usedDishes = new Set();
+
+      const getRandomDish = () => {
+        if (usedDishes.size >= dishIds.length) return null;
+
+        let randomDish;
+        do {
+          const randomIndex = Math.floor(Math.random() * dishIds.length);
+          randomDish = dishIds[randomIndex];
+        } while (usedDishes.has(randomDish));
+
+        usedDishes.add(randomDish);
+        return randomDish;
+      };
+
+      const updatePromises = weekDates
+        .filter((day) => day.dish !== null)
+        .map(async (day) => {
+          const newDish = getRandomDish();
+          if (!newDish) return;
+
+          await fetch(
+            'https://eato-meatplanner.netlify.app/.netlify/functions/menus',
+            {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                weekStartDate: weekDates[0]?.fullDate,
+                date: day.fullDate,
+                dish: newDish,
+              }),
+            }
+          );
+        });
+      await Promise.all(updatePromises);
+
+      // Refresh menu after updates
+      fetchMenuForDate(currentWeekStartDate);
+    } catch (error) {
+      alert('Error regenerating weekly menu');
+      // console.error('Error regenerating weekly menu:', error);
+    }
   };
 
   return (
@@ -419,7 +484,7 @@ function WeeklyMenu() {
                             onClick={() => {
                               if (!isDisabled) {
                                 setSelectedDate(item.fullDate);
-                                dishSwiperRef.current?.slideTo(index); // Move dish swiper
+                                dishSwiperRef.current?.slideTo(index);
                               }
                             }}
                             className={`cursor-pointer flex flex-col items-center justify-center w-[71px] h-[71px] pt-[3px] border border-black rounded-md ${
@@ -460,7 +525,7 @@ function WeeklyMenu() {
               onSlideChange={(swiper) => {
                 const newDate = weekDates[swiper.activeIndex]?.fullDate;
                 setSelectedDate(newDate);
-                dateSwiperRef.current?.slideTo(swiper.activeIndex); // Move date swiper
+                dateSwiperRef.current?.slideTo(swiper.activeIndex);
               }}
               className='h-full'
             >
@@ -477,7 +542,6 @@ function WeeklyMenu() {
           </div>
           {/* Dish details for medium and large screens */}
           <div className='hidden md:block min-h-[620px] '>
-            {/* --- DISH SWIPER (Desktop) --- */}
             <Swiper
               modules={[Navigation]}
               navigation={true}
@@ -518,22 +582,46 @@ function WeeklyMenu() {
         {/* Edit & Export  */}
         {weekStartDate && (
           <div className='mt-5 md:mt-0 flex justify-between items-center border-t-2 border-b-2 border-primary px-3 pt-2 pb-1 bg-white'>
-            {/* Edit */}
-            <button
-              className={`border-[1px] border-primary text-primary py-1 px-4 rounded-full font-semibold text-[24px] shadow-md shadow-gray-400 w-fit ${
+            <div
+              className={`group relative flex flex-col items-center ${
                 currentWeekStartDate === currentWeekStart
                   ? 'opacity-50 cursor-not-allowed'
                   : ''
               }`}
-              onClick={() => setIsModalOpen(true)}
               disabled={currentWeekStartDate === currentWeekStart}
             >
-              Edit Menu
-            </button>
+              <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-gray-400'>
+                Menu
+              </p>
+              <div
+                className={`hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] z-20 ${
+                  currentWeekStartDate === currentWeekStart
+                    ? 'group-hover:hidden cursor-none'
+                    : ''
+                }`}
+              >
+                {/* Edit */}
+                <button
+                  className='border-[1px] border-primary text-[24px] h-[45px] w-[115px] bg-white'
+                  onClick={() => setIsModalOpen(true)}
+                  disabled={currentWeekStartDate === currentWeekStart}
+                >
+                  Edit
+                </button>
+                {/* Regen */}
+                <button
+                  className='border-[1px] border-primary text-[24px] h-[45px] w-[115px] bg-white'
+                  onClick={() => regenerateMenu(token)}
+                  disabled={currentWeekStartDate === currentWeekStart}
+                >
+                  Regen
+                </button>
+              </div>
+            </div>
 
             {/* Export buttons */}
             <div className='group relative flex flex-col items-center'>
-              <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-md shadow-gray-400'>
+              <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-gray-400'>
                 Export Menu <FaArrowDown />
               </p>
               <div className='hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] left-2 right-0 z-20'>
@@ -548,7 +636,6 @@ function WeeklyMenu() {
           </div>
         )}
 
-        {/* The modal is rendered conditionally */}
         {isModalOpen && (
           <EditMealModal
             isModalOpen={isModalOpen}
