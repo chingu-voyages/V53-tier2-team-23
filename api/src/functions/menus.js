@@ -11,14 +11,14 @@ const allowedOrigins = [
   'http://localhost:5173',
 ];
 
-// const getAllowedOrigin = (event) => {
-//   const origin = event.headers?.origin || '';
-//   return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
-// };
-
-const getAllowedOrigin = () => {
-  return '*';
+const getAllowedOrigin = (event) => {
+  const origin = event.headers?.origin || '';
+  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
 };
+
+// const getAllowedOrigin = () => {
+//   return '*';
+// };
 
 const handleError = (error, method, event) => {
   const allowedOrigin = getAllowedOrigin(event);
@@ -278,6 +278,7 @@ exports.handler = async (event) => {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   };
 };
