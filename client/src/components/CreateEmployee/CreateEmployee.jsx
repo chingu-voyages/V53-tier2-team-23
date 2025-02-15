@@ -1,25 +1,10 @@
 import React from 'react';
 import Select from 'react-select';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './CreateEmployee.module.css';
 import ViewEmployee from './../ViewEmployee/ViewEmployee';
-
-const allergiesList = [
-  { value: 'gluten', label: 'Gluten' },
-  { value: 'dairy', label: 'Dairy' },
-  { value: 'egg', label: 'Egg' },
-  { value: 'seafood', label: 'Seafood' },
-  { value: 'soy', label: 'Soy' },
-  { value: 'tree nuts', label: 'Tree Nuts' },
-  { value: 'peanuts', label: 'Peanuts' },
-  { value: 'legumes', label: 'Legumes' },
-  { value: 'sesame seeds', label: 'Sesame Seeds' },
-  { value: 'corn', label: 'Corn' },
-  { value: 'mustard', label: 'Mustard' },
-  { value: 'allium', label: 'Allium' },
-  { value: 'coconut', label: 'Coconut' },
-  { value: 'fruits', label: 'Fruits' },
-];
+import AlertPopUp from './../AlertPopUp/AlertPopUp';
 
 const customStyles = {
   form: styles.form,
@@ -53,67 +38,98 @@ const getAllergyLabel = (allergy) => {
 };
 
 const selectStyles = {
-  control: (styles) => ({
+  control: (styles, { selectProps }) => {
+    const constrolHasOptionDisabled = selectProps.value?.some(
+      (option) => option.isDisabled
+    );
+    return {
+      ...styles,
+      filter: constrolHasOptionDisabled ? 'blur(2px)' : 'none',
+      backgroundColor: constrolHasOptionDisabled ? '#facc15' : 'white',
+      borderColor: '#6b23a6',
+      borderWidth: '2px',
+      borderRadius: '5px',
+      '&:hover': {
+        borderColor: '#fdd053',
+      },
+      '&:focus': {
+        borderColor: '#ff9900',
+        boxShadow: '0 0 0 2px rgba(255, 153, 0, 0.3)',
+      },
+    };
+  },
+  option: (styles, { isDisabled }) => ({
     ...styles,
-    borderColor: '#6b23a6',
-    borderWidth: '2px',
-    borderRadius: '5px',
-    '&:hover': {
-      borderColor: '#fdd053',
-    },
-    '&:focus': {
-      borderColor: '#ff9900',
-      boxShadow: '0 0 0 2px rgba(255, 153, 0, 0.3)',
-    },
+    filter: isDisabled ? 'blur(2px)' : 'none',
+    backgroundColor: isDisabled ? '#facc15' : 'white',
+    color: isDisabled ? 'lightgray' : 'green',
   }),
   dropdownIndicator: (styles) => ({
     ...styles,
+    display: 'block',
+    backgroundImage:
+      'url("https://res.cloudinary.com/dspxn4ees/image/upload/v1738866259/chevrondown.svg")',
+    backgroundSize: 'contain',
+    backgroundRepeat: 'no-repeat',
+    padding: '8px',
+    svg: {
+      display: 'none',
+    },
+    width: '20px',
+    height: '20px',
+    margin: '0 10px',
     color: '#6b23a6',
     ':hover': {
-      color: '#fdd053',
+      backgroundImage:
+        'url("https://res.cloudinary.com/dspxn4ees/image/upload/v1738866259/chevrondown.svg")',
     },
   }),
 };
 
 function CreateEmployee() {
+  const [allergiesList, setAllergiesList] = useState([
+    { value: 'no allergies', label: 'no allergies', isdisabled: false },
+    { value: 'gluten', label: 'Gluten', isdisabled: false },
+    { value: 'dairy', label: 'Dairy', isdisabled: false },
+    { value: 'egg', label: 'Egg', isdisabled: false },
+    { value: 'seafood', label: 'Seafood', isdisabled: false },
+    { value: 'soy', label: 'Soy', isdisabled: false },
+    { value: 'tree nuts', label: 'Tree Nuts', isdisabled: false },
+    { value: 'peanuts', label: 'Peanuts', isdisabled: false },
+    { value: 'legumes', label: 'Legumes', isdisabled: false },
+    { value: 'sesame seeds', label: 'Sesame Seeds', isdisabled: false },
+    { value: 'corn', label: 'Corn', isdisabled: false },
+    { value: 'mustard', label: 'Mustard', isdisabled: false },
+    { value: 'allium', label: 'Allium', isdisabled: false },
+    { value: 'coconut', label: 'Coconut', isdisabled: false },
+    { value: 'fruits', label: 'Fruits', isdisabled: false },
+  ]);
   const [identity, setIdentity] = useState('');
   const [selectedAllergies, setSelectedAllergies] = useState([]);
-  const [formSubmitted, setFormSubmitted] = useState(false);
-  const [employeeData, setEmployeeData] = useState({
-    employeeName: '',
-    allergies: [],
-  });
+  const [previewChanges, setPreviewChanges] = useState(false);
+  const [employeeData, setEmployeeData] = useState(null);
+  const [showAlert, setShowAlert] = useState({ message: '', status: false });
 
-  async function handleCreateEmployee(identity, selectedAllergies) {
-    const response = await fetch(
-      'https://eato-meatplanner.netlify.app/.netlify/functions/employees',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          employeeName: identity,
-          allergies: selectedAllergies,
-        }),
-        mode: 'cors',
-      }
-    );
+  const navigate = useNavigate();
 
-    const responseData = await response.json();
-    return responseData.data;
-  }
+  useEffect(() => {
+    if (previewChanges) {
+      navigate('/view-employee', {
+        state: { employeeData },
+      });
+    }
+  }, [employeeData, previewChanges]);
 
   const handleSelectAllergies = (select) => {
-    // find selected allergies
-    const selectedAllergies = select.map((option) => option.value);
+    const selectedAllergies = select
+      ? select.map((option) => option.value)
+      : [];
 
     setSelectedAllergies((prev) => {
-      // find previous selected allergies
       const allergiesSelected = prev.filter((allergy) =>
         selectedAllergies.includes(allergy)
       );
-      // find new selected allergies
+
       const allergiesNotSelected = selectedAllergies.filter(
         (allergy) => !prev.includes(allergy)
       );
@@ -122,68 +138,118 @@ function CreateEmployee() {
         ...allergiesSelected,
         ...allergiesNotSelected,
       ];
+
+      const updatedAllergiesList = allergiesList.map((allergy) => {
+        if (selectedAllergies.includes('no allergies')) {
+          return {
+            ...allergy,
+            isdisabled: allergy.value !== 'no allergies',
+          };
+        } else if (selectedAllergies.length === 0) {
+          return {
+            ...allergy,
+            isdisabled: false,
+          };
+        } else {
+          return {
+            ...allergy,
+            isdisabled: allergy.value === 'no allergies',
+          };
+        }
+      });
+
+      setAllergiesList(updatedAllergiesList);
+
       return allSelectedAllergies;
     });
   };
 
-  const handleIdentity = (event) => {
+  const handleSaveIdentity = (event) => {
     setIdentity(event.target.value);
   };
 
-  async function submitForm(event) {
+  async function handleSaveNewEmployee(event) {
     event.preventDefault();
-    const data = await handleCreateEmployee(identity, selectedAllergies);
-    setEmployeeData({
-      employeeName: data.employeeName,
-      allergies: data.allergies,
-    });
-    setFormSubmitted(true);
+    const newEmployee = {
+      identity,
+      selectedAllergies,
+    };
+    setEmployeeData(newEmployee);
   }
 
+  const handleViewEmployee = () => {
+    if (selectedAllergies.length === 0) {
+      setShowAlert({
+        message:
+          "Please select either no allergies if the employee doesn't have any allergies or one + multiple allergies.",
+        status: true,
+      });
+      return;
+    } else if (
+      selectedAllergies.includes('no allergies') &&
+      selectedAllergies.length > 1
+    ) {
+      setShowAlert({
+        message:
+          "Please select only no allergies if the employee doesn't have any allergies or any valid allergies from the list, not both.",
+        status: true,
+      });
+      return;
+    } else {
+      setShowAlert({ message: '', status: false });
+    }
+
+    const employeeData = {
+      identity,
+      allergies: selectedAllergies,
+    };
+
+    setPreviewChanges(true);
+  };
+
   return (
-    <>
-      {formSubmitted ? (
-        <ViewEmployee employeeData={employeeData} />
-      ) : (
-        <div className={`flex flex-col ${formContainer}`}>
-          <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>
-            Add Collaborator Details
-          </h2>
-          <form
-            onSubmit={submitForm}
-            className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
-          >
-            <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-              Identity
-            </h4>
-            <input
-              onChange={handleIdentity}
-              type='text'
-              id='identity'
-              value={identity}
-              className={`${formContainerInput} border-[#513174] border-2 rounded-[4px]`}
-              placeholder='John Doe'
-              required
-            />
-            <h4 className='text-[#513174] font-semibold uppercase mt-4'>
-              Allergies
-            </h4>
-            <Select
-              //defaultValue={allergiesList[0]}
-              isMulti
-              name='allergiesList'
-              options={allergiesList}
-              onChange={handleSelectAllergies}
-              className='basic-multi-select'
-              classNamePrefix='select'
-              styles={selectStyles}
-              getOptionLabel={(e) => getAllergyLabel(e.value)}
-            />
-            <div className='buttons-container flex flex-row m-0.5 flex-wrap'>
-              <button
-                type='submit'
-                id='loginButton'
-                className={`${formContainerButton}
+    <div className={`flex flex-col ${formContainer}`}>
+      {showAlert.status && (
+        <AlertPopUp setShowAlert={setShowAlert} showAlert={showAlert} />
+      )}
+      <h2 className={`${formContainerTitle} text-[#513174] font-bold`}>
+        Add Employee Details
+      </h2>
+      <form
+        onSubmit={handleSaveNewEmployee}
+        className={`${formContainerForm} shadow-md border-[#fdd053] px-4 py-4 border-4 rounded-[10px]`}
+      >
+        <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+          Identity
+        </h4>
+        <input
+          onChange={handleSaveIdentity}
+          type='text'
+          id='identity'
+          value={identity}
+          className={`${formContainerInput} border-[#513174] border-2 rounded-[4px]`}
+          placeholder='John Doe'
+          required
+        />
+        <h4 className='text-[#513174] font-semibold uppercase mt-4'>
+          Allergies
+        </h4>
+        <Select
+          isMulti
+          isOptionDisabled={(option) => option.isdisabled}
+          name='allergiesList'
+          options={allergiesList}
+          onChange={handleSelectAllergies}
+          className='basic-multi-select'
+          classNamePrefix='select'
+          styles={selectStyles}
+          getOptionLabel={(e) => getAllergyLabel(e.value, e.isdisabled)}
+        />
+        <div className='buttons-container flex flex-row m-0.5 flex-wrap'>
+          <button
+            onClick={handleViewEmployee}
+            id='loginButton'
+            className={`${formContainerButton}
             w-fit
             rounded-full
             border-none
@@ -199,14 +265,12 @@ function CreateEmployee() {
             font-bold
             shadow-md
             `}
-              >
-                Preview Changes
-              </button>
-            </div>
-          </form>
+          >
+            Preview Changes
+          </button>
         </div>
-      )}
-    </>
+      </form>
+    </div>
   );
 }
 

@@ -59,8 +59,7 @@
 }
 
 .alertModal .d-flex {
-  display: flex !important
-;
+  display: flex !important;
 }
 
 .alertModal .alert-status-icon {
@@ -90,7 +89,7 @@
   margin-bottom: 0;
 }
 
-.alertModal .mb-0 .highlight {
+.highlight {
   font-weight: bold;
   color: white;
   background-color: #de1327;
