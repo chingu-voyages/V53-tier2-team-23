@@ -30,7 +30,7 @@ exports.handler = async (event) => {
   const request = {
     method: event.httpMethod,
     headers: event.headers,
-    body: null
+    body: undefined,
     query: event.queryStringParameters,
   };
 
