@@ -36,9 +36,11 @@ exports.handler = async (event) => {
 
   // Handle CORS Preflight Requests
   const allowedOrigins = [
-    'http://localhost:5173', // Local development
-    'https://chingu-voyages.github.io', // Production environment
+    'https://chingu-voyages.github.io',
+    'https://eato-meatplanner.netlify.app',
+    'https://eatodishes.netlify.app',
   ];
+
   const origin = event.headers.origin;
 
   // Handle CORS Preflight Requests

@@ -5,8 +5,9 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const allowedOrigins = [
-  'http://localhost:5173', // Local development
-  'https://chingu-voyages.github.io', // Production
+  'https://chingu-voyages.github.io',
+  'https://eato-meatplanner.netlify.app',
+  'https://eatodishes.netlify.app',
 ];
 
 const authenticate = (event) => {
