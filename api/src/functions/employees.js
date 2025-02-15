@@ -44,9 +44,10 @@ const handleError = (error, method) => {
   return {
     statusCode: 500,
     headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Origin': event.headers.origin || 'https://eato-meatplanner.netlify.app',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true', 
     },
     body: JSON.stringify({ error: error.message }),
   };
@@ -55,9 +56,10 @@ const handleError = (error, method) => {
 const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
   headers: {
-    'Access-Control-Allow-Origin': '*', // Allows all origins
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+    'Access-Control-Allow-Origin': event.headers.origin || 'https://eato-meatplanner.netlify.app',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true', 
   },
   body: JSON.stringify(data ? { message, data } : { message }),
 });
@@ -137,10 +139,10 @@ exports.handler = async (event) => {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods':
-          'GET, POST, PUT, PATCH, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Origin': event.headers.origin || 'https://eato-meatplanner.netlify.app',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true', // Add this if you're sending cookies/auth headers
       },
       body: '',
     };
