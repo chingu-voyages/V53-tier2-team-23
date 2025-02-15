@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './LoginPage.module.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -28,8 +28,16 @@ function LoginPage() {
   const [responseMessage, setResponseMessage] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [authendicate, setAuthendicate] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authendicate) {
+      setTimeout(() => {
+        navigate('/management', { state: { username } });
+      }, 1000);
+    }
+  }, [authendicate, navigate]);
 
   async function getTokenFromLocalStorage() {
     return localStorage.getItem('token');
@@ -45,6 +53,10 @@ function LoginPage() {
         },
       }
     );
+
+    if (!response.ok) {
+      throw new Error('Invalid token');
+    }
 
     const data = await response.json();
     const dataUsername = data.username;
@@ -107,16 +119,22 @@ function LoginPage() {
         const isUserAuthenticated = await authenticateUser(token);
         if (!isUserAuthenticated) {
           setResponseMessage(`User ${username} not authenticated`);
+          setAuthendicate(false);
+          localStorage.removeItem('token');
+          return;
+        } else {
+          setResponseMessage(`User ${username} already logged in`);
+          setAuthendicate(true);
           return;
         }
-        setResponseMessage(`User ${username} already logged in`);
-        return;
       }
 
       setResponseMessage(`User ${username} not logged in. Logging in...`);
       const result = await loginUser(username, password);
       if (result) {
-        navigate('/management', { state: { username } });
+        setAuthendicate(true);
+      } else {
+        setAuthendicate(false);
       }
     } catch (error) {
       setResponseMessage(`Error: ${error}, authenticating user`);
@@ -182,7 +200,7 @@ function LoginPage() {
         </div>
       </form>
       <div className={customStyles.formContainerResponse}>
-        The response will be shown here ✅
+        {responseMessage || 'The response will be shown here ✅'}
       </div>
     </div>
   );
