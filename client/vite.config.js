@@ -9,4 +9,5 @@ export default defineConfig({
       generateScopedName: '[local]', // prevent prefixes in css classNames
     },
   },
+  base: '/V53-tier2-team-23/',
 });

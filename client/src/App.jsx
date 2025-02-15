@@ -15,7 +15,7 @@ import WeeklyMenu from './components/WeeklyMenu/WeeklyMenu';
 
 function App() {
   return (
-    <Router>
+    <Router basename='/V53-tier2-team-23'>
       <NavBar />
       <Routes>
         <Route path='/' element={<Main />} />
