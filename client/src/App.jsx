@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
+import Main from './components/Main/Main';
+import LoginPage from './components/LoginPage/LoginPage';
 import ManageAllergies from './components/ManageAllergies/ManageAllergies';
 import Management from './components/Management/Management';
 import DatePickerContainer from './components/DatePicker/DatePickerContainer';
@@ -15,6 +17,8 @@ function App() {
     <Router>
       <NavBar />
       <Routes>
+        <Route path='/' element={<Main />} />
+        <Route path='/login' element={<LoginPage />} />
         <Route path='/management' element={<Management />} />
         <Route path='/calendar' element={<DatePickerContainer />} />
         <Route path='/menu' element={<WeeklyMenu />} />
