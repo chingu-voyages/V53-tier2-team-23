@@ -4,24 +4,12 @@ const Menus = require('../models/menu.models');
 const Dishes = require('../models/dishes.models');
 const authenticate = require('../functions/authMiddleware');
 
-const getAllowedOrigin = (event) => {
-  const allowedOrigins = [
-    'https://chingu-voyages.github.io',
-    'https://eato-meatplanner.netlify.app',
-    'https://eatodishes.netlify.app',
-    'http://localhost:5173',
-  ];
-  const origin = event.headers?.origin || '';
-  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
-};
-
-const handleError = (error, method, event) => {
-  const allowedOrigin = getAllowedOrigin(event);
+const handleError = (error, method) => {
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://chingu-voyages.github.io',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
@@ -30,30 +18,37 @@ const handleError = (error, method, event) => {
   };
 };
 
-const sendResponse = (statusCode, message, data = null, event) => {
-  const allowedOrigin = getAllowedOrigin(event);
-  console.log('allowedOrigin:', allowedOrigin);
-  return {
-    statusCode,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Credentials': 'true',
-    },
-    body: JSON.stringify(data ? { message, data } : { message }),
-  };
-};
+const sendResponse = (statusCode, message, data = null) => ({
+  statusCode,
+  headers: {
+    'Access-Control-Allow-Origin':
+      'http://localhost:5173, https://chingu-voyages.github.io',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  },
+  body: JSON.stringify(data ? { message, data } : { message }),
+});
 
 exports.handler = async (event) => {
   await connectDatabase();
-  const allowedOrigin = getAllowedOrigin(event);
+  const { httpMethod, path, body, queryStringParameters } = event;
 
-  if (event.httpMethod === 'OPTIONS') {
+  // Handle CORS Preflight Requests
+  const allowedOrigins = [
+    'https://chingu-voyages.github.io',
+    'https://eato-meatplanner.netlify.app',
+    'https://eatodishes.netlify.app',
+  ];
+
+  const origin = event.headers.origin;
+
+  // Handle CORS Preflight Requests
+  if (httpMethod === 'OPTIONS' && allowedOrigins.includes(origin)) {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': origin,
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Allow-Credentials': 'true',
@@ -82,8 +77,7 @@ exports.handler = async (event) => {
       if (!weekStartDate || !Array.isArray(days) || days.length === 0) {
         return sendResponse(
           400,
-          'Week start date and day arrays are required.',
-          event
+          'Week start date and day arrays are required.'
         );
       }
 
@@ -95,24 +89,19 @@ exports.handler = async (event) => {
       if (existingMenu) {
         return sendResponse(
           409,
-          `A menu already exists for the week starting on ${weekStartDate}.`,
-          event
+          `A menu already exists for the week starting on ${weekStartDate}.`
         );
       }
 
       for (const day of days) {
         if (!day.date) {
-          return sendResponse(400, 'Each day must have a date', event);
+          return sendResponse(400, 'Each day must have a date');
         }
 
         if (day.dish) {
           const dishExists = await Dishes.findById(day.dish);
           if (!dishExists) {
-            return sendResponse(
-              400,
-              `Dish with ID ${day.dish} does not exist`,
-              event
-            );
+            return sendResponse(400, `Dish with ID ${day.dish} does not exist`);
           }
         }
       }
@@ -122,7 +111,7 @@ exports.handler = async (event) => {
         days,
       });
 
-      return sendResponse(200, 'Menu created successfully', newMenu, event);
+      return sendResponse(200, 'Menu created successfully', newMenu);
     } catch (error) {
       return handleError(error, 'creating');
     }
@@ -135,7 +124,7 @@ exports.handler = async (event) => {
 
       // Validate input
       if (!weekStartDate || !date) {
-        return sendResponse(400, 'weekStartDate and date are required.', event);
+        return sendResponse(400, 'weekStartDate and date are required.');
       }
 
       const menu = await Menus.findOne({
@@ -143,11 +132,7 @@ exports.handler = async (event) => {
       });
 
       if (!menu) {
-        return sendResponse(
-          404,
-          'Menu not found for the given weekStartDate',
-          event
-        );
+        return sendResponse(404, 'Menu not found for the given weekStartDate');
       }
 
       // Find the specific day to update
@@ -157,17 +142,13 @@ exports.handler = async (event) => {
       );
 
       if (!dayToUpdate) {
-        return sendResponse(404, `No day found for the date: ${date}`, event);
+        return sendResponse(404, `No day found for the date: ${date}`);
       }
 
       if (dish) {
         const dishExists = await Dishes.findById(dish);
         if (!dishExists) {
-          return sendResponse(
-            400,
-            `Dish with ID ${dish} does not exist.`,
-            event
-          );
+          return sendResponse(400, `Dish with ID ${dish} does not exist.`);
         }
 
         const isDishAlreadyAssigned = menu.days.some(
@@ -184,11 +165,7 @@ exports.handler = async (event) => {
       } else {
         const nullDishCount = menu.days.filter((day) => !day.dish).length;
         if (nullDishCount >= 2) {
-          return sendResponse(
-            400,
-            'Only 2 days off are allowed per week.',
-            event
-          );
+          return sendResponse(400, 'Only 2 days off are allowed per week.');
         }
       }
 
@@ -199,7 +176,7 @@ exports.handler = async (event) => {
         weekStartDate: new Date(weekStartDate),
       }).populate('days.dish');
 
-      return sendResponse(200, 'Menu updated successfully', updatedMenu, event);
+      return sendResponse(200, 'Menu updated successfully', updatedMenu);
     } catch (error) {
       return handleError(error, 'updating specific day');
     }
@@ -211,11 +188,7 @@ exports.handler = async (event) => {
       const { weekStartDate } = queryStringParameters;
 
       if (!weekStartDate) {
-        return sendResponse(
-          400,
-          'weekStartDate query parameter is required.',
-          event
-        );
+        return sendResponse(400, 'weekStartDate query parameter is required.');
       }
 
       const deletedMenu = await Menus.findOneAndDelete({
@@ -223,14 +196,10 @@ exports.handler = async (event) => {
       });
 
       if (!deletedMenu) {
-        return sendResponse(
-          404,
-          'Menu not found for the given weekStartDate',
-          event
-        );
+        return sendResponse(404, 'Menu not found for the given weekStartDate');
       }
 
-      return sendResponse(200, 'Menu deleted successfully', event);
+      return sendResponse(200, 'Menu deleted successfully');
     } catch (error) {
       return handleError(error, 'deleting');
     }
@@ -242,11 +211,7 @@ exports.handler = async (event) => {
       const { weekStartDate } = queryStringParameters;
 
       if (!weekStartDate) {
-        return sendResponse(
-          400,
-          'weekStartDate query parameter is required.',
-          event
-        );
+        return sendResponse(400, 'weekStartDate query parameter is required.');
       }
 
       const menu = await Menus.findOne({
@@ -254,16 +219,12 @@ exports.handler = async (event) => {
       }).populate('days.dish');
 
       if (!menu) {
-        return sendResponse(
-          404,
-          'Menu not found for the given weekStartDate.',
-          event
-        );
+        return sendResponse(404, 'Menu not found for the given weekStartDate.');
       }
 
-      return sendResponse(200, 'Menu fetched successfully', menu, event);
+      return sendResponse(200, 'Menu fetched successfully', menu);
     } catch (error) {
-      return handleError(error, 'fetching', event);
+      return handleError(error, 'fetching');
     }
   }
 
