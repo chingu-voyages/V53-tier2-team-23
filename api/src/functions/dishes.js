@@ -12,10 +12,12 @@ const allowedOrigins = [
   'http://localhost:5173',
 ];
 
-const getAllowedOrigin = (event) => {
-  const origin = event.headers?.origin || '';
-  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
-};
+// const getAllowedOrigin = (event) => {
+//   const origin = event.headers?.origin || '';
+//   return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+// };
+
+const getAllowedOrigin = () => '*';
 
 const handleError = (error, method, event) => {
   const allowedOrigin = getAllowedOrigin(event);
