@@ -11,7 +11,7 @@ const manager = {
 
 const allowedOrigins = [
   'http://localhost:5173', // Local development
-  'https://chingu-voyages.github.io/V53-tier2-team-23/', // Production
+  'https://chingu-voyages.github.io', // Production
 ];
 
 exports.handler = async (event) => {

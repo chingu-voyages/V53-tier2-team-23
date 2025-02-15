@@ -9,8 +9,7 @@ const handleError = (error, method) => {
   return {
     statusCode: 500,
     headers: {
-      'Access-Control-Allow-Origin':
-        'http://localhost:5173, https://chingu-voyages.github.io/V53-tier2-team-23/',
+      'Access-Control-Allow-Origin': 'https://chingu-voyages.github.io',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
@@ -23,7 +22,7 @@ const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
   headers: {
     'Access-Control-Allow-Origin':
-      'http://localhost:5173, https://chingu-voyages.github.io/V53-tier2-team-23/',
+      'http://localhost:5173, https://chingu-voyages.github.io',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Credentials': 'true',
@@ -38,7 +37,7 @@ exports.handler = async (event) => {
   // Handle CORS Preflight Requests
   const allowedOrigins = [
     'http://localhost:5173', // Local development
-    'https://menuhelp.github.io/', // Production environment
+    'https://chingu-voyages.github.io', // Production environment
   ];
   const origin = event.headers.origin;
 

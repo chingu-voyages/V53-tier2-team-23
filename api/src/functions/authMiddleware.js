@@ -6,7 +6,7 @@ dotenv.config();
 
 const allowedOrigins = [
   'http://localhost:5173', // Local development
-  'https://chingu-voyages.github.io/V53-tier2-team-23/', // Production
+  'https://chingu-voyages.github.io', // Production
 ];
 
 const authenticate = (event) => {
@@ -21,7 +21,7 @@ const authenticate = (event) => {
           event.headers.origin
         )
           ? event.headers.origin
-          : 'https://chingu-voyages.github.io/V53-tier2-team-23/', // Default to GitHub Pages
+          : 'https://chingu-voyages.github.io', // Default to GitHub Pages
       },
     };
   }
@@ -42,7 +42,7 @@ const authenticate = (event) => {
           event.headers.origin
         )
           ? event.headers.origin
-          : 'https://chingu-voyages.github.io/V53-tier2-team-23/', // Default to GitHub Pages
+          : 'https://chingu-voyages.github.io', // Default to GitHub Pages
       },
     };
   }
