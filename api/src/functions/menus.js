@@ -32,6 +32,7 @@ const handleError = (error, method, event) => {
 
 const sendResponse = (statusCode, message, data = null, event) => {
   const allowedOrigin = getAllowedOrigin(event);
+  console.log('allowedOrigin:', allowedOrigin);
   return {
     statusCode,
     headers: {
