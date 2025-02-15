@@ -17,7 +17,7 @@ const allowedOrigins = [
 // };
 
 const getAllowedOrigin = () => {
-  '*';
+  return '*';
 };
 
 const handleError = (error, method, event) => {
