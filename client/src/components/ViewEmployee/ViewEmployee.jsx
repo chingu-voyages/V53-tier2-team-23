@@ -39,8 +39,9 @@ function ViewEmployee() {
   const [navigateManagement, setNavigateManagement] = useState(false);
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+
   useEffect(() => {
-    console.log(navigateManagement);
     if (formSubmitted) {
       setTimeout(() => {
         setNavigateManagement(true);
@@ -60,6 +61,7 @@ function ViewEmployee() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           employeeName: identity,
@@ -154,10 +156,11 @@ function ViewEmployee() {
                 Go to Management
               </button>
             )}
-            <button
-              type='submit'
-              id='submitButton'
-              className={`${formContainerButton}
+            {!navigateManagement && (
+              <button
+                type='submit'
+                id='submitButton'
+                className={`${formContainerButton}
                 w-fit
                 rounded-full
                 border-none
@@ -173,9 +176,10 @@ function ViewEmployee() {
                 font-bold
                 shadow-md
                 `}
-            >
-              Save Changes
-            </button>
+              >
+                Save Changes
+              </button>
+            )}
           </div>
         </form>
       </div>
