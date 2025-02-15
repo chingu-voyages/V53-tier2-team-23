@@ -6,7 +6,7 @@
 
   Content-Security-Policy: 
     default-src 'self'; 
-    connect-src 'self' https://eato-meatplanner.netlify.app/.netlify/functions; 
+    connect-src 'self' http://localhost:5173 https://eato-meatplanner.netlify.app/.netlify/functions; 
     img-src 'self' https://res.cloudinary.com; 
     font-src 'self' https://fonts.gstatic.com; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
