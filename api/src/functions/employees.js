@@ -44,10 +44,11 @@ const handleError = (error, method) => {
   return {
     statusCode: 500,
     headers: {
-      'Access-Control-Allow-Origin': event.headers.origin || 'https://eato-meatplanner.netlify.app',
+      'Access-Control-Allow-Origin':
+        'http://localhost:5173, https://eato-meatplanner.netlify.app',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Credentials': 'true', 
+      'Access-Control-Allow-Credentials': 'true',
     },
     body: JSON.stringify({ error: error.message }),
   };
@@ -56,10 +57,11 @@ const handleError = (error, method) => {
 const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
   headers: {
-    'Access-Control-Allow-Origin': event.headers.origin || 'https://eato-meatplanner.netlify.app',
+    'Access-Control-Allow-Origin':
+      'http://localhost:5173, https://eato-meatplanner.netlify.app',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'true', 
+    'Access-Control-Allow-Credentials': 'true',
   },
   body: JSON.stringify(data ? { message, data } : { message }),
 });
@@ -134,21 +136,27 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body, queryStringParameters } = event;
 
+  const allowedOrigins = [
+    'http://localhost:5173', // Local development
+    'https://menuhelp.github.io/', // Production environment
+  ];
+  const origin = event.headers.origin;
+
   // Handle CORS Preflight Requests
-  if (httpMethod === 'OPTIONS') {
+  if (httpMethod === 'OPTIONS' && allowedOrigins.includes(origin)) {
     return {
       statusCode: 200,
       headers: {
-      'Access-Control-Allow-Origin': event.headers.origin || 'https://eato-meatplanner.netlify.app',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Credentials': 'true', // Add this if you're sending cookies/auth headers
+        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
       },
       body: '',
     };
   }
 
-  Check authentication for all methods except GET
+  //Check authentication for all methods except GET
   if (httpMethod !== 'GET') {
     const authResult = authenticate(event);
     if (authResult.statusCode !== 200) {
