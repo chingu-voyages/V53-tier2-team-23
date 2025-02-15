@@ -146,16 +146,16 @@ exports.handler = async (event) => {
     };
   }
 
-  // Check authentication for all methods except GET
-  // if (httpMethod !== 'GET') {
-  //   const authResult = authenticate(event);
-  //   if (authResult.statusCode !== 200) {
-  //     return authResult; // Return early if authentication fails
-  //   }
+  Check authentication for all methods except GET
+  if (httpMethod !== 'GET') {
+    const authResult = authenticate(event);
+    if (authResult.statusCode !== 200) {
+      return authResult; // Return early if authentication fails
+    }
 
-  //   // Proceed if authenticated
-  //   const user = authResult.user;
-  // }
+    // Proceed if authenticated
+    const user = authResult.user;
+  }
 
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
   const employeeName = path.split('/').pop(); // get the employeeName from the URL path
