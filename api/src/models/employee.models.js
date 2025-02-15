@@ -2,21 +2,21 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const allergen = [
-  'peanuts',
-  'shellfish',
-  'fish',
-  'corn',
-  'soy',
-  'egg',
+  'no allergies',
+  'gluten',
   'dairy',
+  'egg',
+  'seafood',
+  'soy',
   'tree nuts',
+  'peanuts',
   'legumes',
   'sesame seeds',
-  'milk',
-  'wheat',
+  'corn',
   'mustard',
-  'gluten',
+  'allium',
   'coconut',
+  'fruits',
 ];
 
 const diet = [
@@ -48,7 +48,7 @@ const employeeSchema = new Schema({
     {
       type: String, // Store the allergy name as a string
       enum: allergen, // Restrict values to the predefined list
-      default: [],
+      default: ['no allergies'],
     },
   ],
   dietaryRestrictions: [

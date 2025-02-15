@@ -183,7 +183,6 @@ function CreateEmployee() {
               <button
                 type='submit'
                 id='loginButton'
-                type='submit'
                 className={`${formContainerButton}
             w-fit
             rounded-full
