@@ -1,11 +1,11 @@
 /* 
-  Access-Control-Allow-Origin: http://localhost:5173, https://chingu-voyages.github.io, https://eato-meatplanner.netlify.app, https://eatodishes.netlify.app
+  Access-Control-Allow-Origin: http://localhost:5173, https://chingu-voyages.github.io/V53-tier2-team-23, https://eato-meatplanner.netlify.app, https://eatodishes.netlify.app
   Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS
   Access-Control-Allow-Headers: Content-Type, Authorization
   Access-Control-Allow-Credentials: true
   Content-Security-Policy: 
     default-src 'self'; 
-    connect-src 'self' http://localhost:5173 https://eato-meatplanner.netlify.app https://eatodishes.netlify.app; 
+    connect-src 'self' http://localhost:5173 https://eato-meatplanner.netlify.app https://eatodishes.netlify.app https://chingu-voyages.github.io/V53-tier2-team-23; 
     img-src 'self' https://res.cloudinary.com; 
     font-src 'self' https://fonts.gstatic.com; 
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;

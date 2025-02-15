@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const allowedOrigins = [
-  'https://chingu-voyages.github.io',
+  'http://localhost:5173',
+  'https://chingu-voyages.github.io/V53-tier2-team-23',
   'https://eato-meatplanner.netlify.app',
   'https://eatodishes.netlify.app',
 ];
@@ -22,7 +23,7 @@ const authenticate = (event) => {
           event.headers.origin
         )
           ? event.headers.origin
-          : 'https://chingu-voyages.github.io', // Default to GitHub Pages
+          : 'https://chingu-voyages.github.io/V53-tier2-team-23', // Default to GitHub Pages
       },
     };
   }
@@ -44,7 +45,7 @@ const authenticate = (event) => {
           event.headers.origin
         )
           ? event.headers.origin
-          : 'https://chingu-voyages.github.io', // Default to GitHub Pages
+          : 'https://chingu-voyages.github.io/V53-tier2-team-23', // Default to GitHub Pages
       },
     };
   }
