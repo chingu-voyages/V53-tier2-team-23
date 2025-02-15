@@ -41,7 +41,6 @@ function ViewEmployee() {
 
   const token = localStorage.getItem('token');
 
-  console.log(token); // Check if it's being retrieved correctly
   if (!token) {
     console.error('No token found');
     return;
@@ -61,6 +60,7 @@ function ViewEmployee() {
   }
 
   async function handleCreateEmployee(identity, selectedAllergies) {
+    // Check if it's being retrieved correctly
     const response = await fetch(
       'https://eato-meatplanner.netlify.app/.netlify/functions/employees',
       {
