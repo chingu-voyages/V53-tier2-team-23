@@ -140,6 +140,7 @@ exports.handler = async (event) => {
     'https://chingu-voyages.github.io',
     'https://eato-meatplanner.netlify.app',
     'https://eatodishes.netlify.app',
+    'http://localhost:5173',
   ];
 
   const origin = event.headers.origin;
