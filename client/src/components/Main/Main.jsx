@@ -26,7 +26,7 @@ function Main() {
   } = customStyles;
 
   const bgStyles = {
-    customBg: Mainstyles['custom-bg'],
+    customBg: Mainstyles['custom-bg-main'],
   };
 
   const buttonStyles = {
