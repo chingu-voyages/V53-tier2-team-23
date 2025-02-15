@@ -145,8 +145,17 @@ function Management() {
                                 key={employee._id}
                                 className='block w-full text-left px-4 py-2 hover:bg-gray-100'
                                 onClick={() => {
-                                  navigate('/edit-employee', {
-                                    state: { employeeId: employee._id },
+                                  sessionStorage.setItem(
+                                    'clearSession',
+                                    'true'
+                                  );
+                                  navigate('/manage-allergies', {
+                                    state: {
+                                      employeeData: {
+                                        employeeId: employee._id,
+                                        identity: employee.employeeName,
+                                      },
+                                    },
                                   });
                                   setShowDropdown(false);
                                 }}
