@@ -138,7 +138,7 @@ exports.handler = async (event) => {
 
   const allowedOrigins = [
     'http://localhost:5173', // Local development
-    'https://menuhelp.github.io/', // Production environment
+    'https://chingu-voyages.github.io/V53-tier2-team-23', // Production environment
   ];
   const origin = event.headers.origin;
 
