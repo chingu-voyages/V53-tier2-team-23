@@ -60,9 +60,9 @@ function AlertPopUp({ setShowAlert, showAlert }) {
               <div className={alertDialogue}>
                 <h3 className={alertText}>Alert</h3>
                 <p className={`${alertQuote} ${mbZero}`}>
-                  {messageParts[0].replace('"', '')}
-                  <span className={hightLight}>no allergies</span>
-                  {messageParts[1].replace('"', '')}
+                  {messageParts[0].replace("'", '')}
+                  {/* <span className={hightLight}>no allergies</span> */}
+                  {messageParts[1] ? messageParts[1].replace("'", '') : ''}
                 </p>
                 <button
                   onClick={closeAlert}

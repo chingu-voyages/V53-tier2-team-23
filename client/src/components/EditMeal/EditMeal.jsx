@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import AlertPopUp from '../AlertPopUp/AlertPopUp';
 import PropTypes from 'prop-types';
 
 const EditMealModal = ({
@@ -12,8 +13,13 @@ const EditMealModal = ({
   const [searchTerms, setSearchTerms] = useState({});
   const [selectedDate, setSelectedDate] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState({});
+  const [showAlert, setShowAlert] = useState(false);
   const dropdownRefs = useRef({});
   const token = localStorage.getItem('token');
+
+  const handleNotice = (message) => {
+    setShowAlert({ message, status: true });
+  };
 
   // Fetch dishes
   useEffect(() => {
@@ -30,11 +36,11 @@ const EditMealModal = ({
         if (responseData?.data?.dishes) {
           setFilterDishes(responseData.data.dishes);
         } else {
-          alert('Unexpected API error');
+          handleNotice('Unexpected API error');
           // console.error('Unexpected API error:', responseData);
         }
       } catch (error) {
-        alert('Error fetching filtered dishes');
+        handleNotice('Error fetching filtered dishes');
         // console.error('Error fetching filtered dishes:', error);
       }
     };
@@ -86,7 +92,7 @@ const EditMealModal = ({
 
   const handleSetDayOff = (date) => {
     if (dayOffCount >= maxDayOff && selectedDishes[date] !== null) {
-      alert('You can only set a maximum of 2 days off in a week.');
+      handleNotice('You can only set a maximum of 2 days off in a week.');
       return;
     }
 
@@ -142,7 +148,7 @@ const EditMealModal = ({
         );
 
         if (!dish) {
-          alert(
+          handleNotice(
             `Dish "${selectedDishName}" not found. Please select a valid dish.`
           );
           return;
@@ -168,16 +174,16 @@ const EditMealModal = ({
       const responseData = await response.json();
 
       if (!response.ok) {
-        alert(
+        handleNotice(
           `Error updating menu: ${responseData.message}. Menu update failed.`
         );
         return;
       }
-      alert('Menu updated successfully!');
+      handleNotice('Menu updated successfully!');
       setIsModalOpen(false);
       refreshMenu();
     } catch (error) {
-      alert(
+      handleNotice(
         'An unexpected error occurred while updating the menu. Please try again.'
       );
       // console.error('Error updating menu:', error);
@@ -187,121 +193,131 @@ const EditMealModal = ({
   if (!isModalOpen || !weekDates) return null;
 
   return (
-    <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
-      <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
-        <h2 className='text-[24px] font-bold font-shantell text-center mb-4 text-black'>
-          Edit Meal
-        </h2>
+    <>
+      <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
+        <div className='bg-white p-6 rounded-lg shadow-lg w-96'>
+          <h2 className='text-[24px] font-bold font-shantell text-center mb-4 text-black'>
+            Edit Meal
+          </h2>
 
-        <div className='border-8 border-secondary rounded-3xl w-full p-8 pb-4'>
-          {/* Date Picker */}
-          <div className='mb-4 '>
-            <label
-              htmlFor='datePicker'
-              className='block text-sm font-medium text-gray-700'
-            >
-              Select Date
-            </label>
-            <select
-              id='datePicker'
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className='mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md'
-            >
-              {weekDates.map((item) => (
-                <option key={item.fullDate} value={item.fullDate}>
-                  {item.day}, {item.fullDate}
-                </option>
-              ))}
-            </select>
-          </div>
+          <div className='border-8 border-secondary rounded-3xl w-full p-8 pb-4'>
+            {/* Date Picker */}
+            <div className='mb-4 '>
+              <label
+                htmlFor='datePicker'
+                className='block text-sm font-medium text-gray-700'
+              >
+                Select Date
+              </label>
+              <select
+                id='datePicker'
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className='mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md'
+              >
+                {weekDates.map((item) => (
+                  <option key={item.fullDate} value={item.fullDate}>
+                    {item.day}, {item.fullDate}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Dish Picker */}
-          <div className='mb-4'>
-            <label
-              htmlFor='dishPicker'
-              className='block text-sm font-medium text-gray-700'
-            >
-              Select Dish
-            </label>
-            <input
-              type='text'
-              id='dishPicker'
-              value={
-                selectedDishes[selectedDate] === null
-                  ? 'Day Off'
-                  : searchTerms[selectedDate] || 'Type your dish here...'
-              }
-              onFocus={() =>
-                setIsDropdownOpen((prev) => ({ ...prev, [selectedDate]: true }))
-              }
-              onChange={(e) => handleSearchChange(selectedDate, e.target.value)}
-              className={`mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md 
+            {/* Dish Picker */}
+            <div className='mb-4'>
+              <label
+                htmlFor='dishPicker'
+                className='block text-sm font-medium text-gray-700'
+              >
+                Select Dish
+              </label>
+              <input
+                type='text'
+                id='dishPicker'
+                value={
+                  selectedDishes[selectedDate] === null
+                    ? 'Day Off'
+                    : searchTerms[selectedDate] || 'Type your dish here...'
+                }
+                onFocus={() =>
+                  setIsDropdownOpen((prev) => ({
+                    ...prev,
+                    [selectedDate]: true,
+                  }))
+                }
+                onChange={(e) =>
+                  handleSearchChange(selectedDate, e.target.value)
+                }
+                className={`mt-2 block w-full px-3 py-2 border border-gray-300 rounded-md 
                 ${
                   selectedDishes[selectedDate] === null
                     ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
                     : ''
                 }`}
-              disabled={selectedDishes[selectedDate] === null}
-            />
-            {isDropdownOpen[selectedDate] &&
-              availableDishes.length > 0 &&
-              selectedDishes[selectedDate] !== null && (
-                <div className='absolute bg-white z-20 border w-[256px] mt-1 max-h-40 overflow-y-auto rounded-md shadow-lg'>
-                  {availableDishes.map((dish) => (
-                    <div
-                      key={dish._id}
-                      className='p-2 hover:bg-gray-200 cursor-pointer'
-                      onClick={() =>
-                        handleDishSelect(selectedDate, dish.dishName)
-                      }
-                    >
-                      {dish.dishName}
-                    </div>
-                  ))}
-                </div>
-              )}
-          </div>
-
-          {/* "Day Off" Button */}
-          <div className='flex items-center space-x-3 mb-5'>
-            <div
-              onClick={() => handleSetDayOff(selectedDate)}
-              className={`relative w-16 h-8 flex items-center cursor-pointer rounded-full p-1 transition-colors duration-300 ${
-                selectedDishes[selectedDate] === null
-                  ? 'bg-gray-300'
-                  : 'bg-primary'
-              }`}
-            >
-              <div
-                className={`absolute bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${
-                  selectedDishes[selectedDate] === null ? 'left-1' : 'right-1'
-                }`}
-              ></div>
+                disabled={selectedDishes[selectedDate] === null}
+              />
+              {isDropdownOpen[selectedDate] &&
+                availableDishes.length > 0 &&
+                selectedDishes[selectedDate] !== null && (
+                  <div className='absolute bg-white z-20 border w-[256px] mt-1 max-h-40 overflow-y-auto rounded-md shadow-lg'>
+                    {availableDishes.map((dish) => (
+                      <div
+                        key={dish._id}
+                        className='p-2 hover:bg-gray-200 cursor-pointer'
+                        onClick={() =>
+                          handleDishSelect(selectedDate, dish.dishName)
+                        }
+                      >
+                        {dish.dishName}
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
-            <span className='text-sm font-medium text-gray-700'>
-              {selectedDishes[selectedDate] === null ? 'Day Off' : 'Day On'}
-            </span>
-          </div>
 
-          {/* Save Button */}
-          <div className='flex justify-between'>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className='bg-gray-500 text-white py-2 px-4 rounded-md'
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              className='bg-primary text-white py-2 px-4 rounded-md'
-            >
-              Save
-            </button>
+            {/* "Day Off" Button */}
+            <div className='flex items-center space-x-3 mb-5'>
+              <div
+                onClick={() => handleSetDayOff(selectedDate)}
+                className={`relative w-16 h-8 flex items-center cursor-pointer rounded-full p-1 transition-colors duration-300 ${
+                  selectedDishes[selectedDate] === null
+                    ? 'bg-gray-300'
+                    : 'bg-primary'
+                }`}
+              >
+                <div
+                  className={`absolute bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ${
+                    selectedDishes[selectedDate] === null ? 'left-1' : 'right-1'
+                  }`}
+                ></div>
+              </div>
+              <span className='text-sm font-medium text-gray-700'>
+                {selectedDishes[selectedDate] === null ? 'Day Off' : 'Day On'}
+              </span>
+            </div>
+
+            {/* Save Button */}
+            <div className='flex justify-between'>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className='bg-gray-500 text-white py-2 px-4 rounded-md'
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSave}
+                className='bg-primary text-white py-2 px-4 rounded-md'
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      {showAlert.status && (
+        <AlertPopUp setShowAlert={setShowAlert} showAlert={showAlert} />
+      )}
+    </>
   );
 };
 

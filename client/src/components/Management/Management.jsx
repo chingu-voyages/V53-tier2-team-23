@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import MenuSection from '../MenuSection/MenuSection';
 import EmployeeSection from '../EmployeeSection/EmployeeSection';
 
 function Management() {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const [employees, setEmployees] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   const { username } = location.state || {};

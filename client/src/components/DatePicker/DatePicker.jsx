@@ -11,6 +11,7 @@ import { DayPicker, useDayPicker } from 'react-day-picker';
 import { useNavigate } from 'react-router-dom';
 import 'react-day-picker/dist/style.css';
 import PropTypes from 'prop-types';
+import AlertPopUp from '../AlertPopUp/AlertPopUp';
 
 export default function DatePicker({
   customDayPicker,
@@ -23,6 +24,7 @@ export default function DatePicker({
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [formattedNextWeekStart, setFormattedNextWeekStart] = useState('');
   const [formattedNextWeekEnd, setFormattedNextWeekEnd] = useState('');
+  const [showAlert, setShowAlert] = useState({ message: '', status: false });
   const weekdaysArray = [
     'Monday',
     'Tuesday',
@@ -36,7 +38,7 @@ export default function DatePicker({
   const navigate = useNavigate();
 
   const handleNotice = (message) => {
-    alert(message);
+    setShowAlert({ message, status: true });
   };
 
   const today = new Date();
@@ -372,6 +374,9 @@ export default function DatePicker({
           </div>
         </div>
       </form>
+      {showAlert.status && (
+        <AlertPopUp setShowAlert={setShowAlert} showAlert={showAlert} />
+      )}
     </>
   );
 }
