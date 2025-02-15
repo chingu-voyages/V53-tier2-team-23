@@ -88,7 +88,7 @@ function CheckEmployeeDetails() {
   // const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
   // const [selectedAllergies, setSelectedAllergies] = useState(allergies || []);
   const [formSubmitted, setFormSubmitted] = useState(false);
-
+  const token = localStorage.getItem('token');
   const updateEmployeeAllergies = async (employeeId, changedAllergies) => {
     try {
       const response = await fetch(
@@ -97,6 +97,7 @@ function CheckEmployeeDetails() {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ allergies: changedAllergies }),
           mode: 'cors',
