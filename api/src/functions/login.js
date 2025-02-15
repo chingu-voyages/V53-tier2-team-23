@@ -9,24 +9,48 @@ const manager = {
   password: process.env.REACT_APP_MANAGER_PASSWORD,
 };
 
+const allowedOrigins = [
+  'http://localhost:5173', // Local development
+  'https://chingu-voyages.github.io/V53-tier2-team-23/', // Production
+];
+
 exports.handler = async (event) => {
+  const origin = event.headers.origin;
+  const isAllowedOrigin = allowedOrigins.includes(origin);
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': isAllowedOrigin ? origin : allowedOrigins[1],
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+
   // set request object
   const request = {
     method: event.httpMethod,
     headers: event.headers,
-    body: event.body ? JSON.parse(event.body) : null,
+    body: null
     query: event.queryStringParameters,
   };
+
+  if (event.body) {
+    try {
+      request.body = JSON.parse(event.body);
+    } catch (error) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ message: 'Invalid JSON format' }),
+        headers,
+      };
+    }
+  }
 
   // Handle OPTIONS preflight request
   if (request.method === 'OPTIONS') {
     return {
       statusCode: 204,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      },
+      headers,
     };
   }
 
@@ -44,26 +68,19 @@ exports.handler = async (event) => {
       // Create a data object to send as the response
       const userData = {
         username: username,
-        password: password,
         token: token,
       };
 
       return {
         statusCode: 200,
         body: JSON.stringify({ userData }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
+        headers,
       };
     } else {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: "Credentials don't match" }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
+        headers,
       };
     }
   }
@@ -76,10 +93,7 @@ exports.handler = async (event) => {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: 'Token not found' }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
+        headers,
       };
     }
 
@@ -93,19 +107,13 @@ exports.handler = async (event) => {
       return {
         statusCode: 200,
         body: responseBody,
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8',
-          'Access-Control-Allow-Origin': '*',
-        },
+        headers,
       };
     } catch (error) {
       return {
         statusCode: 401,
         body: JSON.stringify({ message: 'Token not accepted' }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
+        headers,
       };
     }
   }
@@ -113,9 +121,6 @@ exports.handler = async (event) => {
   return {
     statusCode: 405,
     body: JSON.stringify({ message: 'Method Not Allowed' }),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
+    headers,
   };
 };
