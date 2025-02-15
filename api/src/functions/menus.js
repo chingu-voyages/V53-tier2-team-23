@@ -272,7 +272,7 @@ exports.handler = async (event) => {
     body: JSON.stringify({ error: 'Method not allowed.' }),
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': getAllowedOrigin(event),
+      'Access-Control-Allow-Origin': '*',
     },
   };
 };
