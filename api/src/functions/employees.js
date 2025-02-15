@@ -5,6 +5,7 @@ const Employee = require('../models/employee.models');
 
 // Validations
 const validAllergies = [
+  'no allergies',
   'gluten',
   'dairy',
   'egg',
@@ -21,7 +22,7 @@ const validAllergies = [
   'fruits',
 ];
 
-const validDiet = [
+/* const validDiet = [
   'vegetarian',
   'vegan',
   'pescatarian',
@@ -31,7 +32,7 @@ const validDiet = [
   'standard',
   'lactose-free',
   'diabetes-friendly',
-];
+]; */
 
 // helper function to validate items against a valid list
 const validateItems = (items, validItems) => {
@@ -42,9 +43,24 @@ const handleError = (error, method) => {
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
     body: JSON.stringify({ error: error.message }),
   };
 };
+
+const sendResponse = (statusCode, message, data = null) => ({
+  statusCode,
+  headers: {
+    'Access-Control-Allow-Origin': '*', // Allows all origins
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  },
+  body: JSON.stringify(data ? { message, data } : { message }),
+});
 
 // helper function to update the employee's field if provided
 // const updateEmployeeField = (employee, field, value) => {
@@ -91,44 +107,74 @@ const updateEmployeeAllergiesAndDiet = (
   return null; // No errors
 };
 
+// https://www.geeksforgeeks.org/mongoose-queries-model-findbyidandupdate-function/
+// https://www.geeksforgeeks.org/mongoose-findbyidandupdate-function/
+async function updateEmployeeAllergies(employeeId, changedAllergies) {
+  try {
+    const updatedEmployeeAllergies = await Employee.findByIdAndUpdate(
+      employeeId,
+      { allergies: changedAllergies }, // update allergies
+      { new: true } // new: This is a boolean-type option. If true, return the modified document rather than the original.
+    );
+
+    if (!updatedEmployeeAllergies) {
+      return { error: 'Employee not found.' };
+    }
+
+    return updatedEmployeeAllergies;
+  } catch (error) {
+    console.error('Error updating allergies:', error);
+    return { error: 'Error updating allergies.' };
+  }
+}
+
 exports.handler = async (event) => {
   await connectDatabase();
-  const { httpMethod, path, body } = event;
-  const employeeId = path.split('/').pop(); // get the employeeId from the URL path
+  const { httpMethod, path, body, queryStringParameters } = event;
 
-  // Check authentication
-  const authResult = authenticate(event);
-  if (authResult.statusCode !== 200) {
-    return authResult; // Return early if authentication fails
+  // Handle CORS Preflight Requests
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods':
+          'GET, POST, PUT, PATCH, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+      body: '',
+    };
   }
 
-  // Proceed if authenticated
-  const user = authResult.user;
+  // Check authentication for all methods except GET
+  // if (httpMethod !== 'GET') {
+  //   const authResult = authenticate(event);
+  //   if (authResult.statusCode !== 200) {
+  //     return authResult; // Return early if authentication fails
+  //   }
+
+  //   // Proceed if authenticated
+  //   const user = authResult.user;
+  // }
+
+  const employeeId = path.split('/').pop(); // get the employeeId from the URL path
+  const employeeName = path.split('/').pop(); // get the employeeName from the URL path
 
   // create new employee. removed employeId since database didn't include it
   if (httpMethod === 'POST' && path.endsWith('/employees')) {
     try {
-      const { employeeName, allergies, dietaryRestrictions } = JSON.parse(body);
+      const { employeeName, allergies } = JSON.parse(body);
 
       if (!employeeName) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({
-            error: 'Employeee Name is required.',
-          }),
-        };
+        return sendResponse(400, 'Employeee Name is required.');
       }
 
       const newEmployee = await Employee.create({
         employeeName,
         allergies,
-        dietaryRestrictions,
       });
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify(newEmployee),
-      };
+      return sendResponse(200, 'Employee created successfully', newEmployee);
     } catch (error) {
       return handleError(error, 'creating');
     }
@@ -138,12 +184,65 @@ exports.handler = async (event) => {
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
       const employees = await Employee.find();
-      return {
-        statusCode: 200,
-        body: JSON.stringify(employees),
-      };
+      return sendResponse(200, 'Employees retrieved successfully', employees);
     } catch (error) {
       return handleError(error, 'fetching');
+    }
+  }
+
+  // getting employee info with the name, e.g. /.netlify/functions/employees/Leon
+  if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeName}`)) {
+    try {
+      const employee = await Employee.findOne({ employeeName });
+      const employeeId = employee._id;
+      if (!employee) {
+        return sendResponse(404, 'Employee not found.');
+      }
+      return sendResponse(200, 'Employee retrieved successfully', {
+        employee,
+        employeeId,
+      });
+    } catch (error) {
+      return handleError(error, 'fetching');
+    }
+  }
+
+  // edit employee allergies
+  if (
+    httpMethod === 'PUT' &&
+    path.endsWith(`/employees/allergies/${employeeId}`)
+  ) {
+    try {
+      const { allergies } = JSON.parse(body);
+
+      if (!employeeId) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Missing employeeId' }),
+        };
+      }
+
+      if (!Array.isArray(allergies)) {
+        return sendResponse(400, 'Invalid allergies data. Expected an array.');
+      }
+
+      const updatedEmployee = await updateEmployeeAllergies(
+        employeeId,
+        allergies
+      );
+
+      if (!updatedEmployee) {
+        return sendResponse(404, 'Employee not found.');
+      }
+
+      // Successfully updated the employee's allergies
+      return sendResponse(
+        200,
+        'Employee allergies updated successfully',
+        updatedEmployee
+      );
+    } catch (error) {
+      return handleError(error, 'editing');
     }
   }
 
@@ -152,15 +251,9 @@ exports.handler = async (event) => {
     try {
       const employee = await Employee.findById(employeeId);
       if (!employee) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ error: 'Employee not found' }),
-        };
+        return sendResponse(404, 'Employee not found.');
       }
-      return {
-        statusCode: 200,
-        body: JSON.stringify(employee),
-      };
+      return sendResponse(200, 'Employee retrieved successfully', employee);
     } catch (error) {
       return handleError(error, 'fetching');
     }
@@ -200,16 +293,17 @@ exports.handler = async (event) => {
         dietToRemove
       );
       if (error) {
-        return { statusCode: 400, body: JSON.stringify({ error: error }) };
+        return sendResponse(400, 'Invalid input', error);
       }
 
       // Save the updated employee
       const updatedEmployee = await employee.save();
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify(updatedEmployee),
-      };
+      return sendResponse(
+        200,
+        'Employee updated successfully',
+        updatedEmployee
+      );
     } catch (error) {
       return handleError(error, 'editing');
     }
@@ -220,22 +314,13 @@ exports.handler = async (event) => {
     try {
       const employee = await Employee.findOneAndDelete(employeeId);
       if (!employee) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ error: 'Employee not found' }),
-        };
+        return sendResponse(404, 'Employee not found.');
       }
-      return {
-        statusCode: 200,
-        body: JSON.stringify({ message: 'Employee deleted successfully' }),
-      };
+      return sendResponse(200, 'Employee deleted successfully');
     } catch (error) {
       return handleError(error, 'deleting');
     }
   }
 
-  return {
-    statusCode: 405,
-    body: JSON.stringify({ error: 'Method not allowed.' }),
-  };
+  return sendResponse(405, 'Method not allowed.');
 };

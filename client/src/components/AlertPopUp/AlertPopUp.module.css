@@ -59,8 +59,7 @@
 }
 
 .alertModal .d-flex {
-  display: flex !important
-  ;
+  display: flex !important;
 }
 
 .alertModal .alert-status-icon {

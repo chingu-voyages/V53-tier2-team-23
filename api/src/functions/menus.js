@@ -5,15 +5,25 @@ const Dishes = require('../models/dishes.models');
 const authenticate = require('../functions/authMiddleware');
 
 const handleError = (error, method) => {
-  console.error(`Error ${method} menu: `, error);
+  console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
     body: JSON.stringify({ error: error.message }),
   };
 };
 
 const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
+  headers: {
+    'Access-Control-Allow-Origin': '*', // Allows all origins
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  },
   body: JSON.stringify(data ? { message, data } : { message }),
 });
 
@@ -21,11 +31,24 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body, queryStringParameters } = event;
 
+  // Handle CORS Preflight Requests
+  if (httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+      body: '',
+    };
+  }
+
   // Check authentication for all methods except GET
   if (httpMethod !== 'GET') {
     const authResult = authenticate(event);
     if (authResult.statusCode !== 200) {
-      return authResult; // Return early if authentication fails
+      return authResult;
     }
 
     // Proceed if authenticated
@@ -42,6 +65,18 @@ exports.handler = async (event) => {
         return sendResponse(
           400,
           'Week start date and day arrays are required.'
+        );
+      }
+
+      // to check if a menu already exists
+      const existingMenu = await Menus.findOne({
+        weekStartDate: new Date(weekStartDate),
+      });
+
+      if (existingMenu) {
+        return sendResponse(
+          409,
+          `A menu already exists for the week starting on ${weekStartDate}.`
         );
       }
 
@@ -102,11 +137,31 @@ exports.handler = async (event) => {
         if (!dishExists) {
           return sendResponse(400, `Dish with ID ${dish} does not exist.`);
         }
+
+        const isDishAlreadyAssigned = menu.days.some(
+          (day) => day.dish && day.dish.toString() === dish
+        );
+
+        if (isDishAlreadyAssigned) {
+          console.log(`Dish with ID ${dish} is already assigned in this week.`);
+          return sendResponse(
+            400,
+            `Duplicate dish found. Each dish can only be used once per week.`
+          );
+        }
+      } else {
+        const nullDishCount = menu.days.filter((day) => !day.dish).length;
+        if (nullDishCount >= 2) {
+          return sendResponse(400, 'Only 2 days off are allowed per week.');
+        }
       }
 
       dayToUpdate.dish = dish || null;
 
-      const updatedMenu = await menu.save();
+      await menu.save();
+      const updatedMenu = await Menus.findOne({
+        weekStartDate: new Date(weekStartDate),
+      }).populate('days.dish');
 
       return sendResponse(200, 'Menu updated successfully', updatedMenu);
     } catch (error) {
@@ -160,12 +215,5 @@ exports.handler = async (event) => {
     }
   }
 
-  return {
-    statusCode: 405,
-    body: JSON.stringify({ error: 'Method not allowed.' }),
-    headers: {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-  };
+  return sendResponse(405, 'Method not allowed.');
 };
