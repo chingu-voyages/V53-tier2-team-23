@@ -200,7 +200,8 @@ function LoginPage() {
         </div>
       </form>
       <div className={customStyles.formContainerResponse}>
-        {responseMessage || 'The response will be shown here ✅'}
+        {responseMessage ||
+          'For demo, manager credential username: manager, password: manager'}
       </div>
     </div>
   );

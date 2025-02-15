@@ -1,8 +1,11 @@
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import AlertPopUp from '../AlertPopUp/AlertPopUp';
 import PropTypes from 'prop-types';
 
 const ExportToPDF = ({ weekDates, getImageURL, getIngredientEmoji }) => {
+  const [showAlert, setShowAlert] = useState({ message: '', status: false });
+
   const exportToPDF = () => {
     const pdf = new jsPDF('p', 'mm', 'a4');
     let hasDishes = false;
@@ -94,7 +97,10 @@ const ExportToPDF = ({ weekDates, getImageURL, getIngredientEmoji }) => {
     weekDates.forEach((item, index) => processDish(item, index));
 
     if (!hasDishes) {
-      alert('No dishes assigned this week. PDF will not be generated.');
+      setShowAlert({
+        message: 'No dishes assigned this week. PDF will not be generated.',
+        status: true,
+      });
     }
   };
 

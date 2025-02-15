@@ -9,7 +9,7 @@
   height: 100%;
   overflow: hidden;
   outline: 0;
-  background: #00000014;
+  /* background: #00000014; */
   z-index: 99999999 !important;
   transition: display 0.4sease-in-out;
 }
