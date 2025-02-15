@@ -146,6 +146,9 @@ exports.handler = async (event) => {
 
   const origin = event.headers.origin;
 
+  console.log('Received Authorization Header:', event.headers.authorization);
+  console.log('Received Authorization origin:', origin);
+
   // Handle CORS Preflight Requests
   if (httpMethod === 'OPTIONS') {
     return {
