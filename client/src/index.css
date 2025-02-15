@@ -19,7 +19,7 @@
 
 .custom-bg::before {
   @apply absolute inset-0 bg-white opacity-80 content-[""];
-  z-index: 0;
+  z-index: -1;
 }
 
 @media not all and (min-width: 640px) {
