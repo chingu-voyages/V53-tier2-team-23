@@ -114,7 +114,10 @@ function LoginPage() {
       }
 
       setResponseMessage(`User ${username} not logged in. Logging in...`);
-      await loginUser(username, password);
+      const result = await loginUser(username, password);
+      if (result) {
+        navigate('/management', { state: { username } });
+      }
     } catch (error) {
       setResponseMessage(`Error: ${error}, authenticating user`);
     }
@@ -123,7 +126,6 @@ function LoginPage() {
   async function submitForm(event) {
     event.preventDefault();
     await handleLogin(username, password);
-    navigate('/management', { state: { username } });
   }
 
   return (
