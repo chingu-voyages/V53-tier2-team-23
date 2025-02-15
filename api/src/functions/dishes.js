@@ -10,8 +10,7 @@ const handleError = (error, method) => {
   return {
     statusCode: 500,
     headers: {
-      'Access-Control-Allow-Origin':
-        'http://localhost:5173, https://chingu-voyages.github.io',
+      'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
@@ -23,8 +22,7 @@ const handleError = (error, method) => {
 const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
   headers: {
-    'Access-Control-Allow-Origin':
-      'http://localhost:5173, https://chingu-voyages.github.io',
+    'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     'Access-Control-Allow-Credentials': 'true',

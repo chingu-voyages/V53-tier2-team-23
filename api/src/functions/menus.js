@@ -4,16 +4,15 @@ const Menus = require('../models/menu.models');
 const Dishes = require('../models/dishes.models');
 const authenticate = require('../functions/authMiddleware');
 
-const allowedOrigins = [
-  'https://chingu-voyages.github.io',
-  'https://eato-meatplanner.netlify.app',
-  'https://eatodishes.netlify.app',
-  'http://localhost:5173', // Allow localhost for development
-];
-
 const getAllowedOrigin = (event) => {
+  const allowedOrigins = [
+    'https://chingu-voyages.github.io',
+    'https://eato-meatplanner.netlify.app',
+    'https://eatodishes.netlify.app',
+    'http://localhost:5173',
+  ];
   const origin = event.headers?.origin || '';
-  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0]; // Default to first allowed origin
+  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
 };
 
 const handleError = (error, method, event) => {
@@ -272,7 +271,7 @@ exports.handler = async (event) => {
     body: JSON.stringify({ error: 'Method not allowed.' }),
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'https://chingu-voyages.github.io',
+      'Access-Control-Allow-Origin': allowedOrigin,
     },
   };
 };
