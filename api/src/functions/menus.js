@@ -273,7 +273,6 @@ exports.handler = async (event) => {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': getAllowedOrigin(event),
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   };
 };
