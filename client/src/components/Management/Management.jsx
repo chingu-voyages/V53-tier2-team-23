@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import MenuSection from '../MenuSection/MenuSection';
 
 function Management() {
-  const [buttonText, setButtonText] = useState(''); // for button "generate" or "view" text
   const [showDropdown, setShowDropdown] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -12,7 +12,6 @@ function Management() {
 
   // to navigate to the calendar for user to select week
   const handleMenuButtonClick = (action) => {
-    setButtonText(action);
     navigate('/calendar', { state: { action, isViewMode: action === 'View' } });
   };
 
@@ -70,25 +69,15 @@ function Management() {
             <p className='font-shantell text-primary text-[24px] font-bold text-center'>
               Plan your weekly menu
             </p>
-            <div className='group relative w-[340px] shadow-gray-400 shadow-md rounded-full hover:shadow-none'>
+            <div className='group focus:outline-none relative w-[340px] shadow-gray-400 shadow-md rounded-full hover:shadow-none'>
               <p className='border-secondary border-[5px] bg-white rounded-full px-16 h-[56px] text-2xl font-semibold text-primary text-center flex items-center justify-center'>
                 MENUS
               </p>
               <div className='flex flex-col justify-center items-center'>
-                <div className='hidden group-hover:flex flex-col w-[320px]'>
-                  <button
-                    onClick={() => handleMenuButtonClick('Generate')}
-                    className='border-[1px] border-primary text-2xl h-[56px] bg-white'
-                  >
-                    Generate Menus
-                  </button>
-                  <button
-                    onClick={() => handleMenuButtonClick('View')}
-                    className='border-[1px] border-primary text-2xl h-[56px] bg-white'
-                  >
-                    View Menus
-                  </button>
-                </div>
+                <MenuSection
+                  onGenerate={() => handleMenuButtonClick('Generate')}
+                  onView={() => handleMenuButtonClick('View')}
+                />
               </div>
             </div>
           </div>
