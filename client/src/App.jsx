@@ -12,10 +12,6 @@ function App() {
       <NavBar />
       <Routes>
         <Route path='/' element={<Main />} />
-        <Route path='/login' element={<LoginPage />} />
-        <Route path='/management' element={<Management />} />
-        <Route path='/calendar' element={<DatePicker />} />
-        <Route path='/menu' element={<WeeklyMenu />} />
         <Route path='/create-employee' element={<CreateEmployee />} />
         <Route path='/view-employee' element={<ViewEmployee />} />
         <Route path='/view-employee' element={<ViewEmployee />} />
