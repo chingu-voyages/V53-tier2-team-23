@@ -165,6 +165,7 @@ exports.handler = async (event) => {
 
     // Proceed if authenticated
     const user = authResult.user;
+    console.log(`Authenticated user: ${user.id}`);
   }
 
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
