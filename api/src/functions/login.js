@@ -10,7 +10,8 @@ const manager = {
 };
 
 const allowedOrigins = [
-  'https://chingu-voyages.github.io',
+  'http://localhost:5173',
+  'https://chingu-voyages.github.io/V53-tier2-team-23',
   'https://eato-meatplanner.netlify.app',
   'https://eatodishes.netlify.app',
 ];
