@@ -147,11 +147,13 @@ exports.handler = async (event) => {
   const origin = event.headers.origin;
 
   // Handle CORS Preflight Requests
-  if (httpMethod === 'OPTIONS' && allowedOrigins.includes(origin)) {
+  if (httpMethod === 'OPTIONS') {
     return {
-      statusCode: 200,
+      statusCode: 204, // No Content
       headers: {
-        'Access-Control-Allow-Origin': origin,
+        'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
+          ? origin
+          : '',
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Allow-Credentials': 'true',
