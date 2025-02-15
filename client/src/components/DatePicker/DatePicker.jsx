@@ -8,20 +8,21 @@ import {
   eachDayOfInterval,
 } from 'date-fns';
 import { DayPicker, useDayPicker } from 'react-day-picker';
+import { useNavigate } from 'react-router-dom';
 import 'react-day-picker/dist/style.css';
+import PropTypes from 'prop-types';
 
 export default function DatePicker({
   customDayPicker,
   daysOffContainer,
   daysOffText,
+  action,
+  isViewMode,
 }) {
   const [selectedDaysOff, setSelectedDaysOff] = useState([]);
   const [selectedWeek, setSelectedWeek] = useState(null);
   const [formattedNextWeekStart, setFormattedNextWeekStart] = useState('');
   const [formattedNextWeekEnd, setFormattedNextWeekEnd] = useState('');
-  const [highlightedDaysOff, setHighlightedDaysOff] = useState(null); // Store the highlighted day
-  const [selectedWeekData, setSelectedWeekData] = useState(null);
-  const [result, setResult] = useState(false);
   const weekdaysArray = [
     'Monday',
     'Tuesday',
@@ -32,26 +33,38 @@ export default function DatePicker({
     'Sunday',
   ];
 
+  const navigate = useNavigate();
+
+  const handleNotice = (message) => {
+    alert(message);
+  };
+
   const today = new Date();
+
+  // Get current week's Monday start and Sunday end
+  const currentWeekStart = startOfWeek(today, { weekStartsOn: 1 });
+  const currentWeekEnd = endOfWeek(today, { weekStartsOn: 1 });
+
   // Get next week's Monday start and Sunday end
   const nextWeekStart = startOfWeek(addWeeks(today, 1), { weekStartsOn: 1 });
   const nextWeekEnd = endOfWeek(nextWeekStart, { weekStartsOn: 1 });
 
+  // select current week in view mode else select next week
   useEffect(() => {
-    setSelectedWeek({ from: nextWeekStart, to: nextWeekEnd });
-    setFormattedNextWeekStart(format(nextWeekStart, 'MMMM d, yyyy'));
-    setFormattedNextWeekEnd(format(nextWeekEnd, 'MMMM d, yyyy'));
-  }, []);
-
-  // single day off
-  // const handleSelectedDayOffClick = (day) => {
-  //   toggle ? setSelectedDayoff(day) : setSelectedDayoff('');
-  //   setToggle(!toggle);
-  // };
+    if (isViewMode) {
+      setSelectedWeek({ from: currentWeekStart, to: currentWeekEnd });
+      setFormattedNextWeekStart(format(currentWeekStart, 'MMMM d, yyyy'));
+      setFormattedNextWeekEnd(format(currentWeekEnd, 'MMMM d, yyyy'));
+    } else {
+      setSelectedWeek({ from: nextWeekStart, to: nextWeekEnd });
+      setFormattedNextWeekStart(format(nextWeekStart, 'MMMM d, yyyy'));
+      setFormattedNextWeekEnd(format(nextWeekEnd, 'MMMM d, yyyy'));
+    }
+  }, [isViewMode]);
 
   const handleSelectedDaysOffClick = (event, day) => {
     event.preventDefault();
-    const clickedDay = event.currentTarget.getAttribute('data-day');
+    // const clickedDay = event.currentTarget.getAttribute('data-day');
 
     if (selectedWeek) {
       const dayOfWeek = weekdaysArray.indexOf(day);
@@ -87,22 +100,18 @@ export default function DatePicker({
       setSelectedDaysOff([]); // Reset days off when changing the week
     }
 
-    const weekDates = getWeekDates(newStart, newEnd);
-
-    setHighlightedDaysOff(weekDates);
-
     setFormattedNextWeekStart(format(newStart, 'MMMM d, yyyy'));
     setFormattedNextWeekEnd(format(newEnd, 'MMMM d, yyyy'));
   };
 
   // Get all the days in the selected week
-  const getWeekDates = (newStart, newEnd) => {
+  /*   const getWeekDates = (newStart, newEnd) => {
     return eachDayOfInterval({
       //https://date-fns.org/v4.1.0/docs/eachDayOfInterval
       start: newStart,
       end: newEnd,
     });
-  };
+  }; */
 
   // create form object
   class SelectedWeekObject {
@@ -138,8 +147,8 @@ export default function DatePicker({
       const selectedWeekDaysList = this.getSelectedWeekDates();
 
       const selectedWeekDays = selectedWeekDaysList.map((day) => {
-        const formattedDay = format(day, 'yyyy-MM-dd'); // 2025-02-01
-        const dayName = format(day, 'eeee'); // "Monday"
+        const formattedDay = format(day, 'yyyy-MM-dd');
+        const dayName = format(day, 'eeee');
         const dayOffStatus = this.selectedDaysOff.includes(formattedDay); // Check if it's a day off
         return {
           date: formattedDay,
@@ -158,26 +167,109 @@ export default function DatePicker({
     }
   }
 
-  const handleSubmit = (event) => {
+  // generate menu for the selected week
+  const createMenu = async (requestData, token, selectedDaysOff) => {
+    try {
+      const filteredDishes = await fetch(
+        'https://eato-meatplanner.netlify.app/.netlify/functions/dishes/filtered',
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const filteredDishesRes = await filteredDishes.json();
+      const dishIds = filteredDishesRes.data.dishes.map((dish) => dish._id);
+      const usedDishes = new Set(); // to keep track of used dishes
+
+      const getRandomDish = () => {
+        if (dishIds.length === 0) {
+          return handleNotice('No dishes available');
+        }
+
+        let randomDish;
+
+        do {
+          const randomIndex = Math.floor(Math.random() * dishIds.length);
+          randomDish = dishIds[randomIndex];
+        } while (usedDishes.has(randomDish));
+
+        usedDishes.add(randomDish);
+
+        return randomDish;
+      };
+
+      // to assign random dishes but null on days off
+      const newRequestData = {
+        ...requestData,
+        days: requestData.days.map((day) => ({
+          ...day,
+          dish: selectedDaysOff.includes(day.date) ? null : getRandomDish(),
+        })),
+      };
+
+      // create new menu
+      const response = await fetch(
+        'https://eato-meatplanner.netlify.app/.netlify/functions/menus',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newRequestData),
+        }
+      );
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        // Handle error if the menu already exists or any other issue
+        handleNotice(`Error: ${responseData.message}`);
+        return null;
+      }
+      return responseData;
+    } catch (error) {
+      handleNotice(`Error: ${error.message}`);
+      return null;
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Create a new Selected Week object
     const newSelectedWeekObject = new SelectedWeekObject(
       selectedWeek.from,
       selectedWeek.to,
       selectedDaysOff
     );
 
-    // Get the selectedWeekData from the created week
     const selectedWeekData = newSelectedWeekObject.selectedWeek;
 
     const { selectedWeekRange, selectedWeekDays } = selectedWeekData;
 
-    // console.log('Week:', selectedWeekRange);
-    // console.log('Weekdays:', selectedWeekDays);
+    if (isViewMode) {
+      navigate('/menu', { state: { weekStartDate: selectedWeekRange.from } });
+      return;
+    }
 
-    setResult(true);
-    setSelectedWeekData(selectedWeekData);
+    const requestData = {
+      weekStartDate: selectedWeekRange.from,
+      days: selectedWeekDays.map((day) => ({
+        date: day.date,
+        dish: null, // temporary placeholder
+      })),
+    };
+
+    const token = localStorage.getItem('token');
+
+    const responseData = await createMenu(requestData, token, selectedDaysOff);
+
+    if (responseData) {
+      navigate('/menu', { state: { weekStartDate: selectedWeekRange.from } });
+    }
   };
 
   const handleReset = (event) => {
@@ -212,7 +304,11 @@ export default function DatePicker({
                 ? 'DayPicker-Day--dayoffbg-highlight'
                 : undefined, // Add a custom class for the highlighted days
             }}
-            disabled={{ before: nextWeekStart }}
+            disabled={
+              isViewMode
+                ? { before: currentWeekStart }
+                : { before: nextWeekStart }
+            } // allow current week to be selected in view mode
             broadcastCalendar
             captionLayout='dropdown'
             fromYear={2000}
@@ -226,6 +322,7 @@ export default function DatePicker({
             className={`${customDayPicker}`} // Custom class for styling
           />
           <div
+            style={{ display: isViewMode ? 'none' : 'flex' }}
             className={`${daysOffContainer} flex align-center flex-wrap justify-center gap-3 max-sm:p-[0px_0px_25px] sm:p-[0px_0px_25px] md::p-[0px_28px_25px] lg:p-[0px_28px_25px] bg-white`}
           >
             <span
@@ -270,38 +367,19 @@ export default function DatePicker({
               type='submit'
               className='flex justify-end p-[5px_15px] rounded-[25px] border-2 border-white text-white bg-[#752f62] text-md'
             >
-              Save
+              Save and {action} menu
             </button>
           </div>
         </div>
       </form>
-      {result && selectedWeekData && (
-        <>
-          <div className='result-container grow'>
-            <div className='p-4 bg-gray-100 border rounded-md'>
-              <h2 className='text-lg font-bold'>Selected Week</h2>
-
-              <p>From: {selectedWeekData.selectedWeekRange.from}</p>
-              <p>To: {selectedWeekData.selectedWeekRange.to}</p>
-              <h2 className='text-lg font-bold mt-2'>Weekdays</h2>
-              <ul>
-                {selectedWeekData.selectedWeekDays &&
-                selectedWeekData.selectedWeekDays.length > 0 ? (
-                  selectedWeekData.selectedWeekDays.map((item, index) => (
-                    <ul key={index} className='day-item'>
-                      <li>{item.date}</li>
-                      <li>{item.day}</li>
-                      <li>{item.dayoff}</li>
-                    </ul>
-                  ))
-                ) : (
-                  <li>No weekdays selected</li>
-                )}
-              </ul>
-            </div>
-          </div>
-        </>
-      )}
     </>
   );
 }
+
+DatePicker.propTypes = {
+  customDayPicker: PropTypes.string,
+  daysOffContainer: PropTypes.string,
+  daysOffText: PropTypes.string,
+  action: PropTypes.string.isRequired,
+  isViewMode: PropTypes.bool.isRequired,
+};

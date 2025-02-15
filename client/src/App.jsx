@@ -3,7 +3,6 @@ import NavBar from './components/NavBar/NavBar';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import './index.css';
-import { fr } from 'date-fns/locale';
 
 function App() {
   return (
@@ -11,6 +10,8 @@ function App() {
       <NavBar />
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/create-employee' element={<CreateEmployee />} />
+        <Route path='/view-employee' element={<ViewEmployee />} />
       </Routes>
       <Footer />
     </Router>
