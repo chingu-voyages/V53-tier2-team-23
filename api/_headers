@@ -1,11 +1,13 @@
-/*   Content-Security-Policy: 
-    default-src 'self'; 
-    connect-src *;
-    img-src 'self' https://res.cloudinary.com; 
-    font-src 'self' https://fonts.gstatic.com; 
-    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-  
+/*
   Access-Control-Allow-Origin: *
   Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
   Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept, Authorization
-  Access-Control-Max-Age: 86400 */
+  Access-Control-Max-Age: 86400
+
+  Content-Security-Policy: 
+    default-src 'self'; 
+    connect-src 'self' https://eato-meatplanner.netlify.app/.netlify/functions; 
+    img-src 'self' https://res.cloudinary.com; 
+    font-src 'self' https://fonts.gstatic.com; 
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+
