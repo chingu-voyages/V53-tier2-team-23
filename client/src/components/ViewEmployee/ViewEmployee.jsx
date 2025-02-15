@@ -41,6 +41,12 @@ function ViewEmployee() {
 
   const token = localStorage.getItem('token');
 
+  console.log(token); // Check if it's being retrieved correctly
+  if (!token) {
+    console.error('No token found');
+    return;
+  }
+
   useEffect(() => {
     if (formSubmitted) {
       setTimeout(() => {
