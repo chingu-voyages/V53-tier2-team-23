@@ -31,6 +31,7 @@ const authenticate = (event) => {
     return {
       statusCode: 200,
       user: verified,
+      headers,
     }; // Return decoded token if valid
   } catch (error) {
     return {
