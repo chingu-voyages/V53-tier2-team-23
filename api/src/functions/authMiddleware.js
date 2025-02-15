@@ -13,18 +13,21 @@ const allowedOrigins = [
 
 const authenticate = (event) => {
   const token = event.headers.authorization?.replace('Bearer ', '');
+
+  const responseHeaders = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': allowedOrigins.includes(
+      event.headers.origin || ''
+    )
+      ? event.headers.origin
+      : 'https://chingu-voyages.github.io/V53-tier2-team-23',
+  };
+
   if (!token) {
     return {
       statusCode: 401,
       body: JSON.stringify({ message: 'Token not found' }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': allowedOrigins.includes(
-          event.headers.origin
-        )
-          ? event.headers.origin
-          : 'https://chingu-voyages.github.io/V53-tier2-team-23', // Default to GitHub Pages
-      },
+      headers: responseHeaders,
     };
   }
 
@@ -39,14 +42,7 @@ const authenticate = (event) => {
     return {
       statusCode: 401,
       body: JSON.stringify({ message: 'Invalid token' }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': allowedOrigins.includes(
-          event.headers.origin
-        )
-          ? event.headers.origin
-          : 'https://chingu-voyages.github.io/V53-tier2-team-23', // Default to GitHub Pages
-      },
+      headers: responseHeaders,
     };
   }
 };
