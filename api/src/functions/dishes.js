@@ -1,17 +1,29 @@
-const mongoosee = require('mongoose');
-const Dishes = require('../models/dishes.models');
-const Employee = require('../models/employee.models');
-const Image = require('../models/image.model');
-const connectDatabase = require('../config/database.config');
-const authenticate = require('../functions/authMiddleware');
+import mongoose from 'mongoose';
+import Dishes from '../models/dishes.models';
+import Employee from '../models/employee.models';
+import Image from '../models/image.model';
+import connectDatabase from '../config/database.config';
+import authenticate from '../functions/authMiddleware';
 
-const handleError = (error, method) => {
+const allowedOrigins = [
+  'https://chingu-voyages.github.io',
+  'https://eato-meatplanner.netlify.app',
+  'https://eatodishes.netlify.app',
+  'http://localhost:5173',
+];
+
+const getAllowedOrigin = (event) => {
+  const origin = event.headers?.origin || '';
+  return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+};
+
+const handleError = (error, method, event) => {
+  const allowedOrigin = getAllowedOrigin(event);
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
     headers: {
-      'Access-Control-Allow-Origin':
-        'http://localhost:5173, https://chingu-voyages.github.io',
+      'Access-Control-Allow-Origin': allowedOrigin,
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       'Access-Control-Allow-Credentials': 'true',
@@ -20,31 +32,35 @@ const handleError = (error, method) => {
   };
 };
 
-const sendResponse = (statusCode, message, data = null) => ({
-  statusCode,
-  headers: {
-    'Access-Control-Allow-Origin':
-      'http://localhost:5173, https://chingu-voyages.github.io',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'true',
-  },
-  body: JSON.stringify(data ? { message, data } : { message }),
-});
+const sendResponse = (statusCode, message, data = null, event) => {
+  const allowedOrigin = getAllowedOrigin(event);
+  return {
+    statusCode,
+    headers: {
+      'Access-Control-Allow-Origin': allowedOrigin,
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Access-Control-Allow-Credentials': 'true',
+    },
+    body: JSON.stringify(data ? { message, data } : { message }),
+  };
+};
 
 exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path } = event;
   const dishesId = path.split('/').pop();
 
-  // Handle CORS Preflight Requests (added authorization)
-  if (httpMethod === 'OPTIONS') {
+  const allowedOrigin = getAllowedOrigin(event);
+
+  if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': allowedOrigin,
         'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
       },
       body: '',
     };
@@ -63,17 +79,9 @@ exports.handler = async (event) => {
   if (httpMethod === 'GET' && path.endsWith('/dishes')) {
     try {
       const dishes = await Dishes.find();
-      return {
-        statusCode: 200,
-        body: JSON.stringify(dishes),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-      };
+      return sendResponse(200, 'Dishes fetched successfully', dishes, event);
     } catch (error) {
-      return handleError(error, 'fetching');
+      return handleError(error, 'fetching', event);
     }
   }
 
@@ -86,23 +94,14 @@ exports.handler = async (event) => {
     try {
       const { dishes, allergens } = await getFilteredDishes();
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          success: true,
-          data: {
-            dishes,
-            allergens,
-          },
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-      };
+      return sendResponse(
+        200,
+        'Filtered dishes fetched successfully',
+        { dishes, allergens },
+        event
+      );
     } catch (error) {
-      return handleError(error, 'fetching');
+      return handleError(error, 'fetching', event);
     }
   }
 
@@ -111,27 +110,11 @@ exports.handler = async (event) => {
     try {
       const dish = await Dishes.findById(dishesId);
       if (!dish) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ error: 'Dish not found' }),
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-          },
-        };
+        return sendResponse(404, 'Dish not found', null, event);
       }
-      return {
-        statusCode: 200,
-        body: JSON.stringify(dish),
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-      };
+      return sendResponse(200, 'Dish fetched successfully', dish, event);
     } catch (error) {
-      return handleError(error, 'fetching');
+      return handleError(error, 'fetching', event);
     }
   }
 
@@ -140,7 +123,7 @@ exports.handler = async (event) => {
     body: JSON.stringify({ error: 'Method not allowed.' }),
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': getAllowedOrigin(event),
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
   };
