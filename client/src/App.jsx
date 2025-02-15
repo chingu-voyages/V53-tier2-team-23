@@ -2,16 +2,15 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Main from './components/Main/Main';
 import LoginPage from './components/LoginPage/LoginPage';
+import Management from './components/Management/Management';
+import WeeklyMenu from './components/WeeklyMenu/WeeklyMenu';
+import DatePickerContainer from './components/DatePicker/DatePickerContainer';
 import CreateEmployee from './components/CreateEmployee/CreateEmployee';
+import ManageAllergies from './components/ManageAllergies/ManageAllergies';
 import ViewEmployee from './components/ViewEmployee/ViewEmployee';
+import CheckEmployeeDetails from './components/CheckEmployeeDetails/CheckEmployeeDetails';
 import Footer from './components/Footer/Footer';
 import './index.css';
-import CheckEmployeeDetails from './components/CheckEmployeeDetails/CheckEmployeeDetails';
-import DatePicker from './components/DatePicker/DatePicker';
-import DatePickerContainer from './components/DatePicker/DatePickerContainer';
-import Management from './components/Management/Management';
-import ManageAllergies from './components/ManageAllergies/ManageAllergies';
-import WeeklyMenu from './components/WeeklyMenu/WeeklyMenu';
 
 function App() {
   return (
@@ -21,8 +20,8 @@ function App() {
         <Route path='/' element={<Main />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/management' element={<Management />} />
-        <Route path='/calendar' element={<DatePickerContainer />} />
         <Route path='/menu' element={<WeeklyMenu />} />
+        <Route path='/calendar' element={<DatePickerContainer />} />
         <Route path='/create-employee' element={<CreateEmployee />} />
         <Route path='/manage-allergies' element={<ManageAllergies />} />
         <Route path='/view-employee' element={<ViewEmployee />} />
