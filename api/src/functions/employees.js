@@ -39,30 +39,38 @@ const validateItems = (items, validItems) => {
   return items.filter((item) => !validItems.includes(item));
 };
 
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://chingu-voyages.github.io/V53-tier2-team-23',
+  'https://chingu-voyages.github.io',
+  'https://eato-meatplanner.netlify.app',
+  'https://eatodishes.netlify.app',
+];
+
+const getResponseHeaders = (event) => {
+  const origin = event.headers.origin;
+  return {
+    'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
+      ? origin
+      : '*', // Allow only whitelisted origins
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+};
+
 const handleError = (error, method) => {
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
-    headers: {
-      'Access-Control-Allow-Origin':
-        'http://localhost:5173, https://chingu-voyages.github.io/V53-tier2-team-23',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Credentials': 'true',
-    },
+    headers: getResponseHeaders(event),
     body: JSON.stringify({ error: error.message }),
   };
 };
 
 const sendResponse = (statusCode, message, data = null) => ({
   statusCode,
-  headers: {
-    'Access-Control-Allow-Origin':
-      'http://localhost:5173, https://chingu-voyages.github.io/V53-tier2-team-23',
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'true',
-  },
+  headers: getResponseHeaders(event),
   body: JSON.stringify(data ? { message, data } : { message }),
 });
 
@@ -136,34 +144,19 @@ exports.handler = async (event) => {
   await connectDatabase();
   const { httpMethod, path, body, queryStringParameters } = event;
 
-  const allowedOrigins = [
-    'http://localhost:5173',
-    'https://chingu-voyages.github.io/V53-tier2-team-23',
-    'https://eato-meatplanner.netlify.app',
-    'https://eatodishes.netlify.app',
-    'http://localhost:5173',
-  ];
-
   const origin = event.headers.origin;
 
-  console.log('Received Authorization Header:', event.headers.authorization);
-  console.log('Received Authorization origin:', origin);
-
   // Handle CORS Preflight Requests
-  if (httpMethod === 'OPTIONS') {
+  if (httpMethod === 'OPTIONS' && allowedOrigins.includes(origin)) {
     return {
-      statusCode: 204, // No Content
-      headers: {
-        'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
-          ? origin
-          : '',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        'Access-Control-Allow-Credentials': 'true',
-      },
+      statusCode: 200,
+      headers: getResponseHeaders(origin),
       body: '',
     };
   }
+
+  console.log('Received Authorization Header:', event.headers.authorization);
+  console.log('Received Authorization origin:', origin);
 
   //Check authentication for all methods except GET
   if (httpMethod !== 'GET') {
