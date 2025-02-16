@@ -279,6 +279,13 @@ function ManageAllergies() {
   }, [location.state, isLoadedAllergies]);
 
   const handleViewEmployee = () => {
+    const preselectedOptions = getPreselectedOptions();
+
+    if (preselectedOptions.length > 1) {
+      setShowAlert({ message: '', status: false });
+      return;
+    }
+
     if (selectedAllergies.length === 0) {
       setShowAlert({
         message:
@@ -286,7 +293,9 @@ function ManageAllergies() {
         status: true,
       });
       return;
-    } else if (
+    }
+
+    if (
       selectedAllergies.includes('no allergies') &&
       selectedAllergies.length > 1
     ) {
@@ -296,9 +305,9 @@ function ManageAllergies() {
         status: true,
       });
       return;
-    } else {
-      setShowAlert({ message: '', status: false });
     }
+
+    setShowAlert({ message: '', status: false });
 
     sessionStorage.setItem('clearSession', 'false');
     const employeeData = {
