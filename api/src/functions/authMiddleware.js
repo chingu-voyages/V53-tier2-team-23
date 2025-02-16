@@ -14,6 +14,8 @@ const allowedOrigins = [
 const authenticate = (event) => {
   const token = event.headers.authorization?.replace('Bearer ', '');
 
+  console.log(token);
+
   const responseHeaders = {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': allowedOrigins.includes(
