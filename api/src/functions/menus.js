@@ -12,18 +12,6 @@ const allowedOrigins = [
   'https://eatodishes.netlify.app',
 ];
 
-const getResponseHeaders = (event) => {
-  const origin = event.headers.origin;
-  return {
-    'Access-Control-Allow-Origin': allowedOrigins.includes(origin)
-      ? origin
-      : '*', // Allow only whitelisted origins
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    'Access-Control-Allow-Credentials': 'true',
-  };
-};
-
 const handleError = (error, method) => {
   console.error(`Error ${method} employee: `, error);
   return {
@@ -33,9 +21,20 @@ const handleError = (error, method) => {
   };
 };
 
-const sendResponse = (statusCode, message, data = null) => ({
+const getResponseHeaders = (origin) => {
+  const allowedOrigin =
+    origin && allowedOrigins.includes(origin) ? origin : '*';
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true',
+  };
+};
+
+const sendResponse = (statusCode, message, origin, data = null) => ({
   statusCode,
-  headers: getResponseHeaders(event),
+  headers: getResponseHeaders(origin), // Use the origin from the request
   body: JSON.stringify(data ? { message, data } : { message }),
 });
 
