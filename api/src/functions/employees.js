@@ -171,14 +171,13 @@ exports.handler = async (event) => {
 
   const employeeId = path.split('/').pop(); // get the employeeId from the URL path
   const employeeName = path.split('/').pop(); // get the employeeName from the URL path
-
-  // create new employee. removed employeId since database didn't include it
+  // POST: Create employee
   if (httpMethod === 'POST' && path.endsWith('/employees')) {
     try {
       const { employeeName, allergies } = JSON.parse(body);
 
       if (!employeeName) {
-        return sendResponse(400, 'Employeee Name is required.');
+        return sendResponse(400, 'Employee Name is required.', origin);
       }
 
       const newEmployee = await Employee.create({
@@ -186,40 +185,50 @@ exports.handler = async (event) => {
         allergies,
       });
 
-      return sendResponse(200, 'Employee created successfully', newEmployee);
+      return sendResponse(
+        200,
+        'Employee created successfully',
+        origin,
+        newEmployee
+      );
     } catch (error) {
-      return handleError(error, 'creating');
+      return handleError(error, 'creating', origin); // Pass the origin here as well
     }
   }
 
-  // getting all employees
+  // GET: Get all employees
   if (httpMethod === 'GET' && path.endsWith('/employees')) {
     try {
       const employees = await Employee.find();
-      return sendResponse(200, 'Employees retrieved successfully', employees);
+      return sendResponse(
+        200,
+        'Employees retrieved successfully',
+        origin,
+        employees
+      );
     } catch (error) {
-      return handleError(error, 'fetching');
+      return handleError(error, 'fetching', origin);
     }
   }
 
-  // getting employee info with the name, e.g. /.netlify/functions/employees/Leon
+  // GET: Get employee by name (e.g. /.netlify/functions/employees/Leon)
   if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeName}`)) {
     try {
       const employee = await Employee.findOne({ employeeName });
       const employeeId = employee._id;
       if (!employee) {
-        return sendResponse(404, 'Employee not found.');
+        return sendResponse(404, 'Employee not found.', origin);
       }
-      return sendResponse(200, 'Employee retrieved successfully', {
+      return sendResponse(200, 'Employee retrieved successfully', origin, {
         employee,
         employeeId,
       });
     } catch (error) {
-      return handleError(error, 'fetching');
+      return handleError(error, 'fetching', origin);
     }
   }
 
-  // edit employee allergies
+  // PUT: Edit employee allergies
   if (
     httpMethod === 'PUT' &&
     path.endsWith(`/employees/allergies/${employeeId}`)
@@ -235,7 +244,11 @@ exports.handler = async (event) => {
       }
 
       if (!Array.isArray(allergies)) {
-        return sendResponse(400, 'Invalid allergies data. Expected an array.');
+        return sendResponse(
+          400,
+          'Invalid allergies data. Expected an array.',
+          origin
+        );
       }
 
       const updatedEmployee = await updateEmployeeAllergies(
@@ -244,34 +257,39 @@ exports.handler = async (event) => {
       );
 
       if (!updatedEmployee) {
-        return sendResponse(404, 'Employee not found.');
+        return sendResponse(404, 'Employee not found.', origin);
       }
 
-      // Successfully updated the employee's allergies
       return sendResponse(
         200,
         'Employee allergies updated successfully',
+        origin,
         updatedEmployee
       );
     } catch (error) {
-      return handleError(error, 'editing');
+      return handleError(error, 'editing', origin);
     }
   }
 
-  // getting employee info with the id, e.g. /.netlify/functions/employees/678d1c696b29fd6dada99317
+  // GET: Get employee by ID (e.g. /.netlify/functions/employees/678d1c696b29fd6dada99317)
   if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeId}`)) {
     try {
       const employee = await Employee.findById(employeeId);
       if (!employee) {
-        return sendResponse(404, 'Employee not found.');
+        return sendResponse(404, 'Employee not found.', origin);
       }
-      return sendResponse(200, 'Employee retrieved successfully', employee);
+      return sendResponse(
+        200,
+        'Employee retrieved successfully',
+        origin,
+        employee
+      );
     } catch (error) {
-      return handleError(error, 'fetching');
+      return handleError(error, 'fetching', origin);
     }
   }
 
-  // editing employee info
+  // PUT: Edit employee info
   if (httpMethod === 'PUT' && path.endsWith(`/employees/${employeeId}`)) {
     try {
       const {
@@ -282,17 +300,12 @@ exports.handler = async (event) => {
         dietToRemove,
       } = JSON.parse(body);
 
-      // Fetch the employee from the database
       const employee = await Employee.findById(employeeId);
 
       if (!employee) {
-        return {
-          statusCode: 404,
-          body: JSON.stringify({ error: 'Employee not found.' }),
-        };
+        return sendResponse(404, 'Employee not found.', origin);
       }
 
-      // update name if provided
       if (employeeName) {
         employee.employeeName = employeeName;
       }
@@ -305,34 +318,199 @@ exports.handler = async (event) => {
         dietToRemove
       );
       if (error) {
-        return sendResponse(400, 'Invalid input', error);
+        return sendResponse(400, 'Invalid input', origin, error);
       }
 
-      // Save the updated employee
       const updatedEmployee = await employee.save();
 
       return sendResponse(
         200,
         'Employee updated successfully',
+        origin,
         updatedEmployee
       );
     } catch (error) {
-      return handleError(error, 'editing');
+      return handleError(error, 'editing', origin);
     }
   }
 
-  // delete employee info
+  // DELETE: Delete employee
   if (httpMethod === 'DELETE' && path.endsWith(`/employees/${employeeId}`)) {
     try {
       const employee = await Employee.findOneAndDelete(employeeId);
       if (!employee) {
-        return sendResponse(404, 'Employee not found.');
+        return sendResponse(404, 'Employee not found.', origin);
       }
-      return sendResponse(200, 'Employee deleted successfully');
+      return sendResponse(200, 'Employee deleted successfully', origin);
     } catch (error) {
-      return handleError(error, 'deleting');
+      return handleError(error, 'deleting', origin);
     }
   }
 
+  // Catch unsupported methods
   return sendResponse(405, 'Method not allowed.', origin);
+
+  // // create new employee. removed employeId since database didn't include it
+  // if (httpMethod === 'POST' && path.endsWith('/employees')) {
+  //   try {
+  //     const { employeeName, allergies } = JSON.parse(body);
+
+  //     if (!employeeName) {
+  //       return sendResponse(400, 'Employee Name is required.', origin);
+  //     }
+
+  //     const newEmployee = await Employee.create({
+  //       employeeName,
+  //       allergies,
+  //     });
+
+  //     return sendResponse(200, 'Employee created successfully', newEmployee);
+  //   } catch (error) {
+  //     return handleError(error, 'creating');
+  //   }
+  // }
+
+  // // getting all employees
+  // if (httpMethod === 'GET' && path.endsWith('/employees')) {
+  //   try {
+  //     const employees = await Employee.find();
+  //     return sendResponse(200, 'Employees retrieved successfully', employees);
+  //   } catch (error) {
+  //     return handleError(error, 'fetching');
+  //   }
+  // }
+
+  // // getting employee info with the name, e.g. /.netlify/functions/employees/Leon
+  // if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeName}`)) {
+  //   try {
+  //     const employee = await Employee.findOne({ employeeName });
+  //     const employeeId = employee._id;
+  //     if (!employee) {
+  //       return sendResponse(404, 'Employee not found.');
+  //     }
+  //     return sendResponse(200, 'Employee retrieved successfully', {
+  //       employee,
+  //       employeeId,
+  //     });
+  //   } catch (error) {
+  //     return handleError(error, 'fetching');
+  //   }
+  // }
+
+  // // edit employee allergies
+  // if (
+  //   httpMethod === 'PUT' &&
+  //   path.endsWith(`/employees/allergies/${employeeId}`)
+  // ) {
+  //   try {
+  //     const { allergies } = JSON.parse(body);
+
+  //     if (!employeeId) {
+  //       return {
+  //         statusCode: 400,
+  //         body: JSON.stringify({ error: 'Missing employeeId' }),
+  //       };
+  //     }
+
+  //     if (!Array.isArray(allergies)) {
+  //       return sendResponse(400, 'Invalid allergies data. Expected an array.');
+  //     }
+
+  //     const updatedEmployee = await updateEmployeeAllergies(
+  //       employeeId,
+  //       allergies
+  //     );
+
+  //     if (!updatedEmployee) {
+  //       return sendResponse(404, 'Employee not found.');
+  //     }
+
+  //     // Successfully updated the employee's allergies
+  //     return sendResponse(
+  //       200,
+  //       'Employee allergies updated successfully',
+  //       updatedEmployee
+  //     );
+  //   } catch (error) {
+  //     return handleError(error, 'editing');
+  //   }
+  // }
+
+  // // getting employee info with the id, e.g. /.netlify/functions/employees/678d1c696b29fd6dada99317
+  // if (httpMethod === 'GET' && path.endsWith(`/employees/${employeeId}`)) {
+  //   try {
+  //     const employee = await Employee.findById(employeeId);
+  //     if (!employee) {
+  //       return sendResponse(404, 'Employee not found.');
+  //     }
+  //     return sendResponse(200, 'Employee retrieved successfully', employee);
+  //   } catch (error) {
+  //     return handleError(error, 'fetching');
+  //   }
+  // }
+
+  // // editing employee info
+  // if (httpMethod === 'PUT' && path.endsWith(`/employees/${employeeId}`)) {
+  //   try {
+  //     const {
+  //       employeeName,
+  //       allergiesToAdd,
+  //       allergiesToRemove,
+  //       dietToAdd,
+  //       dietToRemove,
+  //     } = JSON.parse(body);
+
+  //     // Fetch the employee from the database
+  //     const employee = await Employee.findById(employeeId);
+
+  //     if (!employee) {
+  //       return {
+  //         statusCode: 404,
+  //         body: JSON.stringify({ error: 'Employee not found.' }),
+  //       };
+  //     }
+
+  //     // update name if provided
+  //     if (employeeName) {
+  //       employee.employeeName = employeeName;
+  //     }
+
+  //     const error = updateEmployeeAllergiesAndDiet(
+  //       employee,
+  //       allergiesToAdd,
+  //       allergiesToRemove,
+  //       dietToAdd,
+  //       dietToRemove
+  //     );
+  //     if (error) {
+  //       return sendResponse(400, 'Invalid input', error);
+  //     }
+
+  //     // Save the updated employee
+  //     const updatedEmployee = await employee.save();
+
+  //     return sendResponse(
+  //       200,
+  //       'Employee updated successfully',
+  //       updatedEmployee
+  //     );
+  //   } catch (error) {
+  //     return handleError(error, 'editing');
+  //   }
+  // }
+
+  // // delete employee info
+  // if (httpMethod === 'DELETE' && path.endsWith(`/employees/${employeeId}`)) {
+  //   try {
+  //     const employee = await Employee.findOneAndDelete(employeeId);
+  //     if (!employee) {
+  //       return sendResponse(404, 'Employee not found.');
+  //     }
+  //     return sendResponse(200, 'Employee deleted successfully');
+  //   } catch (error) {
+  //     return handleError(error, 'deleting');
+  //   }
+  // }
+
+  // return sendResponse(405, 'Method not allowed.', origin);
 };
