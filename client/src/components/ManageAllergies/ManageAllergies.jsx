@@ -158,6 +158,7 @@ function ManageAllergies() {
 
   const [showAlert, setShowAlert] = useState({ message: '', status: false });
   const [preselectedOptions, setPreselectedOptions] = useState([]);
+  const [viewEmployeeTriggered, setViewEmployeeTriggered] = useState(false);
 
   useEffect(() => {
     const loadPreselectedOptions = async () => {
@@ -289,6 +290,8 @@ function ManageAllergies() {
   }, [location.state, isLoadedAllergies]);
 
   const handleViewEmployee = async () => {
+    setViewEmployeeTriggered(true);
+
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     sessionStorage.setItem('clearSession', 'false');
@@ -317,6 +320,8 @@ function ManageAllergies() {
   };
 
   useEffect(() => {
+    if (!viewEmployeeTriggered) return;
+
     const preselectedAndAllergies =
       preselectedOptions.length > 0 ? preselectedOptions : selectedAllergies;
 
@@ -346,7 +351,7 @@ function ManageAllergies() {
     }
 
     setShowAlert({ message: '', status: false });
-  }, [selectedAllergies, preselectedOptions]);
+  }, [selectedAllergies, preselectedOptions, viewEmployeeTriggered]);
 
   const handleSelectAllergies = (select) => {
     const selectedAllergies = select
