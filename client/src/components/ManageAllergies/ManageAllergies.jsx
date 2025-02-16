@@ -157,6 +157,16 @@ function ManageAllergies() {
     chosenEmployeeAllergiesList[0] === 'no allergies';
 
   const [showAlert, setShowAlert] = useState({ message: '', status: false });
+  const [preselectedOptions, setPreselectedOptions] = useState([]);
+
+  useEffect(() => {
+    const loadPreselectedOptions = async () => {
+      const preselectedOptions = await getPreselectedOptions();
+      setPreselectedOptions(preselectedOptions);
+    };
+
+    loadPreselectedOptions();
+  }, []);
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
@@ -278,42 +288,8 @@ function ManageAllergies() {
     }
   }, [location.state, isLoadedAllergies]);
 
-  useEffect(() => {
-    console.log('Selected allergies updated:', selectedAllergies);
-  }, [selectedAllergies]);
-
-  const handleViewEmployee = () => {
-    const preselectedOptions = getPreselectedOptions();
-
-    if (preselectedOptions.length > 1) {
-      setShowAlert({ message: '', status: false });
-      return;
-    }
-
-    console.log('Selected Allergies:', selectedAllergies);
-
-    if (selectedAllergies.length === 0) {
-      setShowAlert({
-        message:
-          "Please select either no allergies if the employee doesn't have any allergies or one + multiple allergies.",
-        status: true,
-      });
-      return;
-    }
-
-    if (
-      selectedAllergies.includes('no allergies') &&
-      selectedAllergies.length > 1
-    ) {
-      setShowAlert({
-        message:
-          "Please select only no allergies if the employee doesn't have any allergies or any valid allergies from the list, not both.",
-        status: true,
-      });
-      return;
-    }
-
-    setShowAlert({ message: '', status: false });
+  const handleViewEmployee = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     sessionStorage.setItem('clearSession', 'false');
     const employeeData = {
@@ -339,6 +315,38 @@ function ManageAllergies() {
       .map((isSelected, index) => (isSelected ? allergiesList[index] : null))
       .filter(Boolean);
   };
+
+  useEffect(() => {
+    const preselectedAndAllergies =
+      preselectedOptions.length > 0 ? preselectedOptions : selectedAllergies;
+
+    if (preselectedAndAllergies.length > 0) {
+      setShowAlert({ message: '', status: false });
+    }
+
+    if (preselectedAndAllergies.length === 0) {
+      setShowAlert({
+        message:
+          "Please select either 'no allergies' if the employee doesn't have any allergies or one or multiple allergies.",
+        status: true,
+      });
+      return;
+    }
+
+    if (
+      preselectedAndAllergies.includes('no allergies') &&
+      preselectedAndAllergies.length > 1
+    ) {
+      setShowAlert({
+        message:
+          "Please select only 'no allergies' if the employee doesn't have any allergies or any valid allergies from the list, not both.",
+        status: true,
+      });
+      return;
+    }
+
+    setShowAlert({ message: '', status: false });
+  }, [selectedAllergies, preselectedOptions]);
 
   const handleSelectAllergies = (select) => {
     const selectedAllergies = select
