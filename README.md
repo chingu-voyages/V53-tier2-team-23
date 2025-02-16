@@ -1,4 +1,4 @@
-# Eato
+# MenuHelp
 
 ## Overview
 This app was created for Chingu Voyage 53. It integrates with the [Dishes API](https://menus-api.vercel.app/dishes) to provide a menu scheduling platform, enabling managers to create and share weekly meal plans with staff. The application ensures employees have clear visibility of the planned meals while accounting for dietary restrictions and allergies.
