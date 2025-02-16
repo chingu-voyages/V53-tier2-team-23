@@ -337,7 +337,10 @@ function ManageAllergies() {
   };
 
   useEffect(() => {
-    if (!viewEmployeeTriggered) return; // Exit if button wasn't clicked
+    if (!viewEmployeeTriggered) {
+      setShowAlert({ message: '', status: false });
+      return;
+    }
     const combined =
       preselectedOptions.length > 1 ? preselectedOptions : selectedAllergies;
 
