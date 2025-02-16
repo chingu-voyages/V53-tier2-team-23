@@ -292,7 +292,7 @@ function ManageAllergies() {
   const handleViewEmployee = async () => {
     setViewEmployeeTriggered(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    //await new Promise((resolve) => setTimeout(resolve, 1000));
 
     sessionStorage.setItem('clearSession', 'false');
     const employeeData = {
