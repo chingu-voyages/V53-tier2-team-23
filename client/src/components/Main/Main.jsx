@@ -39,9 +39,11 @@ function Main() {
 
   const navigate = useNavigate();
 
+  const token = localStorage.getItem('token');
+
   const handleEnterManagerDashboard = (event) => {
     event.preventDefault();
-    navigate('/login');
+    navigate(token ? '/management' : '/login');
   };
 
   const handleEnterEmployeeView = (event) => {
