@@ -337,38 +337,36 @@ function ManageAllergies() {
   };
 
   useEffect(() => {
-    if (!viewEmployeeTriggered) {
-      return;
+    if (viewEmployeeTriggered) {
+      const combined =
+        preselectedOptions.length > 1 ? preselectedOptions : selectedAllergies;
+
+      if (combined.length === 0) {
+        setShowAlert({
+          message:
+            "Please select either 'no allergies' if the employee doesn't have any allergies or one or multiple allergies.",
+          status: true,
+        });
+        setViewEmployeeTriggered(false);
+        return;
+      }
+
+      if (combined.includes('no allergies') && combined.length > 1) {
+        setShowAlert({
+          message:
+            "Please select only 'no allergies' if the employee doesn't have any allergies or any valid allergies from the list, not both.",
+          status: true,
+        });
+        setViewEmployeeTriggered(false);
+        return;
+      }
+
+      // If everything is valid, clear the alert and update state
+      setShowAlert({ message: '', status: false });
+      setPreselectedAndAllergies(combined);
+
+      handleValidatedNavigation(); // Call navigation function when validation passes
     }
-    const combined =
-      preselectedOptions.length > 1 ? preselectedOptions : selectedAllergies;
-
-    if (combined.length === 0) {
-      setShowAlert({
-        message:
-          "Please select either 'no allergies' if the employee doesn't have any allergies or one or multiple allergies.",
-        status: true,
-      });
-      setViewEmployeeTriggered(false);
-      return;
-    }
-
-    if (combined.includes('no allergies') && combined.length > 1) {
-      setShowAlert({
-        message:
-          "Please select only 'no allergies' if the employee doesn't have any allergies or any valid allergies from the list, not both.",
-        status: true,
-      });
-      setViewEmployeeTriggered(false);
-      return;
-    }
-
-    // If everything is valid, clear the alert and update state
-    setShowAlert({ message: '', status: false });
-    setPreselectedAndAllergies(combined);
-    setViewEmployeeTriggered(false);
-
-    handleValidatedNavigation(); // Call navigation function when validation passes
   }, [selectedAllergies, preselectedOptions, viewEmployeeTriggered]);
 
   const handleSelectAllergies = (select) => {
