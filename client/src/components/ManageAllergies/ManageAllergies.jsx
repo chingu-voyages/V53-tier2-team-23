@@ -278,6 +278,10 @@ function ManageAllergies() {
     }
   }, [location.state, isLoadedAllergies]);
 
+  useEffect(() => {
+    console.log('Selected allergies updated:', selectedAllergies);
+  }, [selectedAllergies]);
+
   const handleViewEmployee = () => {
     const preselectedOptions = getPreselectedOptions();
 
@@ -285,6 +289,8 @@ function ManageAllergies() {
       setShowAlert({ message: '', status: false });
       return;
     }
+
+    console.log('Selected Allergies:', selectedAllergies);
 
     if (selectedAllergies.length === 0) {
       setShowAlert({
