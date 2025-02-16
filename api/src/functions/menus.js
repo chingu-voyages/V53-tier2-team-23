@@ -21,7 +21,7 @@ const handleError = (error, method) => {
   };
 };
 
-const getResponseHeaders = (origin) => {
+const getResponseHeaders = (origin = '*') => {
   const allowedOrigin =
     origin && allowedOrigins.includes(origin) ? origin : '*';
   return {

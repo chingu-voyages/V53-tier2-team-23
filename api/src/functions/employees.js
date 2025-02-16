@@ -56,7 +56,7 @@ const handleError = (error, method) => {
   };
 };
 
-const getResponseHeaders = (origin) => {
+const getResponseHeaders = (origin = '*') => {
   const allowedOrigin =
     origin && allowedOrigins.includes(origin) ? origin : '*';
   return {
@@ -70,6 +70,12 @@ const getResponseHeaders = (origin) => {
 const sendResponse = (statusCode, message, origin, data = null) => ({
   statusCode,
   headers: getResponseHeaders(origin), // Use the origin from the request
+  body: JSON.stringify(data ? { message, data } : { message }),
+});
+
+const sendResponse = (statusCode, message, origin, data = null) => ({
+  statusCode,
+  headers: getResponseHeaders(origin), // Check if this returns valid headers
   body: JSON.stringify(data ? { message, data } : { message }),
 });
 
@@ -145,6 +151,8 @@ exports.handler = async (event) => {
 
   const origin = event.headers.origin;
 
+  console.log('Received Authorization origin:', getResponseHeaders(origin));
+
   // Handle CORS Preflight Requests
   if (httpMethod === 'OPTIONS' && allowedOrigins.includes(origin)) {
     return {
@@ -153,9 +161,6 @@ exports.handler = async (event) => {
       body: '',
     };
   }
-
-  console.log('Received Authorization Header:', event.headers.authorization);
-  console.log('Received Authorization origin:', origin);
 
   //Check authentication for all methods except GET
   if (httpMethod !== 'GET') {
