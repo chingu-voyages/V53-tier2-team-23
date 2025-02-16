@@ -158,6 +158,7 @@ function ManageAllergies() {
 
   const [showAlert, setShowAlert] = useState({ message: '', status: false });
   const [preselectedOptions, setPreselectedOptions] = useState([]);
+  const [preselectedAndAllergies, setPreselectedAndAllergies] = useState([]);
   const [viewEmployeeTriggered, setViewEmployeeTriggered] = useState(false);
 
   useEffect(() => {
@@ -289,16 +290,20 @@ function ManageAllergies() {
     }
   }, [location.state, isLoadedAllergies]);
 
-  const handleViewEmployee = async () => {
+  const handleViewEmployee = () => {
     setViewEmployeeTriggered(true);
+  };
 
-    //await new Promise((resolve) => setTimeout(resolve, 1000));
-
+  const handleValidatedNavigation = () => {
     sessionStorage.setItem('clearSession', 'false');
+
     const employeeData = {
       employeeId,
       identity,
-      allergies: selectedAllergies,
+      allergies:
+        preselectedAndAllergies.length === 0
+          ? ['no allergies']
+          : preselectedAndAllergies,
     };
 
     sessionStorage.setItem('employeeData', JSON.stringify(employeeData));
@@ -306,8 +311,8 @@ function ManageAllergies() {
 
     navigate('/check-employee-details', {
       state: {
-        employeeData: employeeData,
-        optionsState: optionsState,
+        employeeData,
+        optionsState,
       },
     });
   };
@@ -320,37 +325,36 @@ function ManageAllergies() {
   };
 
   useEffect(() => {
-    if (!viewEmployeeTriggered) return;
+    if (!viewEmployeeTriggered) return; // Exit if button wasn't clicked
+    const combined =
+      preselectedOptions.length > 1 ? preselectedOptions : selectedAllergies;
 
-    const preselectedAndAllergies =
-      preselectedOptions.length > 0 ? preselectedOptions : selectedAllergies;
-
-    if (preselectedAndAllergies.length > 0) {
-      setShowAlert({ message: '', status: false });
-    }
-
-    if (preselectedAndAllergies.length === 0) {
+    if (combined.length === 0) {
       setShowAlert({
         message:
           "Please select either 'no allergies' if the employee doesn't have any allergies or one or multiple allergies.",
         status: true,
       });
+      setViewEmployeeTriggered(false);
       return;
     }
 
-    if (
-      preselectedAndAllergies.includes('no allergies') &&
-      preselectedAndAllergies.length > 1
-    ) {
+    if (combined.includes('no allergies') && combined.length > 1) {
       setShowAlert({
         message:
           "Please select only 'no allergies' if the employee doesn't have any allergies or any valid allergies from the list, not both.",
         status: true,
       });
+      setViewEmployeeTriggered(false);
       return;
     }
 
+    // If everything is valid, clear the alert and update state
     setShowAlert({ message: '', status: false });
+    setPreselectedAndAllergies(combined);
+    setViewEmployeeTriggered(false);
+
+    handleValidatedNavigation(); // Call navigation function when validation passes
   }, [selectedAllergies, preselectedOptions, viewEmployeeTriggered]);
 
   const handleSelectAllergies = (select) => {
