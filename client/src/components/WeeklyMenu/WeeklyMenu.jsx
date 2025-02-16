@@ -16,6 +16,8 @@ function WeeklyMenu() {
   const [weekDates, setWeekDates] = useState([]);
   const location = useLocation();
   const { weekStartDate } = location.state || {};
+  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentWeekStartDate, setCurrentWeekStartDate] =
     useState(weekStartDate);
@@ -25,6 +27,30 @@ function WeeklyMenu() {
 
   const dishSwiperRef = useRef(null);
   const dateSwiperRef = useRef(null);
+  const exportMenuRef = useRef(null);
+  const editMenuRef = useRef(null);
+  const editButtonRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        exportMenuRef.current &&
+        !exportMenuRef.current.contains(event.target)
+      ) {
+        setIsExportMenuOpen(false);
+      }
+
+      if (
+        editMenuRef.current &&
+        !editMenuRef.current.contains(event.target) &&
+        !editButtonRef.current.contains(event.target)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const ingredientCategories = {
     Mushrooms: ['Portobello Mushroom', 'Mushrooms'],
@@ -590,55 +616,67 @@ function WeeklyMenu() {
           {weekStartDate && (
             <div className='mt-5 md:mt-0 flex justify-between items-center border-t-2 border-b-2 border-primary px-3 pt-2 pb-1 bg-white'>
               <div
-                className={`group relative flex flex-col items-center ${
+                className={`relative flex flex-col items-center ${
                   currentWeekStartDate === currentWeekStart
                     ? 'opacity-50 cursor-not-allowed'
                     : ''
                 }`}
                 disabled={currentWeekStartDate === currentWeekStart}
               >
-                <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-gray-400'>
+                <p
+                  ref={editButtonRef}
+                  className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-gray-400'
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  disabled={currentWeekStartDate === currentWeekStart}
+                >
                   Menu
                 </p>
-                <div
-                  className={`hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] z-20 ${
-                    currentWeekStartDate === currentWeekStart
-                      ? 'group-hover:hidden cursor-none'
-                      : ''
-                  }`}
-                >
-                  {/* Edit */}
-                  <button
-                    className='border-[1px] border-primary text-[24px] h-[45px] w-[115px] bg-white'
-                    onClick={() => setIsModalOpen(true)}
-                    disabled={currentWeekStartDate === currentWeekStart}
+                {isMenuOpen && (
+                  <div
+                    ref={editMenuRef}
+                    className='flex flex-col mt-2 absolute bottom-[100%] z-20'
                   >
-                    Edit
-                  </button>
-                  {/* Regen */}
-                  <button
-                    className='border-[1px] border-primary text-[24px] h-[45px] w-[115px] bg-white'
-                    onClick={() => regenerateMenu(token)}
-                    disabled={currentWeekStartDate === currentWeekStart}
-                  >
-                    Regen
-                  </button>
-                </div>
+                    {/* Edit */}
+                    <button
+                      className='border-[1px] border-primary text-[24px] h-[45px] w-[115px] bg-white'
+                      onClick={() => setIsModalOpen(true)}
+                      disabled={currentWeekStartDate === currentWeekStart}
+                    >
+                      Edit
+                    </button>
+                    {/* Regen */}
+                    <button
+                      className='border-[1px] border-primary text-[24px] h-[45px] w-[115px] bg-white'
+                      onClick={() => regenerateMenu(token)}
+                      disabled={currentWeekStartDate === currentWeekStart}
+                    >
+                      Regen
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Export buttons */}
-              <div className='group relative flex flex-col items-center'>
-                <p className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center gap-2 shadow-lg w-fit cursor-pointer shadow-gray-400'>
+              <div
+                ref={exportMenuRef}
+                className='relative flex flex-col items-center'
+              >
+                <p
+                  className='bg-primary text-white p-1 px-6 rounded-full text-[24px] flex items-center justify-center  shadow-lg w-fit cursor-pointer shadow-gray-400'
+                  onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
+                >
                   Export Menu <FaArrowDown />
                 </p>
-                <div className='hidden group-hover:flex flex-col mt-2 absolute bottom-[100%] left-2 right-0 z-20'>
-                  <ExportToPDF
-                    weekDates={weekDates}
-                    getImageURL={getImageURL}
-                    getIngredientEmoji={getIngredientEmoji}
-                  />
-                  <ExportToExcel weekDates={weekDates} />
-                </div>
+                {isExportMenuOpen && (
+                  <div className='flex flex-col mt-2 absolute bottom-[100%] left-2 right-0 z-20'>
+                    <ExportToPDF
+                      weekDates={weekDates}
+                      getImageURL={getImageURL}
+                      getIngredientEmoji={getIngredientEmoji}
+                    />
+                    <ExportToExcel weekDates={weekDates} />
+                  </div>
+                )}
               </div>
             </div>
           )}
