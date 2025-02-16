@@ -338,8 +338,7 @@ function ManageAllergies() {
 
   useEffect(() => {
     if (!viewEmployeeTriggered) {
-      setShowAlert({ message: '', status: false });
-      //return;
+      return;
     }
     const combined =
       preselectedOptions.length > 1 ? preselectedOptions : selectedAllergies;
