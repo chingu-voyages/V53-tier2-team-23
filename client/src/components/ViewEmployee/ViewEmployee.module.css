@@ -23,6 +23,7 @@ h2 {
   width: 100%;
   margin: 25px auto;
   height: auto;
+  min-height: 70vh;
   flex-wrap: wrap;
   max-width: 500px;
 }
