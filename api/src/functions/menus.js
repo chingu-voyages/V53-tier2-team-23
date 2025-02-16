@@ -12,11 +12,11 @@ const allowedOrigins = [
   'https://eatodishes.netlify.app',
 ];
 
-const handleError = (error, method) => {
+const handleError = (error, method, origin) => {
   console.error(`Error ${method} employee: `, error);
   return {
     statusCode: 500,
-    headers: getResponseHeaders(event),
+    headers: getResponseHeaders(origin),
     body: JSON.stringify({ error: error.message }),
   };
 };
@@ -32,7 +32,7 @@ const getResponseHeaders = (origin = '*') => {
   };
 };
 
-const sendResponse = (statusCode, message, origin, data = null) => ({
+const sendResponse = (statusCode, message, data = null, origin) => ({
   statusCode,
   headers: getResponseHeaders(origin), // Use the origin from the request
   body: JSON.stringify(data ? { message, data } : { message }),
@@ -261,8 +261,8 @@ exports.handler = async (event) => {
           origin
         );
       }
-
-      return sendResponse(200, 'Menu fetched successfully', origin, menu);
+      console.log('Fetched menu:', menu);
+      return sendResponse(200, 'Menu fetched successfully', menu, origin);
     } catch (error) {
       return handleError(error, 'fetching', origin);
     }

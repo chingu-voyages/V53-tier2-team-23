@@ -1,9 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// using dotenv just for local testing as I don't have access to netlify
-const dotenv = require('dotenv');
-dotenv.config();
-
 const allowedOrigins = [
   'http://localhost:5173',
   'https://chingu-voyages.github.io',
@@ -33,7 +29,7 @@ const authenticate = (event) => {
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET); // Verify token
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
     return {
       statusCode: 200,
       headers: responseHeaders,
