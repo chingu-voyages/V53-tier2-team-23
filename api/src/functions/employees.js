@@ -335,5 +335,5 @@ exports.handler = async (event) => {
     }
   }
 
-  return sendResponse(405, 'Method not allowed.');
+  return sendResponse(405, 'Method not allowed.', origin);
 };
