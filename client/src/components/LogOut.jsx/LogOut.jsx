@@ -21,7 +21,7 @@ const LogOut = () => {
 
   return (
     <>
-      <div className='hidden group-hover:flex group-focus:flex flex-col w-[320px]'>
+      <div className='flex flex-col w-[200px] md:w-[320px]'>
         <button
           onClick={logoutUser}
           className='border-[1px] border-primary text-2xl h-[56px] bg-white'

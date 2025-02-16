@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { CgProfile } from 'react-icons/cg'; // placeholder for profile icon
 import Logo from '../../assets/logo5.svg';
 import MenuSection from '../MenuSection/MenuSection';
@@ -9,11 +9,24 @@ import { useNavigate } from 'react-router-dom';
 function NavBar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const token = localStorage.getItem('token');
+  const menuRef = useRef(null);
 
   useEffect(() => {
     setIsLoggedIn(!!token);
   }, [token]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogoClick = () => {
     navigate(token ? '/management' : '/');
@@ -84,14 +97,17 @@ function NavBar() {
               </div>
             </ul>
           </div>
-          <div className='group relative sm:hidden'>
+          <div ref={menuRef} className='relative sm:hidden'>
             <CgProfile
               size={40}
               className='absolute top-4 right-7 text-primary'
+              onClick={() => setIsOpen(!isOpen)}
             />
-            <div className='absolute right-0 top-full z-20'>
-              <LogOut />
-            </div>
+            {isOpen && (
+              <div className='absolute right-0 top-14 z-20 bg-white shadow-md rounded-md'>
+                <LogOut />
+              </div>
+            )}
           </div>
         </div>
       )}

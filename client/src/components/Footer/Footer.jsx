@@ -5,17 +5,30 @@ import LogOut from '../LogOut.jsx/LogOut';
 import MenuSection from '../MenuSection/MenuSection';
 import EmployeeSection from '../EmployeeSection/EmployeeSection';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function Footer() {
   const navigate = useNavigate();
   const [showNavOptions, setShowNavOptions] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const token = localStorage.getItem('token');
+  const menuRef = useRef(null);
 
   useEffect(() => {
     setIsLoggedIn(!!token);
   }, [token]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleLogoClick = () => {
     navigate(token ? '/management' : '/');
@@ -40,6 +53,7 @@ function Footer() {
   };
 
   const handleAddEmployee = () => {
+    setShowNavOptions(false);
     navigate('/create-employee');
   };
 
@@ -71,11 +85,16 @@ function Footer() {
 
       {isLoggedIn && (
         <div>
-          <div className='hidden sm:flex group'>
-            <CgProfile className='w-14 h-14 lg:w-16 lg:h-16 text-primary' />
-            <div className='absolute right-0 top-auto z-20'>
-              <LogOut />
-            </div>
+          <div ref={menuRef} className='relative sm:flex hidden'>
+            <CgProfile
+              className='w-14 h-14 lg:w-16 lg:h-16 text-primary'
+              onClick={() => setIsOpen(!isOpen)}
+            />
+            {isOpen && (
+              <div className='absolute right-0 bottom-14 z-20 bg-white shadow-md rounded-md'>
+                <LogOut />
+              </div>
+            )}
           </div>
 
           <button
