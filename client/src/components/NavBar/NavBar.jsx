@@ -41,7 +41,7 @@ function NavBar() {
 
   return (
     <nav className='flex gap-16 justify-between p-[0.55rem] pt-3.5 pb-[1.7rem] md:px-8 md:pt-7 md:pb-[1.6rem] lg:pl-[5.5rem] lg:pt-[0.5rem] lg:pb-[2.1rem]'>
-      <div className='flex' onClick={handleLogoClick}>
+      <div className='flex cursor-pointer' onClick={handleLogoClick}>
         <img
           src={Logo}
           alt='MenuHelp logo'
