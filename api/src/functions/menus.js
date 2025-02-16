@@ -32,7 +32,7 @@ const getResponseHeaders = (origin = '*') => {
   };
 };
 
-const sendResponse = (statusCode, message, origin, data = null) => ({
+const sendResponse = (statusCode, message, data = null, origin) => ({
   statusCode,
   headers: getResponseHeaders(origin), // Use the origin from the request
   body: JSON.stringify(data ? { message, data } : { message }),
