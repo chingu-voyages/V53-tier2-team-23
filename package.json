@@ -1,0 +1,10 @@
+{
+  "name": "v53-tier2-team-23",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node backend/src/app.js",
+    "dev": "vite --config frontend/vite.config.js",
+    "install:all": "npm install --prefix backend && npm install --prefix frontend"
+  }
+}

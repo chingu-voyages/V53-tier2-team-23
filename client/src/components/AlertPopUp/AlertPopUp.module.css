@@ -1,0 +1,130 @@
+.alert {
+  opacity: 1;
+  display: block;
+  transition: display 0.4sease-in-out;
+  position: fixed;
+  top: 25%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: 0;
+  /* background: #00000014; */
+  z-index: 99999999 !important;
+  transition: display 0.4sease-in-out;
+}
+
+.alertModal {
+  max-width: 500px;
+  margin: 4.75rem auto;
+}
+
+.alertModal .alert-modal-content {
+  background: transparent;
+  border: none;
+  height: 250px;
+  margin-top: 0em;
+}
+
+.alertModal .alert-wrapper {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+  margin: auto;
+  padding: 2em;
+  position: relative;
+  border-radius: 8px;
+  box-shadow: 0 3px 20px 2px #c5c5c5;
+  background-color: #fff;
+}
+
+.alertModal .alert-wrapper .alert-close-icon {
+  font-size: 24px;
+  width: 20px;
+  position: absolute;
+  right: 20px;
+  top: 25px;
+  color: #95969f;
+  font-weight: 400;
+  border: none;
+  background: transparent;
+}
+
+.alerts button {
+  padding: 5px 10px;
+  margin: 0.5rem;
+  flex: 1 100px;
+  max-width: 100px;
+  cursor: pointer;
+}
+
+.alertModal .d-flex {
+  display: flex !important;
+}
+
+.alertModal .alert-status-icon {
+  margin: 0 15px auto 0;
+}
+
+.alertModal .alert-dialogue {
+  width: 100%;
+  max-width: 400px;
+}
+
+.alertModal .alert-dialogue .alert-text {
+  margin: 0 0 20px;
+  padding: 0;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #262938;
+  position: relative;
+  text-align: left;
+}
+
+.alertModal .mb-0 {
+  margin-bottom: 0;
+}
+
+.highlight {
+  font-weight: bold;
+  color: white;
+  background-color: #de1327;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.alertModal .alert-quote {
+  height: auto;
+  font-size: 15px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: italic;
+  line-height: 2.2;
+  letter-spacing: 0.08px;
+  color: #262938;
+  font-family: 'Rubik', sans-serif;
+}
+
+.alertModal .alert-dialogue .close-alert-btn {
+  margin: 10px 0 0;
+  padding: 6px;
+  border: none;
+  text-transform: capitalize;
+  width: 140px;
+  height: 42px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: 0.35px;
+  text-align: center;
+  color: #fff;
+  border-radius: 8px;
+  background-color: #de1327;
+}

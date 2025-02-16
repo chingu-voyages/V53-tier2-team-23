@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply font-poppins;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.custom-bg {
+  @apply bg-cover bg-center relative;
+  background-image: url('https://res.cloudinary.com/dspxn4ees/image/upload/v1738147201/calendar-background-image.jpg');
+  padding-top: 25px;
+}
+
+.custom-bg::before {
+  @apply absolute inset-0 bg-white opacity-80 content-[""];
+  z-index: 0;
+}
+
+@media not all and (min-width: 640px) {
+  .custom-bg {
+    padding-top: 5px;
+  }
+}

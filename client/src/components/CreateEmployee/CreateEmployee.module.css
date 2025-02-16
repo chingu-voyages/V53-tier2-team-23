@@ -1,0 +1,39 @@
+h2 {
+  color: #fff;
+}
+
+h4 {
+  font-family: Poppins, san-serif;
+}
+
+.form-container {
+  height: auto;
+  max-width: 300px;
+  margin: 25px auto;
+  min-height: 70vh;
+}
+
+.form-container__title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-container__input {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.form-container__button {
+  cursor: pointer;
+  margin: 15px auto;
+}
+
+.form-container__response {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
