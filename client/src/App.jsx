@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './components/NavBar/NavBar';
 import Main from './components/Main/Main';
 import LoginPage from './components/LoginPage/LoginPage';
@@ -14,7 +14,7 @@ import './index.css';
 
 function App() {
   return (
-    <Router basename='/V53-tier2-team-23'>
+    <Router>
       <NavBar />
       <Routes>
         <Route path='/' element={<Main />} />
