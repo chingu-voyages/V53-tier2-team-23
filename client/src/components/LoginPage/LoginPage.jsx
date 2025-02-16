@@ -154,7 +154,7 @@ function LoginPage() {
       </h2>
       <form onSubmit={submitForm} className={formContainerForm}>
         <label className='text-black my-3' htmlFor='username'>
-          Proffesional Email
+          Username
         </label>
         <input
           onChange={(e) => setUsername(e.target.value)}
@@ -162,7 +162,7 @@ function LoginPage() {
           id='username'
           value={username}
           className={formContainerInput}
-          placeholder='john.doe@menuhelp.com'
+          placeholder='Enter Username'
           required
         />
         <label className='text-black my-3' htmlFor='password'>

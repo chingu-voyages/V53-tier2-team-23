@@ -65,7 +65,7 @@ function Main() {
           <h2
             className={`${formContainerTitle} text-[#492470] xs:text-2xl text-xl font-bold`}
           >
-            Weekly menu Home page
+            Access to your dashboard
           </h2>
         </div>
         <button
