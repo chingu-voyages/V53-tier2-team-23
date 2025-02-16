@@ -113,7 +113,7 @@ exports.handler = async (event) => {
         days,
       });
 
-      return sendResponse(200, 'Menu created successfully', newMenu, origin);
+      return sendResponse(200, 'Menu created successfully', origin, newMenu);
     } catch (error) {
       return handleError(error, 'creating', origin);
     }
@@ -198,8 +198,8 @@ exports.handler = async (event) => {
       return sendResponse(
         200,
         'Menu updated successfully',
-        updatedMenu,
-        origin
+        origin,
+        updatedMenu
       );
     } catch (error) {
       return handleError(error, 'updating specific day', origin);
@@ -262,7 +262,7 @@ exports.handler = async (event) => {
         );
       }
 
-      return sendResponse(200, 'Menu fetched successfully', menu, origin);
+      return sendResponse(200, 'Menu fetched successfully', origin, menu);
     } catch (error) {
       return handleError(error, 'fetching', origin);
     }
