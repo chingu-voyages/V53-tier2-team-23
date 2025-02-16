@@ -1,9 +1,5 @@
 const jwt = require('jsonwebtoken');
 
-// using dotenv just for local testing as I don't have access to netlify
-const dotenv = require('dotenv');
-dotenv.config();
-
 const allowedOrigins = [
   'https://chingu-voyages.github.io',
   'https://eato-meatplanner.netlify.app',
@@ -12,40 +8,34 @@ const allowedOrigins = [
 
 const authenticate = (event) => {
   const token = event.headers.authorization?.replace('Bearer ', '');
+  const origin = allowedOrigins.includes(event.headers.origin)
+    ? event.headers.origin
+    : 'https://chingu-voyages.github.io';
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': origin,
+  };
+
   if (!token) {
     return {
       statusCode: 401,
       body: JSON.stringify({ message: 'Token not found' }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': allowedOrigins.includes(
-          event.headers.origin
-        )
-          ? event.headers.origin
-          : 'https://chingu-voyages.github.io', // Default to GitHub Pages
-      },
+      headers,
     };
   }
 
   try {
-    const verified = jwt.verify(token, process.env.JWT_SECRET); // Verify token
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
     return {
       statusCode: 200,
       user: verified,
       headers,
-    }; // Return decoded token if valid
+    };
   } catch (error) {
     return {
       statusCode: 401,
       body: JSON.stringify({ message: 'Invalid token' }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': allowedOrigins.includes(
-          event.headers.origin
-        )
-          ? event.headers.origin
-          : 'https://chingu-voyages.github.io', // Default to GitHub Pages
-      },
+      headers,
     };
   }
 };
