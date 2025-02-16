@@ -297,13 +297,26 @@ function ManageAllergies() {
   const handleValidatedNavigation = () => {
     sessionStorage.setItem('clearSession', 'false');
 
+    const combined =
+      preselectedOptions.length > 1 ? preselectedOptions : selectedAllergies;
+
+    const allergies = combined.length === 0 ? ['no allergies'] : combined;
+
+    if (allergies.includes('no allergies') && allergies.length > 1) {
+      setShowAlert({
+        message:
+          "Please select only 'no allergies' if the employee doesn't have any allergies or any valid allergies from the list, not both.",
+        status: true,
+      });
+      return;
+    }
+
+    setShowAlert({ message: '', status: false });
+
     const employeeData = {
       employeeId,
       identity,
-      allergies:
-        preselectedAndAllergies.length === 0
-          ? ['no allergies']
-          : preselectedAndAllergies,
+      allergies,
     };
 
     sessionStorage.setItem('employeeData', JSON.stringify(employeeData));
@@ -317,7 +330,6 @@ function ManageAllergies() {
     });
   };
 
-  // preselected options based on optionsState
   const getPreselectedOptions = () => {
     return optionsState
       .map((isSelected, index) => (isSelected ? allergiesList[index] : null))
