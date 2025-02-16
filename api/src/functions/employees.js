@@ -73,12 +73,6 @@ const sendResponse = (statusCode, message, origin, data = null) => ({
   body: JSON.stringify(data ? { message, data } : { message }),
 });
 
-const sendResponse = (statusCode, message, origin, data = null) => ({
-  statusCode,
-  headers: getResponseHeaders(origin), // Check if this returns valid headers
-  body: JSON.stringify(data ? { message, data } : { message }),
-});
-
 // helper function to update the employee's field if provided
 // const updateEmployeeField = (employee, field, value) => {
 //   if (val) {
