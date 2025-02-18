@@ -4,7 +4,7 @@ import Logo from '../../assets/logo5.svg';
 import MenuSection from '../MenuSection/MenuSection';
 import EmployeeSection from '../EmployeeSection/EmployeeSection';
 import LogOut from '../LogOut.jsx/LogOut';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 function NavBar() {
   const navigate = useNavigate();
@@ -38,13 +38,16 @@ function NavBar() {
 
   const handleEmployeeSelect = (employee) => {
     sessionStorage.setItem('clearSession', 'true');
-    navigate('/manage-allergies', {
-      state: {
-        employeeData: {
-          employeeId: employee._id,
-          identity: employee.employeeName,
+    navigate('/');
+    setTimeout(() => {
+      navigate('/manage-allergies', {
+        state: {
+          employeeData: {
+            employeeId: employee._id,
+            identity: employee.employeeName,
+          },
         },
-      },
+      });
     });
   };
 
