@@ -41,14 +41,16 @@ function Footer() {
 
   const handleEmployeeSelect = (employee) => {
     sessionStorage.setItem('clearSession', 'true');
-    setShowNavOptions(false);
-    navigate('/manage-allergies', {
-      state: {
-        employeeData: {
-          employeeId: employee._id,
-          identity: employee.employeeName,
+    navigate('/');
+    setTimeout(() => {
+      navigate('/manage-allergies', {
+        state: {
+          employeeData: {
+            employeeId: employee._id,
+            identity: employee.employeeName,
+          },
         },
-      },
+      });
     });
   };
 

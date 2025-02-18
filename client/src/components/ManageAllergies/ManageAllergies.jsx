@@ -276,6 +276,9 @@ function ManageAllergies() {
       sessionStorage.removeItem('optionsState');
       sessionStorage.setItem('clearSession', 'false'); // Reset flag after clearing
     }
+
+
+    console.log('isLoadedAllergies:', isLoadedAllergies)
     if (!isLoadedAllergies) return;
 
     const storedEmployeeData = sessionStorage.getItem('employeeData');
@@ -291,12 +294,17 @@ function ManageAllergies() {
   }, [location.state, isLoadedAllergies]);
 
   useEffect(() => {
+
+    console.log('viewEmployeeTriggered:', viewEmployeeTriggered)
     if (!viewEmployeeTriggered) return;
    
     const hasPreselected = preselectedOptions.length > 0;
     const hasSelected = selectedAllergies.length > 0;
 
+    console.log('hasPreselected:', hasPreselected)
+    console.log('hasSelected:', hasSelected)
     if (!hasPreselected && !hasSelected) {
+      
       setShowAlert({
         message:
           "Please select either 'no allergies' if the employee doesn't have any allergies or one or multiple allergies.",
@@ -304,6 +312,7 @@ function ManageAllergies() {
       });
       return;
     }
+
 
     if (
       (preselectedOptions.includes('no allergies') && hasSelected) ||
