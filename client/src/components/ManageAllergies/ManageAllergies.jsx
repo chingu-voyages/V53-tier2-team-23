@@ -151,15 +151,31 @@ function ManageAllergies() {
   const [defaultOptions, setDefaultOptions] = useState([]);
   const [isLoadedAllergies, setIsLoadedAllergies] = useState(true);
 
-  const isAnyAllergySelected = optionsState.some((value) => value === true);
+  //const isAnyAllergySelected = optionsState.some((value) => value === true);
   const isNoAllergiesSelected =
     chosenEmployeeAllergiesList.length === 1 &&
     chosenEmployeeAllergiesList[0] === 'no allergies';
 
   const [showAlert, setShowAlert] = useState({ message: '', status: false });
   const [preselectedOptions, setPreselectedOptions] = useState([]);
-  const [preselectedAndAllergies, setPreselectedAndAllergies] = useState([]);
   const [viewEmployeeTriggered, setViewEmployeeTriggered] = useState(false);
+  const [isAnyAllergySelected, setIsAnyAllergySelected] = useState(false);
+  
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (optionsState.length > 0) {
+        setIsAnyAllergySelected(optionsState.some((value) => value === true));
+      }
+    }, 300); 
+  }, [optionsState]);
+  
+
+  useEffect(() => {
+    if (chosenEmployeeAllergiesList.length === 1 && chosenEmployeeAllergiesList[0] === 'no allergies') {
+      console.log('No allergies selected');
+    }
+  }, [chosenEmployeeAllergiesList]);
 
   useEffect(() => {
     const loadPreselectedOptions = async () => {
@@ -303,7 +319,7 @@ function ManageAllergies() {
 
     console.log('hasPreselected:', hasPreselected)
     console.log('hasSelected:', hasSelected)
-    if (!hasPreselected && !hasSelected) {
+    if (!hasPreselected || !hasSelected) {
       
       setShowAlert({
         message:
@@ -330,7 +346,7 @@ function ManageAllergies() {
 
     handleValidatedNavigation(); 
     
-  }, [viewEmployeeTriggered]);
+  }, [viewEmployeeTriggered, selectedAllergies, preselectedOptions]);
 
 
   const handleViewEmployee = () => {
