@@ -169,7 +169,7 @@ function ManageAllergies() {
       if (optionsState.length > 0) {
         setIsAnyAllergySelected(optionsState.some((value) => value === true));
       }
-    }, 300); 
+    }, 1300); 
   }, [optionsState]);
   
 
@@ -179,14 +179,6 @@ function ManageAllergies() {
     }
   }, [chosenEmployeeAllergiesList]);
 
-  useEffect(() => {
-    const loadPreselectedOptions = async () => {
-      const preselectedOptions = await getPreselectedOptions();
-      setPreselectedOptions(preselectedOptions);
-    };
-
-    loadPreselectedOptions();
-  }, []);
 
   useEffect(() => {
     const fetchEmployeeData = async () => {
@@ -300,6 +292,7 @@ function ManageAllergies() {
     if (!isLoadedAllergies) return;
 
     const storedEmployeeData = sessionStorage.getItem('employeeData');
+    
     const storedOptionsState = sessionStorage.getItem('optionsState');
 
     if (storedEmployeeData) {
@@ -311,23 +304,34 @@ function ManageAllergies() {
     }
   }, [location.state, isLoadedAllergies]);
 
+  
+  useEffect(() => {
+    console.log('viewEmployeeTriggered:', viewEmployeeTriggered)
+    if (!viewEmployeeTriggered) return;
+    const loadPreselectedOptions = async () => {
+      const preselectedOptions = await getPreselectedOptions();
+      setPreselectedOptions(preselectedOptions);
+    };
+
+    setTimeout(() => loadPreselectedOptions(), 0); 
+  }, [viewEmployeeTriggered]);
+
   useEffect(() => {
 
-    console.log('viewEmployeeTriggered:', viewEmployeeTriggered)
     if (!viewEmployeeTriggered) return;
    
     const isPreselected = preselectedOptions.length > 0;
     const isSelected = selectedAllergies.length > 0;
   
     setHasPreselected(isPreselected);
-    setHasSelected(isSelected);
-
+    setHasSelected(selectedAllergies.length > 0);
+    
     console.log('hasPreselected:', hasPreselected)
     console.log('hasSelected:', hasSelected)
     console.log(selectedAllergies.length)
 
     
-    if (!preselectedOptions.length > 0 || !selectedAllergies.length > 0) {
+    if (!isPreselected || !isSelected) {
       
       setShowAlert({
         message:
@@ -339,8 +343,8 @@ function ManageAllergies() {
 
 
     if (
-      (preselectedOptions.includes('no allergies') && selectedAllergies.length > 0) ||
-      (selectedAllergies.includes('no allergies') && preselectedOptions.length > 0)
+      (preselectedOptions.includes('no allergies') && isSelected) ||
+      (selectedAllergies.includes('no allergies') && isPreselected)
     ) {
       setShowAlert({
         message:
@@ -354,7 +358,7 @@ function ManageAllergies() {
 
     handleValidatedNavigation(); 
     
-  }, [viewEmployeeTriggered, selectedAllergies, preselectedOptions]);
+  }, [ viewEmployeeTriggered, selectedAllergies, preselectedOptions]);
 
 
   const handleViewEmployee = () => {
@@ -436,7 +440,8 @@ function ManageAllergies() {
   const allergenIconURL =
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
 
-  if (optionsState.length > 0 && isAnyAllergySelected) {
+    
+  if (optionsState.length > 0 && isAnyAllergySelected  && preselectedOptions) {
     return (
       // {optionsState.some((value) => value === true) ? (
       <div className={`flex flex-col justify-center ${formContainer}`}>
