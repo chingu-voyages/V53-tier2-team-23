@@ -122,6 +122,7 @@ function ManageAllergies() {
   // Check sessionStorage for existing employee data
   const storedEmployeeData = sessionStorage.getItem('employeeData');
   const storedOptionsState = sessionStorage.getItem('optionsState');
+ 
   const initialEmployeeData =
     location.state?.employeeData ||
     (storedEmployeeData ? JSON.parse(storedEmployeeData) : {});
@@ -130,6 +131,7 @@ function ManageAllergies() {
     : [];
 
   const employeeDataFromLocation = initialEmployeeData;
+  
   const { identity } = employeeDataFromLocation;
   const [employeeId, setEmployeeId] = useState('');
   const [employeeData, setEmployeeData] = useState(employeeDataFromLocation);
@@ -326,7 +328,10 @@ function ManageAllergies() {
     const isSelected = selectedAllergies.length > 0;
     
     if (isLoadedAllergies) {
-      setHasPreselected(true);
+     // setTimeout(() => {
+        setHasPreselected(true);
+      //}, 1300);
+      
     }
     
     setHasSelected(isSelected);
@@ -338,7 +343,7 @@ function ManageAllergies() {
     console.log(selectedAllergies)
 
     
-    if (!isPreselected && !isSelected || selectedAllergies.length===0) {
+    if ((!isPreselected && !isSelected) || selectedAllergies.length===0 && !hasPreselected) {
       
       setShowAlert({
         message:
@@ -352,7 +357,7 @@ function ManageAllergies() {
 
     if (
       (preselectedOptions.includes('no allergies') && preselectedOptions.length > 1) ||
-      (selectedAllergies.includes('no allergies') && selectedAllergies.length > 1)
+      (selectedAllergies.includes('no allergies') && selectedAllergies.length > 1) && !hasPreselected
     ) {
       setShowAlert({
         message:
@@ -366,7 +371,7 @@ function ManageAllergies() {
     setShowAlert({ message: '', status: false });
     handleValidatedNavigation(); 
     
-  }, [ viewEmployeeTriggered, selectedAllergies, preselectedOptions, isLoadedAllergies]);
+  }, [ viewEmployeeTriggered, selectedAllergies, preselectedOptions, isLoadedAllergies, hasPreselected]);
 
 
   const handleViewEmployee = () => {
@@ -450,7 +455,8 @@ function ManageAllergies() {
     'https://res.cloudinary.com/dspxn4ees/image/upload/v1738655655/';
 
     
-  if (optionsState.length > 0 && isAnyAllergySelected  && preselectedOptions) {
+   
+    if (optionsState.length > 0 && isAnyAllergySelected && isLoadedAllergies) {
     return (
       // {optionsState.some((value) => value === true) ? (
       <div className={`flex flex-col justify-center ${formContainer}`}>
