@@ -149,7 +149,7 @@ function ManageAllergies() {
   const [optionsState, setOptionsState] = useState(initialOptionsState || []);
 
   const [defaultOptions, setDefaultOptions] = useState([]);
-  const [isLoadedAllergies, setIsLoadedAllergies] = useState(true);
+  const [isLoadedAllergies, setIsLoadedAllergies] = useState(false);
 
   //const isAnyAllergySelected = optionsState.some((value) => value === true);
   const isNoAllergiesSelected =
@@ -273,7 +273,9 @@ function ManageAllergies() {
       });
       setOptionsState(updatedState);
 
+      setTimeout(() => {
       setIsLoadedAllergies(true);
+      }, 0);
     }
   }, [defaultAllergiesListIndeces, allergiesList]);
 
@@ -322,46 +324,53 @@ function ManageAllergies() {
    
     const isPreselected = preselectedOptions.length > 0;
     const isSelected = selectedAllergies.length > 0;
-  
-    setHasPreselected(isPreselected);
-    setHasSelected(selectedAllergies.length > 0);
+    
+    if (isLoadedAllergies) {
+      setHasPreselected(true);
+    }
+    
+    setHasSelected(isSelected);
     
     console.log('hasPreselected:', hasPreselected)
     console.log('hasSelected:', hasSelected)
-    console.log(selectedAllergies.length)
+     console.log('isPreselected:', isPreselected)
+    console.log('isSelected:', isSelected)
+    console.log(selectedAllergies)
 
     
-    if (!isPreselected || !isSelected) {
+    if (!isPreselected && !isSelected || selectedAllergies.length===0) {
       
       setShowAlert({
         message:
           "Please select either 'no allergies' if the employee doesn't have any allergies or one or multiple allergies.",
         status: true,
       });
+      setViewEmployeeTriggered(false);
       return;
     }
 
 
     if (
-      (preselectedOptions.includes('no allergies') && isSelected) ||
-      (selectedAllergies.includes('no allergies') && isPreselected)
+      (preselectedOptions.includes('no allergies') && preselectedOptions.length > 1) ||
+      (selectedAllergies.includes('no allergies') && selectedAllergies.length > 1)
     ) {
       setShowAlert({
         message:
           "Please select only 'no allergies' if the employee doesn't have any allergies or any valid allergies from the list, not both.",
         status: true,
       });
+      setViewEmployeeTriggered(false);
       return;
     }
-
+    console.log(viewEmployeeTriggered)
     setShowAlert({ message: '', status: false });
-
     handleValidatedNavigation(); 
     
-  }, [ viewEmployeeTriggered, selectedAllergies, preselectedOptions]);
+  }, [ viewEmployeeTriggered, selectedAllergies, preselectedOptions, isLoadedAllergies]);
 
 
   const handleViewEmployee = () => {
+    if(!viewEmployeeTriggered)
     setViewEmployeeTriggered(true);
   };
 
@@ -520,7 +529,6 @@ function ManageAllergies() {
                   getOptionLabel={(e) => getAllergyLabel(e.value, e.isdisabled)}
                 />
                 <button
-                  type='submit'
                   id='submitButton'
                   onClick={handleSaveEmployeeAllergies}
                   className={`${formContainerButton}
