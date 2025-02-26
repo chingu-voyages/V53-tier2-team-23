@@ -4,16 +4,17 @@
 }
 
 .datepicker-container {
-  background: #752f62;
-  border-radius: 15px;
+  background: #492470;
+  border-radius: 20px;
   height: auto;
+  width: -moz-fit-content;
   width: fit-content;
   display: flex;
-  padding: 20px 25px 26px;
+  padding: 20px 3px 33px;
   margin: 25px auto;
   box-sizing: border-box;
   font-weight: 400;
-  font-family: 'Poppins';
+  font-family: "Manrope", serif;
 }
 
 .datepicker-container h1,
@@ -26,9 +27,9 @@
 .datepicker-container .rdp-range_start .rdp-day_button,
 .datepicker-container .rdp-range_end .rdp-day_button {
   color: white;
-  background-color: #752f62;
+  background-color: #492470;
   font-weight: 400;
-  font-family: 'Poppins';
+  font-family: "Poppins";
   border: none;
   width: 3rem;
   height: 3rem;
@@ -36,15 +37,22 @@
 
 .datepicker-container .rdp-range_middle .rdp-day_button {
   font-weight: 400;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 .datepicker-container .custom-day-picker .rdp-chevron {
-  fill: #752f62;
+  fill: #492470;
 }
 
 .datepicker-container .custom-day-picker .rdp-weekday {
-  color: gray;
+  color: #787379;
+  font-family: "Manrope", serif;
+}
+
+.rdp-dropdown_root,
+.rdp-dropdown {
+  font-family: "Shantell Sans";
+  font-weight: 700;
 }
 
 .datepicker-container .custom-day-picker .rdp-month_caption {
@@ -67,7 +75,7 @@
 }
 
 .days-off-container button {
-  font-weight: 400;
+  font-weight: 500;
   font-family: Shantell Sans, sans-serif;
   width: fit-content;
 }
@@ -98,7 +106,7 @@
 .datepicker-container
   .DayPicker-Day--dayoffbg-highlight
   .rdp-day_button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
@@ -107,6 +115,17 @@
   background-color: #1f1c1cbd;
   transform: translate(-50%, -50%);
   z-index: -1;
+}
+.rdp-range_start{
+  background:linear-gradient(90deg, transparent 50%, #f0f0ff 50%);
+}
+
+.rdp-range_end{
+  background:linear-gradient(-90deg, transparent 50%, #f0f0ff 50%);
+}
+
+.rdp-range_middle {
+  background-color: #f0ebf6;
 }
 
 @media not all and (min-width: 640px) {

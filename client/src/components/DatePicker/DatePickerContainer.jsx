@@ -20,7 +20,7 @@ function DatePickerContainer() {
     <div
       className={`${datepickerContainer} lg:p-[20px_70px_26px] flex flex-col flex-wrap items-center`}
     >
-      <h1 className='text-white w-full text-4xl text-center h-14'>Calendar</h1>
+      <h1 className='text-white w-full text-4xl text-center h-3 uppercase font-semibold'>Calendar</h1>
       <div className='flex justify-between flex-row align-center gap-5'>
         <DatePicker
           customDayPicker={customDayPicker}

@@ -328,7 +328,7 @@ export default function DatePicker({
             className={`${daysOffContainer} flex align-center flex-wrap justify-center gap-3 max-sm:p-[0px_0px_25px] sm:p-[0px_0px_25px] md::p-[0px_28px_25px] lg:p-[0px_28px_25px] bg-white`}
           >
             <span
-              className={`${daysOffText} text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm`}
+              className={`${daysOffText} text-black bg-gray-500 p-[5px_10px] rounded-[25px] border border-black text-sm`}
             >
               Days OFF
             </span>
@@ -347,8 +347,8 @@ export default function DatePicker({
                   className={`select-none ${
                     // selectedDayoff === day //for one day
                     selectedDaysOff.includes(currentDay)
-                      ? 'days-off-text text-black bg-gray-500 p-[5px_10px] rounded-[25px] border-2 border-black text-sm selected'
-                      : 'bg-white p-[5px_10px] border-2 border-[#752f62] rounded-[25px] text-xs leading-[1.6]'
+                      ? 'days-off-text text-black bg-[#ACA9A9] p-[5px_10px] rounded-[25px] border border-black text-sm selected font-semibold'
+                      : 'bg-white p-[5px_10px] border border-[#492470] rounded-[25px] text-xs leading-[1.6] font-semibold'
                   }`}
                   onClick={(event) => handleSelectedDaysOffClick(event, day)}
                   data-day={currentDay}
@@ -361,15 +361,15 @@ export default function DatePicker({
           <div className='buttons-container w-full flex align-center justify-between rounded-br-[25px] rounded-bl-[25px] bg-white p-[20px_50px_20px] box-border border-t-2 border-t-[#e5e5e5]'>
             <button
               onClick={handleReset}
-              className='flex justify-start p-[5px_15px] rounded-[25px] border-2 text-[#752f62] border-[#752f62] text-md'
+              className='flex justify-start p-[5px_15px] rounded-[25px] border text-[#492470] leading-[1.7] border-[#492470] text-md uppercase font-semibold'
             >
               Reset
             </button>
             <button
               type='submit'
-              className='flex justify-end p-[5px_15px] rounded-[25px] border-2 border-white text-white bg-[#752f62] text-md'
+              className='flex justify-end p-[5px_15px] rounded-[25px] text-[#492470] bg-[#FFD23F] leading-[1.7] text-md font-semibold shadow-[0px_4px_4px_0px_#00000040]'
             >
-              Save and {action} menu
+              Save
             </button>
           </div>
         </div>
